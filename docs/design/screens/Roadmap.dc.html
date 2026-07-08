@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Product manager roadmap — pathgrid</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M4 24 L13 14 L24 4' stroke='%23000' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='4' cy='24' r='3.4' fill='%23000'/%3E%3Ccircle cx='13' cy='14' r='3.4' fill='%23000'/%3E%3Ccircle cx='24' cy='4' r='4' fill='%23c5b0f4' stroke='%23000' stroke-width='2.2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/elevation.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/base.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/styles.css">
+  <script src="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/_ds_bundle.js"></script>
+  <style>
+    body { margin:0; background:#ffffff; }
+  </style>
+</helmet>
+
+<div style="min-height:100vh; background:var(--color-canvas); font-family:var(--font-sans); color:var(--color-ink);">
+
+  <!-- App nav -->
+  <dc-import name="AppHeader" active="roadmaps" signed-in="true" style="position:sticky; top:0; z-index:50;" hint-size="100%,60px"></dc-import>
+
+  <!-- Roadmap header strip -->
+  <section data-screen-label="Roadmap header" style="border-bottom:var(--border-hairline);">
+    <div style="max-width:1440px; margin:0 auto; padding:28px 32px 24px; display:flex; flex-direction:column; gap:16px;">
+      <div style="display:flex; align-items:center; gap:8px; font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.6;">
+        <a href="Home.dc.html" style="color:inherit; text-decoration:none;">Roadmaps</a><span>/</span><a href="Home.dc.html" style="color:inherit; text-decoration:none;">Role paths</a><span>/</span><span style="opacity:1;">Product manager</span>
+      </div>
+      <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap;">
+        <div style="display:flex; flex-direction:column; gap:10px; min-width:280px;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <h1 style="margin:0; font-size:36px; font-weight:540; letter-spacing:-0.4px; line-height:1.1;">Product manager</h1>
+            <button onClick="{{ toggleBookmark }}" title="Bookmark" style="width:38px; height:38px; border-radius:var(--radius-full); border:var(--border-hairline); background:var(--color-canvas); display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;" style-hover="background:var(--color-surface-soft);">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="{{ bookmarkFill }}"><path d="M4 2.5h8V14l-4-2.6L4 14V2.5z" stroke="var(--color-ink)" stroke-width="1.4" stroke-linejoin="round"></path></svg>
+            </button>
+          </div>
+          <p style="margin:0; font-size:16px; font-weight:330; line-height:1.5; color:var(--color-ink); opacity:0.75; max-width:560px;">Everything from user research to launch, in the order you meet it on the job — across 8 stages.</p>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px; min-width:320px; flex:1; max-width:520px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+            <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.5px; color:var(--color-ink); border:var(--border-hairline); border-radius:var(--radius-pill); padding:5px 12px;">{{ progressLabel }}</span>
+            <div style="display:flex; gap:8px;">
+              <button style="height:38px; padding:0 16px; border-radius:var(--radius-pill); border:var(--border-hairline); background:var(--color-canvas); color:var(--color-ink); font-family:var(--font-sans); font-size:15px; font-weight:480; cursor:pointer;" style-hover="background:var(--color-surface-soft);">Share</button>
+              <a href="Tutor%20Chat.dc.html" style="display:flex; align-items:center; height:38px; padding:0 16px; border-radius:var(--radius-pill); background:var(--color-primary); color:var(--color-on-primary); font-size:15px; font-weight:480; text-decoration:none;">Ask the tutor</a>
+            </div>
+          </div>
+          <div style="height:8px; border-radius:var(--radius-full); background:var(--color-hairline); overflow:hidden;"><div style="width:{{ progressPct }}; height:100%; background:var(--color-ink); transition:width 220ms ease;"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Canvas -->
+  <section data-screen-label="Canvas" style="position:relative; display:flex; flex-wrap:wrap; align-items:flex-start; background:var(--color-block-cream); background-image:radial-gradient(#e2d9c0 1.2px, transparent 1.2px); background-size:24px 24px; border-bottom:var(--border-hairline); min-height:600px;">
+
+    <!-- map / list toggle -->
+    <div style="position:absolute; top:20px; left:24px; z-index:30; display:flex; background:var(--color-canvas); border:2px solid var(--color-ink); border-radius:var(--radius-pill); padding:3px; gap:2px;">
+      <button onClick="{{ showMap }}" style="{{ mapTabStyle }}">Map</button>
+      <button onClick="{{ showList }}" style="{{ listTabStyle }}">List view</button>
+    </div>
+
+    <!-- graph viewport -->
+    <sc-if value="{{ isMap }}" hint-placeholder-val="{{ true }}">
+    <div style="position:relative; flex:1 1 560px; min-width:0; overflow:auto; align-self:stretch;">
+
+      <!-- zoom controls -->
+      <div style="position:absolute; bottom:24px; left:24px; z-index:30; display:flex; flex-direction:column; background:var(--color-canvas); border:2px solid var(--color-ink); border-radius:var(--radius-md); overflow:hidden;">
+        <button onClick="{{ zoomIn }}" style="width:40px; height:40px; display:flex; align-items:center; justify-content:center; border:0; border-bottom:1px solid var(--color-ink); background:var(--color-canvas); cursor:pointer;" style-hover="background:var(--color-surface-soft);"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9M2.5 7h9" stroke="var(--color-ink)" stroke-width="1.8" stroke-linecap="round"></path></svg></button>
+        <button onClick="{{ zoomOut }}" style="width:40px; height:40px; display:flex; align-items:center; justify-content:center; border:0; border-bottom:1px solid var(--color-ink); background:var(--color-canvas); cursor:pointer;" style-hover="background:var(--color-surface-soft);"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9" stroke="var(--color-ink)" stroke-width="1.8" stroke-linecap="round"></path></svg></button>
+        <button onClick="{{ zoomReset }}" title="Fit" style="width:40px; height:40px; display:flex; align-items:center; justify-content:center; border:0; background:var(--color-canvas); cursor:pointer;" style-hover="background:var(--color-surface-soft);"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2.5" y="2.5" width="9" height="9" rx="1.5" stroke="var(--color-ink)" stroke-width="1.4"></rect><path d="M5.5 7h3M7 5.5v3" stroke="var(--color-ink)" stroke-width="1.4" stroke-linecap="round"></path></svg></button>
+      </div>
+
+      <!-- legend -->
+      <div style="position:absolute; bottom:24px; right:24px; z-index:30; background:var(--color-canvas); border:2px solid var(--color-ink); border-radius:var(--radius-md); padding:11px 14px; display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:7px; font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px;"><span style="width:11px; height:11px; border-radius:3px; background:var(--color-block-mint); border:1.5px solid var(--color-ink);"></span>Done</div>
+        <div style="display:flex; align-items:center; gap:7px; font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px;"><span style="width:11px; height:11px; border-radius:3px; background:var(--color-block-lilac); border:1.5px solid var(--color-ink); box-shadow:0 0 0 1.5px var(--color-block-cream), 0 0 0 3px var(--color-ink);"></span>Learning</div>
+        <div style="display:flex; align-items:center; gap:7px; font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px;"><span style="width:11px; height:11px; border-radius:3px; background:var(--color-block-lilac); border:1.5px solid var(--color-ink); opacity:0.4;"></span>Skipped</div>
+        <div style="display:flex; align-items:center; gap:7px; font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px;"><span style="width:14px; border-top:2px dashed var(--color-ink);"></span>Optional</div>
+      </div>
+
+      <!-- graph -->
+      <div style="position:relative; width:960px; height:1120px; margin:24px auto; transform:scale({{ zoom }}); transform-origin:top center;">
+        <svg width="960" height="1120" viewBox="0 0 960 1120" fill="none" style="position:absolute; inset:0; pointer-events:none;">
+          <path d="M470 84 V1050" stroke="var(--color-ink)" stroke-width="2.5"></path>
+          <path d="M470 150 C 590 150, 640 120, 790 120" stroke="var(--color-ink)" stroke-width="2"></path>
+          <path d="M470 150 C 590 150, 640 180, 790 180" stroke="var(--color-ink)" stroke-width="2"></path>
+          <path d="M470 270 C 350 270, 300 240, 165 240" stroke="var(--color-ink)" stroke-width="2"></path>
+          <path d="M470 270 C 350 270, 300 300, 165 300" stroke="var(--color-ink)" stroke-width="2"></path>
+          <path d="M470 270 C 350 270, 300 358, 165 358" stroke="var(--color-ink)" stroke-width="2" stroke-dasharray="2 8"></path>
+          <path d="M470 390 C 590 390, 640 352, 790 352" stroke="var(--color-ink)" stroke-width="2"></path>
+          <path d="M470 390 C 590 390, 640 408, 790 408" stroke="var(--color-ink)" stroke-width="2"></path>
+          <path d="M470 390 C 590 390, 640 464, 790 464" stroke="var(--color-ink)" stroke-width="2"></path>
+          <path d="M470 510 C 350 510, 300 482, 165 482" stroke="var(--color-ink)" stroke-width="2"></path>
+          <path d="M470 510 C 350 510, 300 540, 165 540" stroke="var(--color-ink)" stroke-width="2"></path>
+          <path d="M470 630 C 590 630, 640 602, 790 602" stroke="var(--color-ink)" stroke-width="2"></path>
+          <path d="M470 630 C 590 630, 640 658, 790 658" stroke="var(--color-ink)" stroke-width="2"></path>
+          <path d="M470 630 C 590 630, 640 714, 790 714" stroke="var(--color-ink)" stroke-width="2" stroke-dasharray="2 8"></path>
+          <path d="M470 750 C 350 750, 300 722, 165 722" stroke="var(--color-ink)" stroke-width="2"></path>
+          <path d="M470 750 C 350 750, 300 780, 165 780" stroke="var(--color-ink)" stroke-width="2"></path>
+          <path d="M470 870 C 590 870, 640 842, 790 842" stroke="var(--color-ink)" stroke-width="2"></path>
+          <path d="M470 870 C 590 870, 640 898, 790 898" stroke="var(--color-ink)" stroke-width="2"></path>
+          <path d="M470 990 C 350 990, 300 962, 165 962" stroke="var(--color-ink)" stroke-width="2"></path>
+          <path d="M470 990 C 350 990, 300 1018, 165 1018" stroke="var(--color-ink)" stroke-width="2"></path>
+        </svg>
+
+        <div style="position:absolute; left:470px; top:48px; transform:translate(-50%,-50%); background:var(--color-canvas); border:2.5px solid var(--color-ink); border-radius:10px; padding:14px 28px; font-size:22px; font-weight:700; color:var(--color-ink); box-shadow:0 3px 0 rgba(0,0,0,0.18); white-space:nowrap;">Product manager</div>
+
+        <sc-for list="{{ nodes }}" as="node" hint-placeholder-count="20">
+          <div onClick="{{ node.onClick }}" style="{{ node.style }}" style-hover="filter:brightness(0.97);">
+            <sc-if value="{{ node.showCheck }}" hint-placeholder-val="{{ false }}"><span style="position:absolute; left:11px; top:50%; transform:translateY(-50%); width:16px; height:16px; border-radius:var(--radius-full); background:var(--color-canvas); border:1.5px solid var(--color-ink); display:flex; align-items:center; justify-content:center;"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6.4L4.7 9 10 3.4" stroke="var(--color-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></sc-if>
+            {{ node.label }}
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- list view -->
+    <sc-if value="{{ isList }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="List view" style="flex:1 1 560px; min-width:0; padding:32px; align-self:stretch;">
+      <div style="max-width:760px; margin:0 auto; display:flex; flex-direction:column; gap:22px;">
+        <sc-for list="{{ listGroups }}" as="group" hint-placeholder-count="4">
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.5px; color:var(--color-ink); opacity:0.55;">{{ group.stageLabel }}</span>
+              <span style="height:1px; flex:1; background:var(--color-ink); opacity:0.12;"></span>
+            </div>
+            <div onClick="{{ group.onClick }}" style="display:flex; align-items:center; gap:12px; background:var(--color-canvas); border:2px solid var(--color-ink); border-radius:var(--radius-md); padding:12px 16px; cursor:pointer;">
+              <span style="{{ group.dotStyle }}"></span>
+              <span style="flex:1; font-size:16px; font-weight:480;">{{ group.label }}</span>
+              <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; opacity:0.6;">{{ group.statusLabel }}</span>
+            </div>
+            <sc-for list="{{ group.children }}" as="child" hint-placeholder-count="2">
+              <div onClick="{{ child.onClick }}" style="display:flex; align-items:center; gap:12px; margin-left:24px; background:var(--color-canvas); border:var(--border-hairline); border-radius:var(--radius-md); padding:10px 14px; cursor:pointer;" style-hover="border-color:var(--color-ink);">
+                <span style="{{ child.dotStyle }}"></span>
+                <span style="flex:1; font-size:14px; font-weight:330; {{ child.strike }}">{{ child.label }}</span>
+                <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; opacity:0.55;">{{ child.statusLabel }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- drawer -->
+    <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ true }}">
+      <aside data-screen-label="Topic drawer" style="position:sticky; top:76px; align-self:flex-start; width:392px; max-width:calc(100% - 40px); flex-shrink:0; margin:20px 20px 20px auto; z-index:40; background:var(--color-canvas); border:2px solid var(--color-ink); border-radius:16px; box-shadow:var(--shadow-modal); display:flex; flex-direction:column; overflow:hidden; max-height:min(680px, calc(100vh - 96px));">
+        <div style="padding:20px 22px 16px; border-bottom:var(--border-hairline); display:flex; flex-direction:column; gap:14px;">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+            <div style="display:flex; flex-direction:column; gap:5px;">
+              <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.6;">{{ detail.eyebrow }}</span>
+              <span style="font-size:22px; font-weight:700; letter-spacing:-0.2px; color:var(--color-ink);">{{ detail.label }}</span>
+            </div>
+            <button onClick="{{ closeDrawer }}" title="Close" style="width:34px; height:34px; border-radius:var(--radius-full); background:var(--color-surface-soft); border:0; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;" style-hover="background:var(--color-hairline);"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="var(--color-ink)" stroke-width="1.6" stroke-linecap="round"></path></svg></button>
+          </div>
+          <div style="display:flex; background:var(--color-surface-soft); border-radius:var(--radius-pill); padding:3px; gap:2px;">
+            <button onClick="{{ detail.setPending }}" style="{{ detail.pendingStyle }}">Pending</button>
+            <button onClick="{{ detail.setLearning }}" style="{{ detail.learningStyle }}">Learning</button>
+            <button onClick="{{ detail.setDone }}" style="{{ detail.doneStyle }}">Done</button>
+            <button onClick="{{ detail.setSkipped }}" style="{{ detail.skipStyle }}">Skip</button>
+          </div>
+        </div>
+        <div style="padding:18px 22px; display:flex; flex-direction:column; gap:16px; overflow-y:auto; flex:1; min-height:0;">
+          <p style="margin:0; font-size:15px; font-weight:330; line-height:1.6; color:var(--color-ink);">{{ detail.body }}</p>
+          <div style="display:flex; flex-direction:column; gap:9px;">
+            <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.6;">Resources</span>
+            <a href="#" style="display:flex; align-items:center; gap:11px; border:var(--border-hairline); border-radius:var(--radius-md); padding:11px 13px; text-decoration:none;" style-hover="background:var(--color-surface-soft);">
+              <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:9.5px; letter-spacing:0.5px; color:var(--color-ink); background:var(--color-block-lilac); border-radius:var(--radius-sm); padding:3px 7px;">Article</span>
+              <span style="flex:1; font-size:14px; font-weight:330; color:var(--color-ink);">The five whys, applied honestly</span>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3.5 8.5l5-5M5 3.5h3.5V7" stroke="var(--color-ink)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </a>
+            <a href="Tutor%20Chat.dc.html" style="display:flex; align-items:center; gap:11px; border:var(--border-hairline); border-radius:var(--radius-md); padding:11px 13px; text-decoration:none;" style-hover="background:var(--color-surface-soft);">
+              <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:9.5px; letter-spacing:0.5px; color:var(--color-ink); background:var(--color-block-coral); border-radius:var(--radius-sm); padding:3px 7px;">Video</span>
+              <span style="flex:1; font-size:14px; font-weight:330; color:var(--color-ink);">Running your first user interview</span>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3.5 8.5l5-5M5 3.5h3.5V7" stroke="var(--color-ink)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </a>
+            <a href="#" style="display:flex; align-items:center; gap:11px; border:var(--border-hairline); border-radius:var(--radius-md); padding:11px 13px; text-decoration:none;" style-hover="background:var(--color-surface-soft);">
+              <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:9.5px; letter-spacing:0.5px; color:var(--color-ink); background:var(--color-block-mint); border-radius:var(--radius-sm); padding:3px 7px;">Course</span>
+              <span style="flex:1; font-size:14px; font-weight:330; color:var(--color-ink);">Continuous discovery habits</span>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3.5 8.5l5-5M5 3.5h3.5V7" stroke="var(--color-ink)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </a>
+          </div>
+          <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; color:var(--color-ink); opacity:0.5;">Resource list: AI-drafted · human-reviewed</span>
+        </div>
+        <div style="border-top:var(--border-hairline); padding:14px 22px; display:flex; gap:8px;">
+          <a href="Tutor%20Chat.dc.html" style="flex:1; display:flex; align-items:center; justify-content:center; gap:7px; font-size:14px; font-weight:480; color:var(--color-on-primary); background:var(--color-primary); border-radius:var(--radius-pill); padding:11px; text-decoration:none;">Explain this topic</a>
+          <a href="Tutor%20Chat.dc.html" style="flex:1; display:flex; align-items:center; justify-content:center; gap:7px; font-size:14px; font-weight:480; color:var(--color-ink); border:var(--border-hairline); border-radius:var(--radius-pill); padding:11px; text-decoration:none;" style-hover="background:var(--color-surface-soft);">Ask the tutor</a>
+        </div>
+      </aside>
+    </sc-if>
+  </section>
+
+  <!-- SEO + FAQ -->
+  <section data-screen-label="About this path" style="max-width:1280px; margin:0 auto; padding:64px 32px 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:48px;">
+    <div style="display:flex; flex-direction:column; gap:18px;">
+      <div style="font-family:var(--font-mono); text-transform:uppercase; font-size:13px; letter-spacing:0.6px; color:var(--color-ink);">About this path</div>
+      <h2 style="margin:0; font-size:32px; font-weight:540; letter-spacing:-0.4px; line-height:1.15;">What does a product manager do?</h2>
+      <p style="margin:0; font-size:18px; font-weight:330; line-height:1.6; color:var(--color-ink);">A product manager decides what a team builds and why. The job sits between users, business and engineering: finding the problems worth solving, framing them so a team can act, and checking whether shipped work actually moved anything.</p>
+      <p style="margin:0; font-size:18px; font-weight:330; line-height:1.6; color:var(--color-ink);">This path covers the craft in the order you'll meet it on the job — research before prioritization, prioritization before roadmaps. Mark each topic done, learning or skipped; every topic links 2–4 vetted resources.</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:4px;">
+        <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.5px; color:var(--color-ink); border:var(--border-hairline); border-radius:var(--radius-pill); padding:6px 12px;">~3 months at 5h/week</span>
+        <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.5px; color:var(--color-ink); border:var(--border-hairline); border-radius:var(--radius-pill); padding:6px 12px;">no prerequisites</span>
+        <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.5px; color:var(--color-ink); border:var(--border-hairline); border-radius:var(--radius-pill); padding:6px 12px;">updated Jun 2026</span>
+      </div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:0;">
+      <h2 style="margin:0 0 12px; font-size:32px; font-weight:540; letter-spacing:-0.4px; line-height:1.15;">Common questions</h2>
+      <sc-for list="{{ faqs }}" as="faq" hint-placeholder-count="4">
+        <div onClick="{{ faq.onClick }}" style="border-bottom:var(--border-hairline); padding:18px 0; display:flex; flex-direction:column; gap:10px; cursor:pointer;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+            <span style="font-size:17px; font-weight:480; color:var(--color-ink);">{{ faq.q }}</span>
+            <span style="{{ faq.iconStyle }}"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4.5l4 4 4-4" stroke="var(--color-ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+          </div>
+          <sc-if value="{{ faq.open }}" hint-placeholder-val="{{ false }}"><p style="margin:0; font-size:15px; font-weight:330; line-height:1.65; color:var(--color-ink); opacity:0.8;">{{ faq.a }}</p></sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- Related -->
+  <section data-screen-label="Related paths" style="max-width:1280px; margin:0 auto; padding:56px 32px 0;">
+    <div style="display:flex; align-items:center; gap:16px; margin-bottom:22px;">
+      <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:13px; letter-spacing:0.6px; color:var(--color-ink);">Related paths</span>
+      <span style="height:1px; flex:1; background:var(--color-hairline);"></span>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px;">
+      <a href="Roadmap.dc.html" style="text-decoration:none; background:var(--color-surface-soft); border:1px solid transparent; border-radius:var(--radius-md); padding:20px; display:flex; flex-direction:column; gap:10px;" style-hover="border-color:var(--color-hairline);"><span style="font-size:17px; font-weight:480; color:var(--color-ink);">Engineering manager</span><span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; opacity:0.6;">Role path · 41 topics</span></a>
+      <a href="Roadmap.dc.html" style="text-decoration:none; background:var(--color-surface-soft); border:1px solid transparent; border-radius:var(--radius-md); padding:20px; display:flex; flex-direction:column; gap:10px;" style-hover="border-color:var(--color-hairline);"><span style="font-size:17px; font-weight:480; color:var(--color-ink);">Data analyst</span><span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; opacity:0.6;">Role path · 44 topics</span></a>
+      <a href="Roadmap.dc.html" style="text-decoration:none; background:var(--color-surface-soft); border:1px solid transparent; border-radius:var(--radius-md); padding:20px; display:flex; flex-direction:column; gap:10px;" style-hover="border-color:var(--color-hairline);"><span style="font-size:17px; font-weight:480; color:var(--color-ink);">Prompt engineering</span><span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; opacity:0.6;">Skill path · 20 topics</span></a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div style="margin-top:72px;"><dc-import name="AppFooter" hint-size="100%,320px"></dc-import></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 940 }
+}">
+class Component extends DCLogic {
+  state = {
+    view: 'map',
+    zoom: 1,
+    selected: 'user-research',
+    bookmarked: true,
+    faqOpen: 0,
+    statuses: {
+      'product-fundamentals':'done','what-pms-do':'done','product-lifecycle':'done',
+      'user-research':'learning','interview-scripts':'done','surveys-panels':'learning',
+      'prioritization':'pending','rice-ice':'done','kano':'skipped','cost-of-delay':'done',
+      'roadmapping':'pending','now-next-later':'done','outcome-roadmaps':'done',
+      'metrics':'pending','north-star':'done','funnels':'done',
+      'experimentation':'pending','hypothesis':'pending','ab-testing':'pending',
+      'stakeholders':'pending','prds':'pending','saying-no':'pending',
+      'strategy':'pending','positioning':'done','gtm':'pending'
+    }
+  };
+
+  NODES = [
+    { id:'product-fundamentals', label:'Product fundamentals', x:470, y:150, kind:'topic', stage:1 },
+    { id:'user-research', label:'User research', x:470, y:270, kind:'topic', stage:2 },
+    { id:'prioritization', label:'Prioritization', x:470, y:390, kind:'topic', stage:3 },
+    { id:'roadmapping', label:'Roadmapping', x:470, y:510, kind:'topic', stage:4 },
+    { id:'metrics', label:'Metrics & analytics', x:470, y:630, kind:'topic', stage:5 },
+    { id:'experimentation', label:'Experimentation', x:470, y:750, kind:'topic', stage:6 },
+    { id:'stakeholders', label:'Stakeholders & comms', x:470, y:870, kind:'topic', stage:7 },
+    { id:'strategy', label:'Strategy & launch', x:470, y:990, kind:'topic', stage:8 },
+    { id:'what-pms-do', label:'What PMs actually do', x:790, y:120, kind:'sub', parent:'product-fundamentals' },
+    { id:'product-lifecycle', label:'Product lifecycle', x:790, y:180, kind:'sub', parent:'product-fundamentals' },
+    { id:'interview-scripts', label:'Interview scripts', x:165, y:240, kind:'sub', parent:'user-research' },
+    { id:'surveys-panels', label:'Surveys & panels', x:165, y:300, kind:'sub', parent:'user-research' },
+    { id:'jtbd', label:'Optional: Jobs-to-be-done', x:165, y:358, kind:'sub', parent:'user-research', optional:true },
+    { id:'rice-ice', label:'RICE & ICE scoring', x:790, y:352, kind:'sub', parent:'prioritization' },
+    { id:'kano', label:'Kano model', x:790, y:408, kind:'sub', parent:'prioritization' },
+    { id:'cost-of-delay', label:'Cost of delay', x:790, y:464, kind:'sub', parent:'prioritization' },
+    { id:'now-next-later', label:'Now-next-later', x:165, y:482, kind:'sub', parent:'roadmapping' },
+    { id:'outcome-roadmaps', label:'Outcome roadmaps', x:165, y:540, kind:'sub', parent:'roadmapping' },
+    { id:'north-star', label:'North-star metric', x:790, y:602, kind:'sub', parent:'metrics' },
+    { id:'funnels', label:'Funnels & retention', x:790, y:658, kind:'sub', parent:'metrics' },
+    { id:'sql-basics', label:'Optional: SQL basics', x:790, y:714, kind:'sub', parent:'metrics', optional:true },
+    { id:'hypothesis', label:'Hypothesis writing', x:165, y:722, kind:'sub', parent:'experimentation' },
+    { id:'ab-testing', label:'A/B testing', x:165, y:780, kind:'sub', parent:'experimentation' },
+    { id:'prds', label:'PRDs that get read', x:790, y:842, kind:'sub', parent:'stakeholders' },
+    { id:'saying-no', label:'Saying no', x:790, y:898, kind:'sub', parent:'stakeholders' },
+    { id:'positioning', label:'Positioning', x:165, y:962, kind:'sub', parent:'strategy' },
+    { id:'gtm', label:'GTM checklist', x:165, y:1018, kind:'sub', parent:'strategy' }
+  ];
+
+  STAGE_LABEL = {1:'01 · Foundations',2:'02 · Discovery',3:'03 · Prioritization',4:'04 · Roadmapping',5:'05 · Metrics',6:'06 · Experimentation',7:'07 · Stakeholders',8:'08 · Strategy'};
+
+  setStatus(id, s) { this.setState(prev => ({ statuses: { ...prev.statuses, [id]: s } })); }
+  select(id) { this.setState({ selected: id }); }
+
+  nodeStyle(n) {
+    const st = this.state.statuses[n.id] || 'pending';
+    const selected = this.state.selected === n.id;
+    const topic = n.kind === 'topic';
+    const s = {
+      position:'absolute', left:n.x+'px', top:n.y+'px', transform:'translate(-50%,-50%)',
+      borderRadius:'8px', border:'2px solid var(--color-ink)', color:'var(--color-ink)',
+      whiteSpace:'nowrap', cursor:'pointer', boxSizing:'border-box',
+      fontSize: topic ? '15px' : '13.5px', fontWeight: 500,
+      padding: topic ? '11px 18px' : '9px 15px',
+      background: topic ? 'var(--color-block-lilac)' : 'var(--color-canvas)',
+      boxShadow:'0 2px 0 rgba(0,0,0,0.14)', transition:'background 180ms ease, box-shadow 180ms ease, opacity 180ms ease'
+    };
+    if (n.optional) { s.background='transparent'; s.border='2px dashed var(--color-ink)'; s.boxShadow='none'; s.color='var(--color-ink)'; s.opacity=0.75; }
+    if (st === 'done') { s.background='var(--color-block-mint)'; s.paddingLeft = topic ? '38px' : '34px'; }
+    if (st === 'learning') { s.boxShadow='0 0 0 3px var(--color-block-cream), 0 0 0 5px var(--color-ink)'; }
+    if (st === 'skipped') { s.opacity=0.4; s.textDecoration='line-through'; }
+    if (selected) { s.transform='translate(-50%,-50%) scale(1.05)'; s.zIndex=5; s.boxShadow = (st==='learning') ? '0 0 0 3px var(--color-block-cream), 0 0 0 5px var(--color-ink)' : '0 8px 22px rgba(0,0,0,0.22)'; }
+    return s;
+  }
+
+  pillStyle(active) {
+    return { flex:1, textAlign:'center', border:0, borderRadius:'var(--radius-pill)', padding:'8px 4px', cursor:'pointer',
+      fontFamily:'var(--font-sans)', fontSize:'13px', fontWeight: active?480:330,
+      background: active ? 'var(--color-primary)' : 'transparent', color: active ? 'var(--color-on-primary)' : 'var(--color-ink)' };
+  }
+  tabStyle(active) {
+    return { border:0, borderRadius:'var(--radius-pill)', padding:'7px 16px', cursor:'pointer', fontFamily:'var(--font-sans)',
+      fontSize:'14px', fontWeight:480, background: active?'var(--color-primary)':'transparent', color: active?'var(--color-on-primary)':'var(--color-ink)',
+      display:'flex', alignItems:'center', gap:'6px' };
+  }
+  dotStyle(id) {
+    const st = this.state.statuses[id] || 'pending';
+    const map = { done:'var(--color-block-mint)', learning:'var(--color-block-lilac)', skipped:'var(--color-block-lilac)', pending:'var(--color-canvas)' };
+    return { width:'12px', height:'12px', borderRadius:'3px', flexShrink:0, background: map[st], border:'1.5px solid var(--color-ink)', opacity: st==='skipped'?0.4:1,
+      boxShadow: st==='learning' ? '0 0 0 1.5px var(--color-canvas), 0 0 0 3px var(--color-ink)' : 'none' };
+  }
+  statusLabel(id) { const m={done:'Done',learning:'Learning',skipped:'Skipped',pending:'To do'}; return m[this.state.statuses[id]||'pending']; }
+
+  detailFor(id) {
+    const n = this.NODES.find(x => x.id === id) || { label:'Product manager', kind:'topic', stage:0 };
+    const stageName = n.kind === 'topic' ? (this.STAGE_LABEL[n.stage]||'').split('· ')[1] : (this.STAGE_LABEL[(this.NODES.find(p=>p.id===n.parent)||{}).stage]||'· Discovery').split('· ')[1];
+    const idx = String((this.NODES.indexOf(n)+2)).padStart(2,'0');
+    const bodies = {
+      'user-research':'Learn to plan and run interviews, surveys and usability tests — and turn raw notes into decisions your team trusts.',
+      'rice-ice':'Score competing bets on reach, impact, confidence and effort so prioritization is a conversation, not a fight.',
+      'north-star':'Pick one metric that captures the value users get, and learn why it beats a dashboard of vanity numbers.'
+    };
+    return {
+      eyebrow: 'Topic ' + idx + ' · ' + stageName,
+      label: n.label.replace('Optional: ',''),
+      body: bodies[id] || (n.label.replace('Optional: ','') + ' — plan, practice and apply it on the job. Each topic links 2–4 vetted resources you can mark as you go.')
+    };
+  }
+
+  renderVals() {
+    const view = this.state.view, zoom = this.state.zoom, sel = this.state.selected;
+    const counted = this.NODES.filter(n => !n.optional);
+    const done = counted.filter(n => (this.state.statuses[n.id]||'pending') === 'done').length;
+    const total = counted.length;
+    const pct = Math.round(done/total*100);
+    const d = this.detailFor(sel);
+    const curStatus = this.state.statuses[sel] || 'pending';
+
+    const nodes = this.NODES.map(n => ({
+      label: n.label, style: this.nodeStyle(n),
+      showCheck: (this.state.statuses[n.id]||'pending') === 'done' && !n.optional,
+      onClick: () => this.select(n.id)
+    }));
+
+    const topics = this.NODES.filter(n => n.kind === 'topic');
+    const listGroups = topics.map(t => ({
+      stageLabel: this.STAGE_LABEL[t.stage], label: t.label, statusLabel: this.statusLabel(t.id),
+      dotStyle: this.dotStyle(t.id), onClick: () => this.select(t.id),
+      children: this.NODES.filter(c => c.parent === t.id).map(c => ({
+        label: c.label, statusLabel: this.statusLabel(c.id), dotStyle: this.dotStyle(c.id),
+        strike: (this.state.statuses[c.id]==='skipped') ? 'text-decoration:line-through; opacity:0.55;' : '',
+        onClick: () => this.select(c.id)
+      }))
+    }));
+
+    const faqData = [
+      { q:'Do I need a technical background?', a:'No. Two topics touch SQL and APIs at a reading level; both are marked optional. If you can follow a spreadsheet, you can follow this path.' },
+      { q:'How is progress saved?', a:'On this device by default — your statuses live in your browser. Sign in to sync across devices and keep them backed up.' },
+      { q:'Can the AI adapt this path to my experience?', a:'Yes. From the AI hub, describe your background and the tutor re-weights the stages and can add or skip topics for you.' },
+      { q:'Who reviews the content?', a:'Every resource is AI-drafted then human-reviewed before it ships — the footnote you see on generated content.' }
+    ];
+    const faqs = faqData.map((f,i) => ({
+      q:f.q, a:f.a, open: this.state.faqOpen === i, onClick: () => this.setState({ faqOpen: this.state.faqOpen === i ? -1 : i }),
+      iconStyle: { display:'flex', flexShrink:0, transition:'transform 180ms ease', transform: this.state.faqOpen===i ? 'rotate(180deg)' : 'none' }
+    }));
+
+    return {
+      isMap: view === 'map', isList: view === 'list', drawerOpen: !!sel,
+      showMap: () => this.setState({ view:'map' }), showList: () => this.setState({ view:'list' }),
+      mapTabStyle: this.tabStyle(view==='map'), listTabStyle: this.tabStyle(view==='list'),
+      zoom, zoomIn: () => this.setState({ zoom: Math.min(1.4, +(zoom+0.15).toFixed(2)) }),
+      zoomOut: () => this.setState({ zoom: Math.max(0.55, +(zoom-0.15).toFixed(2)) }), zoomReset: () => this.setState({ zoom: 1 }),
+      nodes, listGroups, faqs,
+      progressLabel: done + ' of ' + total + ' done · ' + pct + '%', progressPct: pct + '%',
+      bookmarked: this.state.bookmarked, bookmarkFill: this.state.bookmarked ? 'var(--color-ink)' : 'none',
+      toggleBookmark: () => this.setState({ bookmarked: !this.state.bookmarked }),
+      closeDrawer: () => this.setState({ selected: null }),
+      detail: {
+        eyebrow: d.eyebrow, label: d.label, body: d.body,
+        pendingStyle: this.pillStyle(curStatus==='pending'), learningStyle: this.pillStyle(curStatus==='learning'),
+        doneStyle: this.pillStyle(curStatus==='done'), skipStyle: this.pillStyle(curStatus==='skipped'),
+        setPending: () => this.setStatus(sel,'pending'), setLearning: () => this.setStatus(sel,'learning'),
+        setDone: () => this.setStatus(sel,'done'), setSkipped: () => this.setStatus(sel,'skipped')
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

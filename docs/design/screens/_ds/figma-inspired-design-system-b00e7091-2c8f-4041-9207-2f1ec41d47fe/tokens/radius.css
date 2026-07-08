@@ -1,0 +1,11 @@
+/* Radius tokens — pill is the only button shape; no square CTAs anywhere. */
+
+:root {
+  --radius-xs: 2px;    /* link decoration corners */
+  --radius-sm: 6px;    /* small chips, sub-nav tabs, sticky-note corners */
+  --radius-md: 8px;    /* inputs, list items, image frames, template tiles */
+  --radius-lg: 24px;   /* pricing cards, color-block sections */
+  --radius-xl: 32px;   /* hero feature panels, oversized callouts */
+  --radius-pill: 50px; /* every text CTA */
+  --radius-full: 9999px; /* circular icon buttons, checkmark glyphs */
+}

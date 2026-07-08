@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>pathgrid — Component board</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M4 24 L13 14 L24 4' stroke='%23000' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='4' cy='24' r='3.4' fill='%23000'/%3E%3Ccircle cx='13' cy='14' r='3.4' fill='%23000'/%3E%3Ccircle cx='24' cy='4' r='4' fill='%23c5b0f4' stroke='%23000' stroke-width='2.2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/elevation.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/base.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/styles.css">
+  <script src="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/_ds_bundle.js"></script>
+  <style>
+    body { margin:0; background:#ffffff; }
+    .da-sec { border:var(--border-hairline); border-radius:24px; padding:24px; display:flex; flex-direction:column; gap:18px; box-sizing:border-box; }
+    .da-idx { font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.55; }
+    .da-node { border:2px solid var(--color-ink); border-radius:8px; font-size:14px; font-weight:500; color:var(--color-ink); box-shadow:0 2px 0 rgba(0,0,0,0.14); }
+  </style>
+</helmet>
+
+<div style="min-height:100vh; background:var(--color-canvas); font-family:var(--font-sans); color:var(--color-ink); padding:44px 40px 80px;">
+  <div style="max-width:1560px; margin:0 auto; display:flex; flex-direction:column; gap:24px;">
+
+    <!-- Board header -->
+    <header style="display:flex; align-items:flex-end; justify-content:space-between; gap:24px; padding-bottom:24px; border-bottom:var(--border-hairline); flex-wrap:wrap;">
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-size:20px; font-weight:540; letter-spacing:-0.4px; display:flex; align-items:center; gap:9px;"><svg width="22" height="22" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;"><g opacity="0.35"><circle cx="3" cy="3" r="1" fill="var(--color-ink)"></circle><circle cx="10" cy="3" r="1" fill="var(--color-ink)"></circle><circle cx="17" cy="3" r="1" fill="var(--color-ink)"></circle><circle cx="24" cy="3" r="1" fill="var(--color-ink)"></circle><circle cx="3" cy="10" r="1" fill="var(--color-ink)"></circle><circle cx="24" cy="10" r="1" fill="var(--color-ink)"></circle><circle cx="3" cy="17" r="1" fill="var(--color-ink)"></circle><circle cx="24" cy="17" r="1" fill="var(--color-ink)"></circle><circle cx="3" cy="24" r="1" fill="var(--color-ink)"></circle><circle cx="10" cy="24" r="1" fill="var(--color-ink)"></circle><circle cx="17" cy="24" r="1" fill="var(--color-ink)"></circle><circle cx="24" cy="24" r="1" fill="var(--color-ink)"></circle></g><path d="M4 24 L13 14 L24 4" stroke="var(--color-ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="4" cy="24" r="3" fill="var(--color-ink)"></circle><circle cx="13" cy="14" r="3" fill="var(--color-ink)"></circle><circle cx="24" cy="4" r="3.5" fill="var(--color-block-lilac)" stroke="var(--color-ink)" stroke-width="2"></circle></svg>pathgrid</span>
+          <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.5px; color:var(--color-ink); border:var(--border-hairline); border-radius:var(--radius-pill); padding:5px 12px;">Component board · v1 · Figma language</span>
+        </div>
+        <h1 style="margin:0; font-size:40px; font-weight:340; letter-spacing:-0.02em; line-height:1.0;">Components &amp; states</h1>
+      </div>
+      <nav style="display:flex; gap:8px; flex-wrap:wrap;">
+        <a href="Home.dc.html" style="color:var(--color-ink); text-decoration:none; font-size:14px; font-weight:480; border:var(--border-hairline); border-radius:var(--radius-pill); padding:8px 15px;" style-hover="background:var(--color-surface-soft);">Home</a>
+        <a href="Roadmap.dc.html" style="color:var(--color-ink); text-decoration:none; font-size:14px; font-weight:480; border:var(--border-hairline); border-radius:var(--radius-pill); padding:8px 15px;" style-hover="background:var(--color-surface-soft);">Roadmap</a>
+        <a href="AI%20Hub.dc.html" style="color:var(--color-ink); text-decoration:none; font-size:14px; font-weight:480; border:var(--border-hairline); border-radius:var(--radius-pill); padding:8px 15px;" style-hover="background:var(--color-surface-soft);">AI hub</a>
+        <a href="Tutor%20Chat.dc.html" style="color:var(--color-ink); text-decoration:none; font-size:14px; font-weight:480; border:var(--border-hairline); border-radius:var(--radius-pill); padding:8px 15px;" style-hover="background:var(--color-surface-soft);">Tutor</a>
+        <a href="Dashboard.dc.html" style="color:var(--color-ink); text-decoration:none; font-size:14px; font-weight:480; border:var(--border-hairline); border-radius:var(--radius-pill); padding:8px 15px;" style-hover="background:var(--color-surface-soft);">Dashboard</a>
+        <a href="Settings.dc.html" style="color:var(--color-ink); text-decoration:none; font-size:14px; font-weight:480; border:var(--border-hairline); border-radius:var(--radius-pill); padding:8px 15px;" style-hover="background:var(--color-surface-soft);">Settings</a>
+        <a href="Auth.dc.html" style="color:var(--color-ink); text-decoration:none; font-size:14px; font-weight:480; border:var(--border-hairline); border-radius:var(--radius-pill); padding:8px 15px;" style-hover="background:var(--color-surface-soft);">Auth</a>
+      </nav>
+    </header>
+
+    <div style="display:grid; grid-template-columns:repeat(12,1fr); gap:20px;">
+
+      <!-- 01 Color -->
+      <section class="da-sec" style="grid-column:span 7;">
+        <div class="da-idx">01 — Color</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.5px; opacity:0.7;">Monochrome core + surfaces</div>
+          <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:8px;">
+            <div style="display:flex; flex-direction:column; gap:6px;"><div style="height:52px; border-radius:8px; background:var(--color-ink);"></div><div style="font-family:var(--font-mono); font-size:9.5px; opacity:0.7;">ink / primary<br>#000000</div></div>
+            <div style="display:flex; flex-direction:column; gap:6px;"><div style="height:52px; border-radius:8px; background:var(--color-canvas); border:var(--border-hairline);"></div><div style="font-family:var(--font-mono); font-size:9.5px; opacity:0.7;">canvas<br>#ffffff</div></div>
+            <div style="display:flex; flex-direction:column; gap:6px;"><div style="height:52px; border-radius:8px; background:var(--color-surface-soft); border:var(--border-hairline);"></div><div style="font-family:var(--font-mono); font-size:9.5px; opacity:0.7;">surface-soft<br>#f7f7f5</div></div>
+            <div style="display:flex; flex-direction:column; gap:6px;"><div style="height:52px; border-radius:8px; background:var(--color-hairline);"></div><div style="font-family:var(--font-mono); font-size:9.5px; opacity:0.7;">hairline<br>#e6e6e6</div></div>
+            <div style="display:flex; flex-direction:column; gap:6px;"><div style="height:52px; border-radius:8px; background:var(--color-accent-magenta);"></div><div style="font-family:var(--font-mono); font-size:9.5px; opacity:0.7;">magenta (unused)<br>#ff3d8b</div></div>
+            <div style="display:flex; flex-direction:column; gap:6px;"><div style="height:52px; border-radius:8px; background:var(--color-success);"></div><div style="font-family:var(--font-mono); font-size:9.5px; opacity:0.7;">success<br>#1ea64a</div></div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.5px; opacity:0.7;">Pastel blocks · storytelling + canvas nodes</div>
+          <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:8px;">
+            <div style="display:flex; flex-direction:column; gap:6px;"><div style="height:44px; border-radius:8px; background:var(--color-block-lime);"></div><div style="font-family:var(--font-mono); font-size:9.5px; opacity:0.7;">lime</div></div>
+            <div style="display:flex; flex-direction:column; gap:6px;"><div style="height:44px; border-radius:8px; background:var(--color-block-lilac);"></div><div style="font-family:var(--font-mono); font-size:9.5px; opacity:0.7;">lilac · topic / AI</div></div>
+            <div style="display:flex; flex-direction:column; gap:6px;"><div style="height:44px; border-radius:8px; background:var(--color-block-cream);"></div><div style="font-family:var(--font-mono); font-size:9.5px; opacity:0.7;">cream · canvas</div></div>
+            <div style="display:flex; flex-direction:column; gap:6px;"><div style="height:44px; border-radius:8px; background:var(--color-block-mint);"></div><div style="font-family:var(--font-mono); font-size:9.5px; opacity:0.7;">mint · done</div></div>
+            <div style="display:flex; flex-direction:column; gap:6px;"><div style="height:44px; border-radius:8px; background:var(--color-block-coral);"></div><div style="font-family:var(--font-mono); font-size:9.5px; opacity:0.7;">coral · alert</div></div>
+            <div style="display:flex; flex-direction:column; gap:6px;"><div style="height:44px; border-radius:8px; background:var(--color-block-navy);"></div><div style="font-family:var(--font-mono); font-size:9.5px; opacity:0.7;">navy</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 02 Type -->
+      <section class="da-sec" style="grid-column:span 5;">
+        <div class="da-idx">02 — Type</div>
+        <div style="font-size:48px; font-weight:340; line-height:1.0; letter-spacing:-0.03em;">Inter, one voice that flexes</div>
+        <div style="font-size:18px; font-weight:320; line-height:1.45; letter-spacing:-0.26px;">Weight, not gray, carries hierarchy — <span style="font-weight:480;">480 for emphasis</span> against 320 body. Sentence case everywhere; verbs on buttons.</div>
+        <div style="font-family:var(--font-mono); text-transform:uppercase; font-size:13px; letter-spacing:0.54px;">JetBrains Mono — eyebrows, meters, taxonomy</div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <span style="font-family:var(--font-mono); font-size:11px; border:var(--border-hairline); border-radius:6px; padding:4px 9px;">320</span>
+          <span style="font-family:var(--font-mono); font-size:11px; border:var(--border-hairline); border-radius:6px; padding:4px 9px;">330</span>
+          <span style="font-family:var(--font-mono); font-size:11px; border:var(--border-hairline); border-radius:6px; padding:4px 9px;">340</span>
+          <span style="font-family:var(--font-mono); font-size:11px; border:var(--border-hairline); border-radius:6px; padding:4px 9px;">480</span>
+          <span style="font-family:var(--font-mono); font-size:11px; border:var(--border-hairline); border-radius:6px; padding:4px 9px;">540</span>
+          <span style="font-family:var(--font-mono); font-size:11px; border:var(--border-hairline); border-radius:6px; padding:4px 9px;">700</span>
+        </div>
+      </section>
+
+      <!-- 03 Buttons -->
+      <section class="da-sec" style="grid-column:span 5;">
+        <div class="da-idx">03 — Buttons · pills only</div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <button style="height:46px; padding:0 22px; border-radius:var(--radius-pill); border:0; background:var(--color-primary); color:var(--color-on-primary); font-family:var(--font-sans); font-size:16px; font-weight:480; cursor:pointer;">Generate roadmap</button>
+          <button style="height:46px; padding:0 22px; border-radius:var(--radius-pill); border:var(--border-hairline); background:var(--color-canvas); color:var(--color-ink); font-family:var(--font-sans); font-size:16px; font-weight:480; cursor:pointer;" style-hover="background:var(--color-surface-soft);">Browse paths</button>
+          <button style="height:46px; padding:0 22px; border-radius:var(--radius-pill); border:0; background:var(--color-block-coral); color:var(--color-ink); font-family:var(--font-sans); font-size:16px; font-weight:480; cursor:pointer;">Delete roadmap</button>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <button style="height:38px; padding:0 16px; border-radius:var(--radius-pill); border:0; background:var(--color-primary); color:var(--color-on-primary); font-size:14px; font-weight:480; cursor:pointer;">Small</button>
+          <button style="height:38px; padding:0 16px; border-radius:var(--radius-pill); border:0; background:var(--color-surface-soft); color:var(--color-ink); font-size:14px; font-weight:480; cursor:default; opacity:0.5;">Disabled</button>
+          <div style="width:40px; height:40px; border-radius:var(--radius-full); background:var(--color-surface-soft); display:flex; align-items:center; justify-content:center;"><svg width="15" height="15" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="var(--color-ink)" stroke-width="1.5" stroke-linecap="round"></path></svg></div>
+          <span style="font-size:16px; font-weight:480; color:var(--color-ink); border-bottom:2px solid var(--color-ink);">Text link</span>
+        </div>
+        <div style="font-size:13px; font-weight:330; opacity:0.65; line-height:1.5;">Primary = black fill. Secondary = white + hairline. Destructive = coral fill, ink text. Pressed = micro-scale; focus = 2px ink ring.</div>
+      </section>
+
+      <!-- 04 Header + dropdown -->
+      <section class="da-sec" style="grid-column:span 7;">
+        <div class="da-idx">04 — Header &amp; dropdown</div>
+        <div style="border:var(--border-hairline); border-radius:12px; overflow:hidden;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:0 20px; height:60px; background:var(--color-canvas); border-bottom:var(--border-hairline);">
+            <div style="display:flex; align-items:center; gap:24px;">
+              <span style="font-size:19px; font-weight:540; letter-spacing:-0.4px; display:flex; align-items:center; gap:8px;"><svg width="20" height="20" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;"><g opacity="0.35"><circle cx="3" cy="3" r="1" fill="var(--color-ink)"></circle><circle cx="10" cy="3" r="1" fill="var(--color-ink)"></circle><circle cx="17" cy="3" r="1" fill="var(--color-ink)"></circle><circle cx="24" cy="3" r="1" fill="var(--color-ink)"></circle><circle cx="3" cy="10" r="1" fill="var(--color-ink)"></circle><circle cx="24" cy="10" r="1" fill="var(--color-ink)"></circle><circle cx="3" cy="17" r="1" fill="var(--color-ink)"></circle><circle cx="24" cy="17" r="1" fill="var(--color-ink)"></circle><circle cx="3" cy="24" r="1" fill="var(--color-ink)"></circle><circle cx="10" cy="24" r="1" fill="var(--color-ink)"></circle><circle cx="17" cy="24" r="1" fill="var(--color-ink)"></circle><circle cx="24" cy="24" r="1" fill="var(--color-ink)"></circle></g><path d="M4 24 L13 14 L24 4" stroke="var(--color-ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="4" cy="24" r="3" fill="var(--color-ink)"></circle><circle cx="13" cy="14" r="3" fill="var(--color-ink)"></circle><circle cx="24" cy="4" r="3.5" fill="var(--color-block-lilac)" stroke="var(--color-ink)" stroke-width="2"></circle></svg>pathgrid</span>
+              <div style="display:flex; align-items:center; gap:2px;">
+                <span style="display:flex; align-items:center; gap:5px; font-size:15px; font-weight:480; background:var(--color-surface-soft); border-radius:var(--radius-full); padding:6px 12px;">Roadmaps <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg></span>
+                <span style="font-size:15px; font-weight:330; opacity:0.85; padding:6px 12px;">AI hub</span>
+                <span style="font-size:15px; font-weight:330; opacity:0.85; padding:6px 12px;">Tutor</span>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:15px; font-weight:480; padding:6px 10px;">Sign in</span>
+              <span style="height:38px; padding:0 16px; border-radius:var(--radius-pill); background:var(--color-primary); color:var(--color-on-primary); font-size:14px; font-weight:480; display:flex; align-items:center;">Get started free</span>
+            </div>
+          </div>
+          <div style="background:var(--color-canvas); padding:14px 20px 20px; display:flex;">
+            <div style="width:320px; background:var(--color-canvas); border:var(--border-hairline); border-radius:12px; padding:6px; box-shadow:var(--shadow-soft); display:flex; flex-direction:column;">
+              <div style="display:flex; gap:12px; align-items:center; padding:10px 12px; border-radius:8px; background:var(--color-surface-soft);">
+                <div style="width:34px; height:34px; border-radius:8px; background:var(--color-block-lilac); border:1.5px solid var(--color-ink); display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 4l4-1.5 4 1.5 4-1.5v9.5l-4 1.5-4-1.5-4 1.5V4z" stroke="var(--color-ink)" stroke-width="1.3" stroke-linejoin="round"></path></svg></div>
+                <div style="display:flex; flex-direction:column; gap:1px;"><span style="font-size:15px; font-weight:480;">Role paths</span><span style="font-size:13px; font-weight:330; opacity:0.65;">Frontend, backend, PM, DevOps…</span></div>
+              </div>
+              <div style="display:flex; gap:12px; align-items:center; padding:10px 12px; border-radius:8px;">
+                <div style="width:34px; height:34px; border-radius:8px; background:var(--color-block-mint); border:1.5px solid var(--color-ink); display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.8 4 4.2.5-3.1 2.9.8 4.2L8 11l-3.7 2.1.8-4.2L2 6l4.2-.5L8 1.5z" stroke="var(--color-ink)" stroke-width="1.3" stroke-linejoin="round"></path></svg></div>
+                <div style="display:flex; flex-direction:column; gap:1px;"><span style="font-size:15px; font-weight:480;">Skill paths</span><span style="font-size:13px; font-weight:330; opacity:0.65;">TypeScript, SQL, system design…</span></div>
+              </div>
+              <div style="display:flex; gap:12px; align-items:center; padding:10px 12px; border-radius:8px;">
+                <div style="width:34px; height:34px; border-radius:8px; background:var(--color-block-coral); border:1.5px solid var(--color-ink); display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg width="15" height="15" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="var(--color-ink)" stroke-width="1.4" stroke-linecap="round"></path></svg></div>
+                <div style="display:flex; flex-direction:column; gap:1px;"><span style="font-size:15px; font-weight:480;">Generate your own</span><span style="font-size:13px; font-weight:330; opacity:0.65;">Describe a goal, get a custom map</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 Roadmap cards -->
+      <section class="da-sec" style="grid-column:span 6;">
+        <div class="da-idx">05 — Roadmap card + divider chip</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div style="background:var(--color-surface-soft); border-radius:8px; padding:16px; display:flex; flex-direction:column; gap:12px;">
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:8px;"><span style="font-size:16px; font-weight:480;">Frontend developer</span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0; margin-top:2px;"><path d="M4 2.5h8V14l-4-2.6L4 14V2.5z" stroke="var(--color-ink)" stroke-width="1.4" stroke-linejoin="round"></path></svg></div>
+            <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; opacity:0.6;">Role · 54 topics</span>
+          </div>
+          <div style="background:var(--color-surface-soft); border-radius:8px; padding:16px; display:flex; flex-direction:column; gap:12px;">
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:8px;"><span style="font-size:16px; font-weight:480; display:flex; align-items:center; gap:7px;">AI engineer <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:9px; letter-spacing:0.5px; background:var(--color-block-lilac); border-radius:6px; padding:2px 6px;">New</span></span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0; margin-top:2px;"><path d="M4 2.5h8V14l-4-2.6L4 14V2.5z" stroke="var(--color-ink)" stroke-width="1.4" stroke-linejoin="round"></path></svg></div>
+            <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; opacity:0.6;">Role · 61 topics</span>
+          </div>
+          <div style="grid-column:span 2; background:var(--color-surface-soft); border-radius:8px; padding:16px; display:flex; flex-direction:column; gap:12px;">
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:8px;"><span style="font-size:16px; font-weight:480;">Product manager</span><svg width="16" height="16" viewBox="0 0 16 16" fill="var(--color-ink)" style="flex-shrink:0; margin-top:2px;"><path d="M4 2.5h8V14l-4-2.6L4 14V2.5z" stroke="var(--color-ink)" stroke-width="1.4" stroke-linejoin="round"></path></svg></div>
+            <div style="display:flex; align-items:center; gap:10px;"><div style="flex:1; height:6px; border-radius:var(--radius-full); background:var(--color-hairline); overflow:hidden;"><div style="width:44%; height:100%; background:var(--color-ink);"></div></div><span style="font-family:var(--font-mono); font-size:11px; opacity:0.7;">44%</span></div>
+            <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; opacity:0.6;">In progress · bookmarked</span>
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px;">
+          <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px;">Skill paths</span>
+          <span style="height:1px; flex:1; background:var(--color-hairline);"></span>
+          <span style="font-size:13px; font-weight:330; opacity:0.6;">divider chip</span>
+        </div>
+      </section>
+
+      <!-- 06 Progress + toast -->
+      <section class="da-sec" style="grid-column:span 6;">
+        <div class="da-idx">06 — Progress, meters, toast</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="display:flex; align-items:center; justify-content:space-between;"><span style="font-size:14px; font-weight:330; opacity:0.7;">Your progress</span><span style="font-family:var(--font-mono); font-size:11px;">11 of 25 · 44%</span></div>
+          <div style="height:8px; border-radius:var(--radius-full); background:var(--color-hairline); overflow:hidden;"><div style="width:44%; height:100%; background:var(--color-ink);"></div></div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="align-self:flex-start; display:flex; align-items:center; gap:12px; background:var(--color-block-mint); border-radius:12px; padding:12px 16px;">
+            <span style="width:22px; height:22px; border-radius:var(--radius-full); background:var(--color-canvas); border:1.5px solid var(--color-ink); display:flex; align-items:center; justify-content:center;"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6.4L4.7 9 10 3.4" stroke="var(--color-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+            <span style="font-size:15px; font-weight:330;">Marked "User research" as done</span>
+            <span style="font-size:14px; font-weight:480; border-bottom:2px solid var(--color-ink);">Undo</span>
+          </div>
+          <div style="align-self:flex-start; display:flex; align-items:center; gap:12px; background:var(--color-block-coral); border-radius:12px; padding:12px 16px;">
+            <span style="width:22px; height:22px; border-radius:var(--radius-full); background:var(--color-canvas); border:1.5px solid var(--color-ink); display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:13px; font-weight:700;">!</span>
+            <span style="font-size:15px; font-weight:330;">Generation failed — the model timed out</span>
+            <span style="font-size:14px; font-weight:480; border-bottom:2px solid var(--color-ink);">Retry</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 Canvas nodes -->
+      <section class="da-sec" style="grid-column:span 8;">
+        <div class="da-idx">07 — Canvas node set × states</div>
+        <div style="background:var(--color-block-cream); background-image:radial-gradient(#e2d9c0 1.2px, transparent 1.2px); background-size:20px 20px; border-radius:8px; padding:24px; display:flex; flex-direction:column; gap:20px;">
+          <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+            <div style="background:var(--color-canvas); border:2.5px solid var(--color-ink); border-radius:10px; padding:13px 26px; font-size:19px; font-weight:700; box-shadow:0 3px 0 rgba(0,0,0,0.18);">Product manager</div>
+            <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; opacity:0.6;">title node</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+            <div class="da-node" style="background:var(--color-block-lilac); padding:11px 18px;">User research</div>
+            <div class="da-node" style="position:relative; background:var(--color-block-mint); padding:11px 18px 11px 38px;"><span style="position:absolute; left:12px; top:50%; transform:translateY(-50%); width:17px; height:17px; border-radius:var(--radius-full); background:var(--color-canvas); border:1.5px solid var(--color-ink); display:flex; align-items:center; justify-content:center;"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6.4L4.7 9 10 3.4" stroke="var(--color-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>User research</div>
+            <div class="da-node" style="background:var(--color-block-lilac); padding:11px 18px; box-shadow:0 0 0 3px var(--color-block-cream), 0 0 0 5px var(--color-ink);">User research</div>
+            <div class="da-node" style="background:var(--color-block-lilac); padding:11px 18px; opacity:0.4; text-decoration:line-through; box-shadow:none;">User research</div>
+            <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; opacity:0.6;">default · done · learning · skipped</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+            <div class="da-node" style="background:var(--color-canvas); padding:9px 15px; font-size:13.5px;">Interview scripts</div>
+            <div style="border:2px dashed var(--color-ink); border-radius:8px; padding:9px 15px; font-size:13.5px; font-weight:500; opacity:0.75;">Optional: Jobs-to-be-done</div>
+            <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; opacity:0.6;">subtopic · optional label</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 08 Edges + controls -->
+      <section class="da-sec" style="grid-column:span 4;">
+        <div class="da-idx">08 — Edges &amp; controls</div>
+        <div style="background:var(--color-block-cream); background-image:radial-gradient(#e2d9c0 1.2px, transparent 1.2px); background-size:20px 20px; border-radius:8px; padding:20px; display:flex; flex-direction:column; gap:14px;">
+          <svg width="100%" height="60" viewBox="0 0 260 60" fill="none"><path d="M8 14 H120 Q132 14 132 26 V38 Q132 50 144 50 H252" stroke="var(--color-ink)" stroke-width="2.5" stroke-linecap="round"></path><path d="M8 40 H90" stroke="var(--color-ink)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="2 8"></path></svg>
+          <div style="display:flex; gap:16px; font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; opacity:0.7;"><span>— required</span><span>┄ optional</span></div>
+          <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:12px;">
+            <div style="display:flex; flex-direction:column; background:var(--color-canvas); border:2px solid var(--color-ink); border-radius:8px; overflow:hidden;">
+              <span style="width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-bottom:1px solid var(--color-ink);"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9M2.5 7h9" stroke="var(--color-ink)" stroke-width="1.6" stroke-linecap="round"></path></svg></span>
+              <span style="width:36px; height:36px; display:flex; align-items:center; justify-content:center;"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9" stroke="var(--color-ink)" stroke-width="1.6" stroke-linecap="round"></path></svg></span>
+            </div>
+            <div style="background:var(--color-canvas); border:2px solid var(--color-ink); border-radius:8px; padding:9px 11px; display:flex; flex-direction:column; gap:5px;">
+              <div style="display:flex; align-items:center; gap:7px; font-family:var(--font-mono); text-transform:uppercase; font-size:9px; letter-spacing:0.4px;"><span style="width:10px; height:10px; border-radius:3px; background:var(--color-block-mint); border:1.5px solid var(--color-ink);"></span>Done</div>
+              <div style="display:flex; align-items:center; gap:7px; font-family:var(--font-mono); text-transform:uppercase; font-size:9px; letter-spacing:0.4px;"><span style="width:10px; height:10px; border-radius:3px; background:var(--color-block-lilac); border:1.5px solid var(--color-ink);"></span>Learning</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 09 Topic drawer -->
+      <section class="da-sec" style="grid-column:span 5;">
+        <div class="da-idx">09 — Topic drawer</div>
+        <div style="background:var(--color-canvas); border:2px solid var(--color-ink); border-radius:16px; overflow:hidden; box-shadow:var(--shadow-modal);">
+          <div style="padding:18px 20px 14px; border-bottom:var(--border-hairline); display:flex; flex-direction:column; gap:12px;">
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+              <div style="display:flex; flex-direction:column; gap:4px;"><span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; opacity:0.6;">Topic 04 · Discovery</span><span style="font-size:19px; font-weight:700;">User research</span></div>
+              <span style="width:32px; height:32px; border-radius:var(--radius-full); background:var(--color-surface-soft); display:flex; align-items:center; justify-content:center;"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="var(--color-ink)" stroke-width="1.6" stroke-linecap="round"></path></svg></span>
+            </div>
+            <div style="display:flex; background:var(--color-surface-soft); border-radius:var(--radius-pill); padding:3px; gap:2px;">
+              <span style="flex:1; text-align:center; font-size:12px; font-weight:330; padding:8px 4px; opacity:0.7;">Pending</span>
+              <span style="flex:1; text-align:center; font-size:12px; font-weight:480; color:var(--color-on-primary); background:var(--color-primary); padding:8px 4px; border-radius:var(--radius-pill);">Learning</span>
+              <span style="flex:1; text-align:center; font-size:12px; font-weight:330; padding:8px 4px; opacity:0.7;">Done</span>
+              <span style="flex:1; text-align:center; font-size:12px; font-weight:330; padding:8px 4px; opacity:0.7;">Skip</span>
+            </div>
+          </div>
+          <div style="padding:16px 20px; display:flex; flex-direction:column; gap:12px;">
+            <p style="margin:0; font-size:14px; font-weight:330; line-height:1.55;">Learn to plan and run interviews, surveys and usability tests — and turn raw notes into decisions.</p>
+            <a href="#" style="display:flex; align-items:center; gap:10px; border:var(--border-hairline); border-radius:8px; padding:10px 12px; text-decoration:none;"><span style="font-family:var(--font-mono); text-transform:uppercase; font-size:9px; letter-spacing:0.5px; background:var(--color-block-lilac); border-radius:6px; padding:3px 7px;">Article</span><span style="flex:1; font-size:13px; font-weight:330; color:var(--color-ink);">The five whys, applied honestly</span></a>
+            <div style="display:flex; gap:8px;">
+              <span style="flex:1; text-align:center; font-size:13px; font-weight:480; color:var(--color-on-primary); background:var(--color-primary); border-radius:var(--radius-pill); padding:9px;">Explain this topic</span>
+              <span style="flex:1; text-align:center; font-size:13px; font-weight:480; border:var(--border-hairline); border-radius:var(--radius-pill); padding:9px;">Ask the tutor</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10 Chat -->
+      <section class="da-sec" style="grid-column:span 4;">
+        <div class="da-idx">10 — Chat &amp; streaming</div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="align-self:flex-end; max-width:85%; background:var(--color-primary); color:var(--color-on-primary); border-radius:16px 16px 4px 16px; padding:11px 14px; font-size:14px; font-weight:330; line-height:1.5;">How do I pick which users to interview first?</div>
+          <div style="align-self:flex-start; max-width:92%; background:var(--color-canvas); border:var(--border-hairline); border-radius:16px 16px 16px 4px; padding:12px 14px; font-size:14px; font-weight:330; line-height:1.6;">Start with recency, not seniority — pull 5 recent sign-ups and 5 churned users…<div style="margin-top:8px; font-family:var(--font-mono); text-transform:uppercase; font-size:9px; letter-spacing:0.4px; opacity:0.55;">AI-drafted · human-reviewed</div></div>
+          <div style="align-self:flex-start; display:flex; align-items:center; gap:5px; background:var(--color-canvas); border:var(--border-hairline); border-radius:16px; padding:12px 16px;"><span style="width:6px; height:6px; border-radius:var(--radius-full); background:var(--color-ink);"></span><span style="width:6px; height:6px; border-radius:var(--radius-full); background:var(--color-ink); opacity:0.55;"></span><span style="width:6px; height:6px; border-radius:var(--radius-full); background:var(--color-ink); opacity:0.25;"></span></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; border:var(--border-hairline); border-radius:var(--radius-pill); padding:6px 6px 6px 16px;"><span style="flex:1; font-size:14px; font-weight:330; opacity:0.5;">Ask about this roadmap…</span><span style="width:34px; height:34px; border-radius:var(--radius-full); background:var(--color-primary); display:flex; align-items:center; justify-content:center;"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 11.5v-9M3.5 6L7 2.5 10.5 6" stroke="var(--color-on-primary)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></span></div>
+      </section>
+
+      <!-- 11 Stepper + inputs -->
+      <section class="da-sec" style="grid-column:span 3;">
+        <div class="da-idx">11 — Stepper &amp; inputs</div>
+        <div style="display:flex; flex-direction:column;">
+          <div style="display:flex; gap:12px; align-items:flex-start;"><div style="display:flex; flex-direction:column; align-items:center;"><span style="width:22px; height:22px; border-radius:var(--radius-full); background:var(--color-primary); display:flex; align-items:center; justify-content:center;"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6.4L4.7 9 10 3.4" stroke="var(--color-on-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><span style="width:2px; height:22px; background:var(--color-hairline);"></span></div><span style="font-size:14px; font-weight:480; padding-top:1px;">Outline drafted</span></div>
+          <div style="display:flex; gap:12px; align-items:flex-start;"><div style="display:flex; flex-direction:column; align-items:center;"><span style="width:22px; height:22px; border-radius:var(--radius-full); border:2px solid var(--color-ink); box-sizing:border-box; display:flex; align-items:center; justify-content:center;"><span style="width:8px; height:8px; border-radius:var(--radius-full); background:var(--color-ink);"></span></span><span style="width:2px; height:22px; background:var(--color-hairline);"></span></div><span style="font-size:14px; font-weight:480; padding-top:1px;">Building graph…</span></div>
+          <div style="display:flex; gap:12px; align-items:flex-start;"><span style="width:22px; height:22px; border-radius:var(--radius-full); border:2px solid var(--color-hairline); box-sizing:border-box;"></span><span style="font-size:14px; font-weight:330; opacity:0.55; padding-top:1px;">Layout &amp; links</span></div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <label style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; opacity:0.6;">Goal</label>
+          <div style="border:2px solid var(--color-ink); border-radius:8px; padding:10px 12px; font-size:14px; font-weight:330; box-shadow:0 0 0 1px var(--color-ink);">Growth product management<span style="display:inline-block; width:1.5px; height:14px; background:var(--color-ink); margin-left:1px; vertical-align:-2px;"></span></div>
+        </div>
+        <div style="display:flex; background:var(--color-surface-soft); border-radius:var(--radius-pill); padding:3px; gap:2px;">
+          <span style="flex:1; text-align:center; font-size:12px; font-weight:330; padding:7px 4px; opacity:0.7;">New</span>
+          <span style="flex:1; text-align:center; font-size:12px; font-weight:480; color:var(--color-on-primary); background:var(--color-primary); padding:7px 4px; border-radius:var(--radius-pill);">Some</span>
+          <span style="flex:1; text-align:center; font-size:12px; font-weight:330; padding:7px 4px; opacity:0.7;">Deep</span>
+        </div>
+      </section>
+
+      <!-- 12 API key states -->
+      <section class="da-sec" style="grid-column:span 5;">
+        <div class="da-idx">12 — Provider chip &amp; API-key states</div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="display:flex; align-items:center; gap:7px; font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.4px; background:var(--color-surface-soft); border-radius:var(--radius-pill); padding:6px 12px;"><span style="width:6px; height:6px; border-radius:var(--radius-full); background:var(--color-success);"></span>Claude Sonnet</span>
+          <span style="font-family:var(--font-mono); font-size:11px; opacity:0.7;">1,842 tokens · ~$0.01</span>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; align-items:center; gap:8px; font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.4px;"><span style="width:13px; height:13px; border-radius:var(--radius-full); border:2px solid var(--color-hairline); border-top-color:var(--color-ink);"></span>Checking key…</div>
+          <span style="align-self:flex-start; display:flex; align-items:center; gap:8px; font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.4px; background:var(--color-block-mint); border-radius:var(--radius-pill); padding:5px 12px;"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.4L4.7 9 10 3.4" stroke="var(--color-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Key valid · Anthropic reachable</span>
+          <span style="align-self:flex-start; display:flex; align-items:center; gap:8px; font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.4px; background:var(--color-block-coral); border-radius:var(--radius-pill); padding:5px 12px;"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2.8v3.6M6 8.6v.2" stroke="var(--color-ink)" stroke-width="1.8" stroke-linecap="round"></path></svg>Couldn't verify — check the key</span>
+        </div>
+      </section>
+
+      <!-- 13 BYOK note + empty -->
+      <section class="da-sec" style="grid-column:span 4;">
+        <div class="da-idx">13 — BYOK note &amp; empty state</div>
+        <div style="background:var(--color-block-lilac); border-radius:16px; padding:20px; display:flex; flex-direction:column; gap:10px;">
+          <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.5px;">No limits</span>
+          <span style="font-size:14px; font-weight:330; line-height:1.45;">Runs on your own key — generate and chat as much as you like.</span>
+          <span style="align-self:flex-start; height:36px; padding:0 16px; border-radius:var(--radius-pill); background:var(--color-primary); color:var(--color-on-primary); font-size:14px; font-weight:480; display:flex; align-items:center;">Manage key</span>
+        </div>
+        <div style="border:2px dashed var(--color-hairline); border-radius:12px; padding:24px; display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center;">
+          <span style="font-size:15px; font-weight:480;">No bookmarks yet</span>
+          <span style="font-size:13px; font-weight:330; opacity:0.7;">Save a path to find it here.</span>
+        </div>
+      </section>
+
+      <!-- 14 Footer + footnote -->
+      <section class="da-sec" style="grid-column:span 8;">
+        <div class="da-idx">14 — Newsletter field &amp; AI footnote</div>
+        <div style="display:flex; align-items:center; gap:10px; max-width:480px;">
+          <div style="flex:1; border:var(--border-hairline); border-radius:var(--radius-pill); padding:12px 18px; font-size:15px; font-weight:330; opacity:0.5;">you@work.com</div>
+          <button style="height:46px; padding:0 20px; border-radius:var(--radius-pill); border:0; background:var(--color-primary); color:var(--color-on-primary); font-size:15px; font-weight:480; cursor:pointer; flex-shrink:0;">Subscribe</button>
+        </div>
+        <div style="border-top:var(--border-hairline); padding-top:14px; font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.5px; opacity:0.6;">AI-drafted · human-reviewed — the footnote on all AI-generated content</div>
+      </section>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1560, &quot;height&quot;: 1200 }
+}"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Sign in — pathgrid</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M4 24 L13 14 L24 4' stroke='%23000' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='4' cy='24' r='3.4' fill='%23000'/%3E%3Ccircle cx='13' cy='14' r='3.4' fill='%23000'/%3E%3Ccircle cx='24' cy='4' r='4' fill='%23c5b0f4' stroke='%23000' stroke-width='2.2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/elevation.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/base.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/styles.css">
+  <script src="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/_ds_bundle.js"></script>
+  <style>
+    body { margin:0; background:#ffffff; }
+  </style>
+</helmet>
+
+<div data-screen-label="Auth" style="min-height:100vh; display:flex; flex-wrap:wrap; font-family:var(--font-sans); color:var(--color-ink);">
+
+  <!-- Poster panel -->
+  <section style="flex:1 1 440px; min-width:min(100%,440px); background:var(--color-block-lilac); padding:40px 48px; display:flex; flex-direction:column; justify-content:space-between; gap:48px; box-sizing:border-box;">
+    <a href="Home.dc.html" style="text-decoration:none; color:var(--color-ink); font-size:22px; font-weight:540; letter-spacing:-0.4px; display:flex; align-items:center; gap:10px;"><svg width="24" height="24" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;"><g opacity="0.35"><circle cx="3" cy="3" r="1" fill="var(--color-ink)"></circle><circle cx="10" cy="3" r="1" fill="var(--color-ink)"></circle><circle cx="17" cy="3" r="1" fill="var(--color-ink)"></circle><circle cx="24" cy="3" r="1" fill="var(--color-ink)"></circle><circle cx="3" cy="10" r="1" fill="var(--color-ink)"></circle><circle cx="24" cy="10" r="1" fill="var(--color-ink)"></circle><circle cx="3" cy="17" r="1" fill="var(--color-ink)"></circle><circle cx="24" cy="17" r="1" fill="var(--color-ink)"></circle><circle cx="3" cy="24" r="1" fill="var(--color-ink)"></circle><circle cx="10" cy="24" r="1" fill="var(--color-ink)"></circle><circle cx="17" cy="24" r="1" fill="var(--color-ink)"></circle><circle cx="24" cy="24" r="1" fill="var(--color-ink)"></circle></g><path d="M4 24 L13 14 L24 4" stroke="var(--color-ink)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="4" cy="24" r="3" fill="var(--color-ink)"></circle><circle cx="13" cy="14" r="3" fill="var(--color-ink)"></circle><circle cx="24" cy="4" r="3.5" fill="var(--color-block-lilac)" stroke="var(--color-ink)" stroke-width="2"></circle></svg>pathgrid</a>
+    <div style="display:flex; flex-direction:column; gap:24px; max-width:440px;">
+      <div style="font-family:var(--font-mono); text-transform:uppercase; font-size:13px; letter-spacing:0.6px;">Visual learning paths</div>
+      <h1 style="margin:0; font-size:clamp(40px,6vw,64px); font-weight:340; line-height:1.0; letter-spacing:-0.96px; text-wrap:balance;">Learn anything. See the whole map.</h1>
+      <p style="margin:0; font-size:20px; font-weight:330; line-height:1.4; letter-spacing:-0.14px;">One account keeps your maps, progress and tutor threads together — generated for you, tracked by you.</p>
+    </div>
+    <div style="display:flex; gap:10px; align-items:flex-start;">
+      <span style="width:20px; height:20px; border-radius:var(--radius-full); background:var(--color-canvas); border:1.5px solid var(--color-ink); display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6.4L4.7 9 10 3.4" stroke="var(--color-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+      <span style="font-size:16px; font-weight:330; line-height:1.45; letter-spacing:-0.14px;">Your progress on this device is kept and merged into your account.</span>
+    </div>
+  </section>
+
+  <!-- Form panel -->
+  <main style="flex:1 1 480px; min-width:min(100%,360px); background:var(--color-canvas); display:flex; align-items:center; justify-content:center; padding:48px 24px; box-sizing:border-box;">
+    <div style="width:100%; max-width:392px; display:flex; flex-direction:column; gap:24px;">
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div style="font-family:var(--font-mono); text-transform:uppercase; font-size:12px; letter-spacing:0.6px; color:var(--color-ink);">{{ eyebrow }}</div>
+        <h2 style="margin:0; font-size:32px; font-weight:540; line-height:1.15; letter-spacing:-0.4px;">{{ title }}</h2>
+        <p style="margin:0; font-size:16px; font-weight:330; line-height:1.45; letter-spacing:-0.14px;">{{ subtitle }}</p>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <button style="height:48px; border-radius:var(--radius-pill); border:var(--border-hairline); background:var(--color-canvas); color:var(--color-ink); font-family:var(--font-sans); font-size:16px; font-weight:480; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; transition:transform 150ms ease, background-color 150ms ease;" style-hover="background:var(--color-surface-soft);" style-active="transform:scale(0.98);">
+          <svg width="17" height="17" viewBox="0 0 16 16" fill="var(--color-ink)"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.42 7.42 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+          Continue with GitHub
+        </button>
+        <button style="height:48px; border-radius:var(--radius-pill); border:var(--border-hairline); background:var(--color-canvas); color:var(--color-ink); font-family:var(--font-sans); font-size:16px; font-weight:480; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; transition:transform 150ms ease, background-color 150ms ease;" style-hover="background:var(--color-surface-soft);" style-active="transform:scale(0.98);">
+          <svg width="17" height="17" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"></path><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 0 0 9 18z"></path><path fill="#FBBC05" d="M3.97 10.72a5.41 5.41 0 0 1 0-3.44V4.95H.96a9 9 0 0 0 0 8.1l3.01-2.33z"></path><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.59A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"></path></svg>
+          Continue with Google
+        </button>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:14px;">
+        <span style="height:1px; flex:1; background:var(--color-hairline);"></span>
+        <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink);">or</span>
+        <span style="height:1px; flex:1; background:var(--color-hairline);"></span>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <label style="font-size:16px; font-weight:330; letter-spacing:-0.14px;" for="da-email">Work or personal email</label>
+        <input id="da-email" type="email" placeholder="you@work.com" value="{{ email }}" onInput="{{ onEmail }}" style="width:100%; box-sizing:border-box; background:var(--color-canvas); color:var(--color-ink); font-family:var(--font-sans); font-size:18px; font-weight:320; letter-spacing:-0.26px; border:var(--border-hairline); border-radius:var(--radius-md); padding:12px 14px; outline:none;" style-focus="border-color:var(--color-ink); box-shadow:0 0 0 1px var(--color-ink);">
+        <button onClick="{{ onSubmit }}" style="height:48px; border-radius:var(--radius-pill); border:0; background:var(--color-primary); color:var(--color-on-primary); font-family:var(--font-sans); font-size:16px; font-weight:480; cursor:pointer; transition:transform 150ms ease;" style-active="transform:scale(0.98);">{{ cta }}</button>
+        <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; gap:9px; align-items:center; background:var(--color-block-mint); border-radius:var(--radius-md); padding:12px 14px;">
+            <svg width="15" height="15" viewBox="0 0 12 12" fill="none"><path d="M2 6.4L4.7 9 10 3.4" stroke="var(--color-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span style="font-size:15px; font-weight:330;">Check {{ email }} — we sent a one-time link.</span>
+          </div>
+        </sc-if>
+        <span style="font-size:13px; font-weight:330; color:var(--color-ink); opacity:0.6; text-align:center;">No password — we email a one-time link.</span>
+      </div>
+
+      <div style="border-top:var(--border-hairline); padding-top:18px; display:flex; flex-direction:column; gap:10px;">
+        <div style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.65;">{{ switchPrompt }}</div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button onClick="{{ onToggleMode }}" style="background:transparent; border:0; padding:0; cursor:pointer; font-family:var(--font-sans); font-size:16px; font-weight:480; letter-spacing:-0.1px; color:var(--color-ink); border-bottom:2px solid var(--color-ink);">{{ switchAction }}</button>
+        </div>
+        <span style="font-size:13px; font-weight:330; line-height:1.5; color:var(--color-ink); opacity:0.6;">By continuing you agree to the <a href="#" style="color:var(--color-ink);">terms</a> and <a href="#" style="color:var(--color-ink);">privacy policy</a>.</span>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1200, &quot;height&quot;: 780 },
+  &quot;mode&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;signin&quot;, &quot;signup&quot;], &quot;default&quot;: &quot;signin&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Card&quot; }
+}">
+class Component extends DCLogic {
+  state = { mode: null, email: '', sent: false };
+  renderVals() {
+    const mode = this.state.mode ?? this.props.mode ?? 'signin';
+    const signin = mode === 'signin';
+    return {
+      eyebrow: signin ? 'Welcome back' : 'Get started free',
+      title: signin ? 'Sign in to pathgrid' : 'Create your account',
+      subtitle: signin
+        ? 'Pick up where you left off — maps, progress and tutor threads.'
+        : 'Bring your own AI key — pathgrid itself is free and yours to keep.',
+      cta: signin ? 'Email me a sign-in link' : 'Email me a sign-up link',
+      switchPrompt: signin ? 'New here?' : 'Already have an account?',
+      switchAction: signin ? 'Create an account' : 'Sign in instead',
+      email: this.state.email,
+      sent: this.state.sent,
+      onEmail: (e) => this.setState({ email: e.target.value, sent: false }),
+      onSubmit: () => { if ((this.state.email || '').includes('@')) this.setState({ sent: true }); },
+      onToggleMode: () => this.setState({ mode: (this.state.mode ?? this.props.mode ?? 'signin') === 'signin' ? 'signup' : 'signin', sent: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

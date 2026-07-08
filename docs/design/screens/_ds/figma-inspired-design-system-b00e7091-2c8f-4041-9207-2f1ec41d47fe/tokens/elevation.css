@@ -1,0 +1,10 @@
+/* Elevation — shadow-light by design: color blocks substitute for elevation.
+   L0 flat · L1 hairline border · L2 soft shadow · L3 modal + scrim */
+
+:root {
+  --shadow-none: none;
+  --shadow-soft: 0 4px 16px rgba(0, 0, 0, 0.06);   /* floating tiles, dropdowns */
+  --shadow-modal: 0 12px 40px rgba(0, 0, 0, 0.18); /* lightbox / dialog surfaces */
+  --border-hairline: 1px solid var(--color-hairline);
+  --border-hairline-soft: 1px solid var(--color-hairline-soft);
+}

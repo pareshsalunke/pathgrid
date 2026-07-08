@@ -1,0 +1,20 @@
+/* Spacing tokens — 8px base unit; 96px section rhythm is the universal constant. */
+
+:root {
+  --space-hair: 1px;
+  --space-xxs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;    /* card interior padding */
+  --space-xl: 32px;
+  --space-xxl: 48px;   /* color-block interior padding */
+  --space-section: 96px; /* vertical gap between major sections */
+
+  /* Documented odd values — copy exactly, never snap */
+  --pad-button-primary: 10px 20px;
+  --pad-button-secondary: 8px 18px 10px 18px; /* asymmetric: optically centers type in pill */
+  --pad-input: 12px 14px;
+
+  --container-max: 1280px;
+}

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Tutor — pathgrid</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M4 24 L13 14 L24 4' stroke='%23000' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='4' cy='24' r='3.4' fill='%23000'/%3E%3Ccircle cx='13' cy='14' r='3.4' fill='%23000'/%3E%3Ccircle cx='24' cy='4' r='4' fill='%23c5b0f4' stroke='%23000' stroke-width='2.2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/elevation.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/base.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/styles.css">
+  <script src="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/_ds_bundle.js"></script>
+  <style>
+    body { margin:0; background:#ffffff; }
+    @keyframes da-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    @keyframes da-pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  </style>
+</helmet>
+
+<div style="height:100vh; background:var(--color-canvas); font-family:var(--font-sans); color:var(--color-ink); display:flex; flex-direction:column; overflow:hidden;">
+
+  <!-- App nav -->
+  <dc-import name="AppHeader" active="ai" signed-in="true" style="flex-shrink:0; position:relative; z-index:50;" hint-size="100%,60px"></dc-import>
+
+  <div style="flex:1; display:flex; max-width:1440px; margin:0 auto; width:100%; min-height:0; box-sizing:border-box;">
+
+    <!-- Thread list -->
+    <aside data-screen-label="Thread list" style="width:284px; flex-shrink:0; border-right:var(--border-hairline); padding:20px 14px; display:flex; flex-direction:column; gap:18px; overflow-y:auto;">
+      <button style="height:44px; border-radius:var(--radius-pill); border:var(--border-hairline); background:var(--color-canvas); color:var(--color-ink); font-family:var(--font-sans); font-size:15px; font-weight:480; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;" style-hover="background:var(--color-surface-soft);">
+        <svg width="13" height="13" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="var(--color-ink)" stroke-width="1.5" stroke-linecap="round"></path></svg>New chat
+      </button>
+      <div style="display:flex; flex-direction:column; gap:5px;">
+        <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.55; padding:0 10px 4px;">Today</span>
+        <div style="display:flex; flex-direction:column; gap:5px; background:var(--color-surface-soft); border-radius:var(--radius-md); padding:11px 12px; cursor:pointer;">
+          <span style="font-size:15px; font-weight:480; color:var(--color-ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Picking interview users</span>
+          <span style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.3px; color:var(--color-ink); opacity:0.55;">Product manager · 2:14 pm</span>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:5px; border-radius:var(--radius-md); padding:11px 12px; cursor:pointer;" style-hover="background:var(--color-surface-soft);">
+          <span style="font-size:15px; font-weight:330; color:var(--color-ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">RICE vs reach-only scoring</span>
+          <span style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.3px; color:var(--color-ink); opacity:0.55;">Product manager · 11:02 am</span>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:5px;">
+        <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.55; padding:0 10px 4px;">Earlier</span>
+        <div style="display:flex; flex-direction:column; gap:5px; border-radius:var(--radius-md); padding:11px 12px; cursor:pointer;" style-hover="background:var(--color-surface-soft);">
+          <span style="font-size:15px; font-weight:330; color:var(--color-ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">SQL joins, explained slowly</span>
+          <span style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.3px; color:var(--color-ink); opacity:0.55;">SQL · Jun 29</span>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:5px; border-radius:var(--radius-md); padding:11px 12px; cursor:pointer;" style-hover="background:var(--color-surface-soft);">
+          <span style="font-size:15px; font-weight:330; color:var(--color-ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">What to put in a first PRD</span>
+          <span style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.3px; color:var(--color-ink); opacity:0.55;">Product manager · Jun 27</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Chat pane -->
+    <main data-screen-label="Chat pane" style="flex:1; min-width:0; display:flex; flex-direction:column;">
+
+      <!-- context chip -->
+      <div style="flex-shrink:0; border-bottom:var(--border-hairline); padding:12px 32px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="display:flex; align-items:center; gap:8px; font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.4px; color:var(--color-ink); background:var(--color-block-lilac); border-radius:var(--radius-pill); padding:6px 12px;">
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><circle cx="3" cy="9" r="1.4" stroke="var(--color-ink)" stroke-width="1.2"></circle><circle cx="9" cy="9" r="1.4" stroke="var(--color-ink)" stroke-width="1.2"></circle><circle cx="6" cy="3" r="1.4" stroke="var(--color-ink)" stroke-width="1.2"></circle><path d="M6 4.4L3.7 7.6M6 4.4l2.3 3.2" stroke="var(--color-ink)" stroke-width="1.2"></path></svg>
+            Product manager · User research
+          </span>
+          <a href="Roadmap.dc.html" style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.4px; color:var(--color-ink); text-decoration:none; border-bottom:1.5px solid var(--color-ink);">Change</a>
+        </div>
+        <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.4px; color:var(--color-ink); opacity:0.55;">Answers cite nodes from this map</span>
+      </div>
+
+      <!-- messages -->
+      <div style="flex:1; overflow-y:auto; padding:28px 32px; display:flex; flex-direction:column; gap:18px; max-width:780px; width:100%; margin:0 auto; box-sizing:border-box;">
+        <div style="align-self:flex-end; max-width:75%; background:var(--color-primary); color:var(--color-on-primary); border-radius:16px 16px 4px 16px; padding:12px 16px; font-size:15px; font-weight:330; line-height:1.55;">How do I pick which users to interview first?</div>
+        <div style="align-self:flex-start; max-width:88%; display:flex; flex-direction:column; gap:9px;">
+          <div style="background:var(--color-canvas); border:var(--border-hairline); border-radius:16px 16px 16px 4px; padding:14px 16px; font-size:15px; font-weight:330; line-height:1.65; color:var(--color-ink);">
+            Start with recency, not seniority — people who hit the problem this week remember the details. A simple first batch:
+            <div style="margin-top:10px; display:flex; flex-direction:column; gap:7px;">
+              <div style="display:flex; gap:10px;"><span style="font-family:var(--font-mono); font-size:12px; color:var(--color-ink); opacity:0.55; padding-top:1px;">1</span><span>5 recent sign-ups — why now, what almost stopped them</span></div>
+              <div style="display:flex; gap:10px;"><span style="font-family:var(--font-mono); font-size:12px; color:var(--color-ink); opacity:0.55; padding-top:1px;">2</span><span>5 churned users — what they replaced you with</span></div>
+              <div style="display:flex; gap:10px;"><span style="font-family:var(--font-mono); font-size:12px; color:var(--color-ink); opacity:0.55; padding-top:1px;">3</span><span>2 heavy users — what they'd hate to lose</span></div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:9px; flex-wrap:wrap;">
+            <a href="Roadmap.dc.html" style="display:flex; align-items:center; gap:6px; font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.4px; color:var(--color-ink); background:var(--color-block-lilac); border:1.5px solid var(--color-ink); border-radius:var(--radius-sm); padding:4px 9px; text-decoration:none;">
+              <svg width="9" height="9" viewBox="0 0 12 12" fill="none"><circle cx="3" cy="9" r="1.4" stroke="var(--color-ink)" stroke-width="1.2"></circle><circle cx="9" cy="9" r="1.4" stroke="var(--color-ink)" stroke-width="1.2"></circle><circle cx="6" cy="3" r="1.4" stroke="var(--color-ink)" stroke-width="1.2"></circle></svg>
+              User research → Interview scripts
+            </a>
+            <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.4px; color:var(--color-ink); opacity:0.5;">AI-drafted · human-reviewed sources</span>
+          </div>
+        </div>
+
+        <div style="align-self:flex-end; max-width:75%; background:var(--color-primary); color:var(--color-on-primary); border-radius:16px 16px 4px 16px; padding:12px 16px; font-size:15px; font-weight:330; line-height:1.55;">Draft five screener questions for the churned group.</div>
+
+        <sc-if value="{{ isStreaming }}" hint-placeholder-val="{{ true }}">
+          <div style="align-self:flex-start; max-width:88%; display:flex; flex-direction:column; gap:9px;">
+            <div style="background:var(--color-canvas); border:var(--border-hairline); border-radius:16px 16px 16px 4px; padding:14px 16px; font-size:15px; font-weight:330; line-height:1.65; color:var(--color-ink);">
+              Keep screeners factual — no "would you" questions. Draft:<br><br>1. When did you last use the product for real work?<span style="display:inline-block; width:2px; height:15px; background:var(--color-ink); margin-left:2px; vertical-align:-2px; animation:da-blink 1s step-end infinite;"></span>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px; padding-left:2px;">
+              <span style="width:5px; height:5px; border-radius:var(--radius-full); background:var(--color-ink); animation:da-pulse 1s ease-in-out infinite;"></span>
+              <span style="width:5px; height:5px; border-radius:var(--radius-full); background:var(--color-ink); animation:da-pulse 1s ease-in-out 0.2s infinite;"></span>
+              <span style="width:5px; height:5px; border-radius:var(--radius-full); background:var(--color-ink); animation:da-pulse 1s ease-in-out 0.4s infinite;"></span>
+              <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.4px; color:var(--color-ink); opacity:0.55; padding-left:4px;">Writing…</span>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isIdle }}" hint-placeholder-val="{{ false }}">
+          <div style="align-self:flex-start; max-width:88%; background:var(--color-canvas); border:var(--border-hairline); border-radius:16px 16px 16px 4px; padding:14px 16px; font-size:15px; font-weight:330; line-height:1.65; color:var(--color-ink);">
+            Keep screeners factual — no "would you" questions. Draft:
+            <div style="margin-top:10px; display:flex; flex-direction:column; gap:7px;">
+              <div style="display:flex; gap:10px;"><span style="font-family:var(--font-mono); font-size:12px; color:var(--color-ink); opacity:0.55; padding-top:1px;">1</span><span>When did you last use the product for real work?</span></div>
+              <div style="display:flex; gap:10px;"><span style="font-family:var(--font-mono); font-size:12px; color:var(--color-ink); opacity:0.55; padding-top:1px;">2</span><span>What do you use instead today?</span></div>
+              <div style="display:flex; gap:10px;"><span style="font-family:var(--font-mono); font-size:12px; color:var(--color-ink); opacity:0.55; padding-top:1px;">3</span><span>What were you trying to finish when you stopped?</span></div>
+              <div style="display:flex; gap:10px;"><span style="font-family:var(--font-mono); font-size:12px; color:var(--color-ink); opacity:0.55; padding-top:1px;">4</span><span>Who else was involved in the switch?</span></div>
+              <div style="display:flex; gap:10px;"><span style="font-family:var(--font-mono); font-size:12px; color:var(--color-ink); opacity:0.55; padding-top:1px;">5</span><span>May we follow up for 20 minutes this week?</span></div>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+
+      <!-- composer -->
+      <div style="flex-shrink:0; border-top:var(--border-hairline); padding:16px 32px 20px;">
+        <div style="max-width:780px; margin:0 auto; display:flex; flex-direction:column; gap:10px;">
+          <sc-if value="{{ missingKey }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex; align-items:center; gap:16px; background:var(--color-block-lilac); border-radius:var(--radius-lg); padding:18px 20px; flex-wrap:wrap;">
+              <div style="flex:1; min-width:240px; display:flex; flex-direction:column; gap:4px;">
+                <span style="font-size:16px; font-weight:480;">Add an AI key to start chatting</span>
+                <span style="font-size:14px; font-weight:330; line-height:1.45;">The tutor uses your own provider key. It stays in this browser — we never see it.</span>
+              </div>
+              <a href="Settings.dc.html" style="display:flex; align-items:center; height:40px; padding:0 18px; border-radius:var(--radius-pill); background:var(--color-primary); color:var(--color-on-primary); font-size:15px; font-weight:480; text-decoration:none; flex-shrink:0;">Open settings</a>
+            </div>
+          </sc-if>
+          <div style="display:flex; align-items:center; gap:10px; border:var(--border-hairline); border-radius:var(--radius-pill); padding:6px 6px 6px 18px; opacity:{{ composerOpacity }};">
+            <input placeholder="Ask about this roadmap…" value="{{ draft }}" onInput="{{ onDraft }}" style="flex:1; min-width:0; border:0; outline:0; background:transparent; font-family:var(--font-sans); font-size:15px; font-weight:330; color:var(--color-ink);">
+            <button onClick="{{ send }}" style="width:40px; height:40px; border-radius:var(--radius-full); border:0; background:var(--color-primary); display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 11.5v-9M3.5 6L7 2.5 10.5 6" stroke="var(--color-on-primary)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:space-between; font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.4px; color:var(--color-ink); opacity:0.6; padding:0 6px; flex-wrap:wrap; gap:8px;">
+            <span>{{ meterLabel }}</span>
+            <span>Answers can be wrong — check the sources</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 900 },
+  &quot;chatState&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;streaming&quot;, &quot;idle&quot;, &quot;missing_key&quot;], &quot;default&quot;: &quot;streaming&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Chat&quot; }
+}">
+class Component extends DCLogic {
+  state = { chat: null, draft: '' };
+  timers = [];
+  componentWillUnmount() { this.timers.forEach(t => clearTimeout(t)); }
+  cur() { return this.state.chat ?? this.props.chatState ?? 'streaming'; }
+  send() {
+    const c = this.cur();
+    if (c === 'missing_key') return;
+    this.timers.forEach(t => clearTimeout(t));
+    this.setState({ chat: 'streaming', draft: '' });
+    this.timers.push(setTimeout(() => this.setState({ chat: 'idle' }), 1600));
+  }
+  renderVals() {
+    const c = this.cur();
+    const missingKey = c === 'missing_key';
+    const streaming = c === 'streaming';
+    return {
+      isStreaming: streaming,
+      isIdle: c === 'idle',
+      missingKey,
+      composerOpacity: missingKey ? '0.45' : '1',
+      meterLabel: '1,842 tokens this session · ~$0.01 · Claude Sonnet',
+      draft: this.state.draft,
+      onDraft: (e) => this.setState({ draft: e.target.value }),
+      send: () => this.send()
+    };
+  }
+}
+</script>
+</body>
+</html>

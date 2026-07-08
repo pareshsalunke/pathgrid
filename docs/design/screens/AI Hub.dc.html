@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>AI hub — pathgrid</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M4 24 L13 14 L24 4' stroke='%23000' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='4' cy='24' r='3.4' fill='%23000'/%3E%3Ccircle cx='13' cy='14' r='3.4' fill='%23000'/%3E%3Ccircle cx='24' cy='4' r='4' fill='%23c5b0f4' stroke='%23000' stroke-width='2.2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/elevation.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/base.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/styles.css">
+  <script src="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/_ds_bundle.js"></script>
+  <style>
+    body { margin:0; background:#ffffff; }
+    @keyframes da-pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  </style>
+</helmet>
+
+<div style="min-height:100vh; background:var(--color-canvas); font-family:var(--font-sans); color:var(--color-ink); display:flex; flex-direction:column;">
+
+  <!-- App nav -->
+  <dc-import name="AppHeader" active="ai" signed-in="true" style="flex-shrink:0; position:relative; z-index:50;" hint-size="100%,60px"></dc-import>
+
+  <div style="flex:1; display:flex; max-width:1440px; margin:0 auto; width:100%; min-height:0; flex-wrap:wrap;">
+
+    <!-- Rail -->
+    <aside data-screen-label="AI hub rail" style="width:268px; flex-shrink:0; border-right:var(--border-hairline); padding:24px 16px; display:flex; flex-direction:column; gap:26px; box-sizing:border-box;">
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.55; padding:0 10px 6px;">Create</span>
+        <button onClick="{{ pickRoadmap }}" style="{{ roadmapModeStyle }}">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;"><path d="M8 2l6 3-6 3-6-3 6-3z" stroke="var(--color-ink)" stroke-width="1.3" stroke-linejoin="round"></path><path d="M2 8l6 3 6-3M2 11l6 3 6-3" stroke="var(--color-ink)" stroke-width="1.3" stroke-linejoin="round"></path></svg>Roadmap
+        </button>
+        <button onClick="{{ pickCourse }}" style="{{ courseModeStyle }}">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;"><rect x="2.5" y="3" width="11" height="10.5" rx="1.5" stroke="var(--color-ink)" stroke-width="1.3"></rect><path d="M2.5 6h11M5.5 1.8v2.4M10.5 1.8v2.4" stroke="var(--color-ink)" stroke-width="1.3" stroke-linecap="round"></path></svg>Course plan
+        </button>
+        <button onClick="{{ pickQuiz }}" style="{{ quizModeStyle }}">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;"><circle cx="8" cy="8" r="6" stroke="var(--color-ink)" stroke-width="1.3"></circle><circle cx="8" cy="8" r="2.8" stroke="var(--color-ink)" stroke-width="1.3"></circle><circle cx="8" cy="8" r="0.6" fill="var(--color-ink)"></circle></svg>Quiz
+        </button>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.55; padding:0 10px 4px;">My learning</span>
+        <a href="Roadmap.dc.html" style="display:flex; flex-direction:column; gap:7px; text-decoration:none; border-radius:var(--radius-md); padding:9px 10px;" style-hover="background:var(--color-surface-soft);">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;"><span style="font-size:15px; font-weight:480; color:var(--color-ink);">Product manager</span><span style="font-family:var(--font-mono); font-size:11px; color:var(--color-ink); opacity:0.6;">44%</span></div>
+          <div style="height:5px; border-radius:var(--radius-full); background:var(--color-hairline); overflow:hidden;"><div style="width:44%; height:100%; background:var(--color-ink);"></div></div>
+        </a>
+        <a href="Roadmap.dc.html" style="display:flex; flex-direction:column; gap:7px; text-decoration:none; border-radius:var(--radius-md); padding:9px 10px;" style-hover="background:var(--color-surface-soft);">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;"><span style="font-size:15px; font-weight:330; color:var(--color-ink);">SQL</span><span style="font-family:var(--font-mono); font-size:11px; color:var(--color-ink); opacity:0.6;">8%</span></div>
+          <div style="height:5px; border-radius:var(--radius-full); background:var(--color-hairline); overflow:hidden;"><div style="width:8%; height:100%; background:var(--color-ink);"></div></div>
+        </a>
+      </div>
+
+      <!-- AI engine chip + token readout -->
+      <div style="display:flex; flex-direction:column; gap:10px; border:var(--border-hairline); border-radius:var(--radius-lg); padding:14px;">
+        <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.55;">AI engine</span>
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+          <span style="display:flex; align-items:center; gap:7px; font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.4px; background:var(--color-surface-soft); border-radius:var(--radius-pill); padding:5px 10px;"><span style="width:6px; height:6px; border-radius:var(--radius-full); background:var(--color-success);"></span>Claude Sonnet</span>
+          <a href="Settings.dc.html" style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.4px; color:var(--color-ink); text-decoration:none; border-bottom:1.5px solid var(--color-ink);">Change</a>
+        </div>
+        <span style="font-family:var(--font-mono); font-size:11px; letter-spacing:0.2px; color:var(--color-ink); opacity:0.7;">1,842 tokens this session · ~$0.01</span>
+      </div>
+
+      <div style="margin-top:auto; display:flex; flex-direction:column; gap:10px; background:var(--color-block-lilac); border-radius:var(--radius-lg); padding:16px;">
+        <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.5px; color:var(--color-ink);">No limits</span>
+        <span style="font-size:14px; font-weight:330; line-height:1.45;">Generate and chat as much as you like — it runs on your own key. You only pay your provider for what you use.</span>
+        <a href="Settings.dc.html" style="align-self:flex-start; display:flex; align-items:center; height:36px; padding:0 16px; border-radius:var(--radius-pill); background:var(--color-primary); color:var(--color-on-primary); font-size:14px; font-weight:480; text-decoration:none;">Manage key</a>
+      </div>
+    </aside>
+
+    <!-- Main pane -->
+    <main style="flex:1 1 480px; min-width:0; padding:44px 48px; display:flex; flex-direction:column;">
+
+      <!-- EMPTY -->
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ true }}">
+        <div data-screen-label="AI hub — empty" style="max-width:660px; width:100%; margin:24px auto 0; display:flex; flex-direction:column; gap:26px;">
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:13px; letter-spacing:0.6px; color:var(--color-ink);">{{ modeEyebrow }}</span>
+            <h1 style="margin:0; font-size:clamp(32px,4vw,48px); font-weight:340; line-height:1.05; letter-spacing:-0.02em;">{{ modeHeading }}</h1>
+            <p style="margin:0; font-size:18px; font-weight:330; line-height:1.5; color:var(--color-ink); opacity:0.8; max-width:520px;">{{ modeSub }}</p>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:16px; border:2px solid var(--color-ink); border-radius:var(--radius-lg); padding:22px;">
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <label style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.6;">{{ goalLabel }}</label>
+              <textarea rows="2" placeholder="{{ goalPlaceholder }}" value="{{ goal }}" onInput="{{ onGoal }}" style="width:100%; box-sizing:border-box; resize:none; background:var(--color-canvas); color:var(--color-ink); font-family:var(--font-sans); font-size:17px; font-weight:330; line-height:1.5; border:var(--border-hairline); border-radius:var(--radius-md); padding:12px 14px; outline:none;" style-focus="border-color:var(--color-ink); box-shadow:0 0 0 1px var(--color-ink);"></textarea>
+            </div>
+            <div style="display:flex; gap:16px; flex-wrap:wrap;">
+              <div style="flex:1; min-width:230px; display:flex; flex-direction:column; gap:8px;">
+                <label style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.6;">Your level</label>
+                <div style="display:flex; background:var(--color-surface-soft); border-radius:var(--radius-pill); padding:3px; gap:2px;">
+                  <button onClick="{{ setNew }}" style="{{ lvlNew }}">New to it</button>
+                  <button onClick="{{ setSome }}" style="{{ lvlSome }}">Some</button>
+                  <button onClick="{{ setDeep }}" style="{{ lvlDeep }}">Deep</button>
+                </div>
+              </div>
+              <div style="width:170px; display:flex; flex-direction:column; gap:8px;">
+                <label style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.6;">Weekly time</label>
+                <button onClick="{{ cycleHours }}" style="display:flex; align-items:center; justify-content:space-between; border:var(--border-hairline); border-radius:var(--radius-md); padding:10px 12px; font-family:var(--font-sans); font-size:15px; font-weight:330; color:var(--color-ink); background:var(--color-canvas); cursor:pointer;" style-hover="background:var(--color-surface-soft);">{{ hoursLabel }} <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+              <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.5px; color:var(--color-ink); opacity:0.6;">Runs on your key · no daily limit</span>
+              <button onClick="{{ generate }}" style="height:46px; padding:0 24px; border-radius:var(--radius-pill); border:0; background:var(--color-primary); color:var(--color-on-primary); font-family:var(--font-sans); font-size:16px; font-weight:480; cursor:pointer; transition:transform 150ms ease;" style-active="transform:scale(0.98);">{{ modeCta }}</button>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+            <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.5px; color:var(--color-ink); opacity:0.5;">Try</span>
+            <sc-for list="{{ examples }}" as="ex" hint-placeholder-count="3">
+              <button onClick="{{ ex.onClick }}" style="font-size:14px; font-weight:330; color:var(--color-ink); border:var(--border-hairline); background:var(--color-canvas); border-radius:var(--radius-pill); padding:7px 14px; cursor:pointer;" style-hover="background:var(--color-surface-soft);">{{ ex.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- GENERATING -->
+      <sc-if value="{{ isGenerating }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="AI hub — generating" style="max-width:580px; width:100%; margin:40px auto 0; display:flex; flex-direction:column; gap:30px;">
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.6;">Generating from your goal</span>
+            <div style="border:2px solid var(--color-ink); border-radius:var(--radius-md); padding:14px 16px; font-size:16px; font-weight:330; line-height:1.5;">"{{ goalEcho }}"</div>
+          </div>
+          <div style="display:flex; flex-direction:column;">
+            <sc-for list="{{ steps }}" as="step" hint-placeholder-count="3">
+              <div style="display:flex; gap:14px; align-items:flex-start;">
+                <div style="display:flex; flex-direction:column; align-items:center;">
+                  <span style="{{ step.circle }}"><sc-if value="{{ step.check }}" hint-placeholder-val="{{ false }}"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6.4L4.7 9 10 3.4" stroke="var(--color-on-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if><sc-if value="{{ step.dot }}" hint-placeholder-val="{{ false }}"><span style="width:8px; height:8px; border-radius:var(--radius-full); background:var(--color-ink); animation:da-pulse 1s ease-in-out infinite;"></span></sc-if></span>
+                  <sc-if value="{{ step.connector }}" hint-placeholder-val="{{ true }}"><span style="width:2px; height:30px; background:var(--color-hairline);"></span></sc-if>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:2px; padding-top:2px;">
+                  <span style="font-size:16px; font-weight:480; color:var(--color-ink); {{ step.dim }}">{{ step.label }}</span>
+                  <span style="font-size:13px; font-weight:330; color:var(--color-ink); opacity:0.6;">{{ step.sub }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+            <span style="font-size:14px; font-weight:330; color:var(--color-ink); opacity:0.7;">Usually under a minute. You can leave — it'll be in your library.</span>
+            <button onClick="{{ cancel }}" style="height:38px; padding:0 16px; border-radius:var(--radius-pill); border:var(--border-hairline); background:var(--color-canvas); color:var(--color-ink); font-family:var(--font-sans); font-size:14px; font-weight:480; cursor:pointer;" style-hover="background:var(--color-surface-soft);">Cancel</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- RESULT -->
+      <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="AI hub — result" style="max-width:780px; width:100%; margin:0 auto; display:flex; flex-direction:column; gap:20px;">
+          <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.6;">Generated just now</span>
+              <h1 style="margin:0; font-size:32px; font-weight:540; letter-spacing:-0.4px;">Growth product management</h1>
+              <span style="font-size:15px; font-weight:330; color:var(--color-ink); opacity:0.75;">7 stages · 24 topics · tuned for weak experimentation skills</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button onClick="{{ regenerate }}" style="height:42px; padding:0 18px; border-radius:var(--radius-pill); border:var(--border-hairline); background:var(--color-canvas); color:var(--color-ink); font-family:var(--font-sans); font-size:15px; font-weight:480; cursor:pointer;" style-hover="background:var(--color-surface-soft);">Regenerate</button>
+              <a href="Dashboard.dc.html" style="display:flex; align-items:center; height:42px; padding:0 20px; border-radius:var(--radius-pill); background:var(--color-primary); color:var(--color-on-primary); font-size:15px; font-weight:480; text-decoration:none;">Save to library</a>
+            </div>
+          </div>
+
+          <div style="position:relative; background:var(--color-block-cream); background-image:radial-gradient(#e2d9c0 1.2px, transparent 1.2px); background-size:20px 20px; border:2px solid var(--color-ink); border-radius:var(--radius-lg); height:420px; overflow:hidden;">
+            <svg width="100%" height="420" viewBox="0 0 760 420" fill="none" preserveAspectRatio="xMidYMid meet" style="position:absolute; inset:0;">
+              <path d="M380 58 V372" stroke="var(--color-ink)" stroke-width="2"></path>
+              <path d="M380 120 C 460 120, 490 96, 580 96" stroke="var(--color-ink)" stroke-width="1.8"></path>
+              <path d="M380 120 C 460 120, 490 146, 580 146" stroke="var(--color-ink)" stroke-width="1.8"></path>
+              <path d="M380 210 C 300 210, 270 186, 180 186" stroke="var(--color-ink)" stroke-width="1.8"></path>
+              <path d="M380 210 C 300 210, 270 236, 180 236" stroke="var(--color-ink)" stroke-width="1.8" stroke-dasharray="2 7"></path>
+              <path d="M380 300 C 460 300, 490 276, 580 276" stroke="var(--color-ink)" stroke-width="1.8"></path>
+              <path d="M380 300 C 460 300, 490 326, 580 326" stroke="var(--color-ink)" stroke-width="1.8"></path>
+            </svg>
+            <div style="position:absolute; left:380px; top:40px; transform:translate(-50%,-50%); background:var(--color-canvas); border:2.5px solid var(--color-ink); border-radius:8px; padding:9px 18px; font-size:15px; font-weight:700; color:var(--color-ink); box-shadow:0 2px 0 rgba(0,0,0,0.18); white-space:nowrap;">Growth PM</div>
+            <div style="position:absolute; left:380px; top:120px; transform:translate(-50%,-50%); background:var(--color-block-lilac); border:2px solid var(--color-ink); border-radius:8px; padding:8px 14px; font-size:13px; font-weight:500; color:var(--color-ink); box-shadow:0 2px 0 rgba(0,0,0,0.14); white-space:nowrap;">Growth loops</div>
+            <div style="position:absolute; left:380px; top:210px; transform:translate(-50%,-50%); background:var(--color-block-lilac); border:2px solid var(--color-ink); border-radius:8px; padding:8px 14px; font-size:13px; font-weight:500; color:var(--color-ink); box-shadow:0 2px 0 rgba(0,0,0,0.14); white-space:nowrap;">Experimentation</div>
+            <div style="position:absolute; left:380px; top:300px; transform:translate(-50%,-50%); background:var(--color-block-lilac); border:2px solid var(--color-ink); border-radius:8px; padding:8px 14px; font-size:13px; font-weight:500; color:var(--color-ink); box-shadow:0 2px 0 rgba(0,0,0,0.14); white-space:nowrap;">Retention &amp; churn</div>
+            <div style="position:absolute; left:380px; top:372px; transform:translate(-50%,-50%); background:var(--color-block-lilac); border:2px solid var(--color-ink); border-radius:8px; padding:8px 14px; font-size:13px; font-weight:500; color:var(--color-ink); box-shadow:0 2px 0 rgba(0,0,0,0.14); white-space:nowrap;">Monetization</div>
+            <div style="position:absolute; left:580px; top:96px; transform:translate(-50%,-50%); background:var(--color-canvas); border:2px solid var(--color-ink); border-radius:8px; padding:7px 12px; font-size:12px; font-weight:500; color:var(--color-ink); white-space:nowrap;">AARRR vs loops</div>
+            <div style="position:absolute; left:580px; top:146px; transform:translate(-50%,-50%); background:var(--color-canvas); border:2px solid var(--color-ink); border-radius:8px; padding:7px 12px; font-size:12px; font-weight:500; color:var(--color-ink); white-space:nowrap;">Referral mechanics</div>
+            <div style="position:absolute; left:180px; top:186px; transform:translate(-50%,-50%); background:var(--color-canvas); border:2px solid var(--color-ink); border-radius:8px; padding:7px 12px; font-size:12px; font-weight:500; color:var(--color-ink); white-space:nowrap;">Hypothesis writing</div>
+            <div style="position:absolute; left:180px; top:236px; transform:translate(-50%,-50%); border:2px dashed var(--color-ink); border-radius:8px; padding:7px 12px; font-size:12px; font-weight:500; color:var(--color-ink); opacity:0.75; white-space:nowrap;">Optional: Stats refresher</div>
+            <div style="position:absolute; left:580px; top:276px; transform:translate(-50%,-50%); background:var(--color-canvas); border:2px solid var(--color-ink); border-radius:8px; padding:7px 12px; font-size:12px; font-weight:500; color:var(--color-ink); white-space:nowrap;">Cohort analysis</div>
+            <div style="position:absolute; left:580px; top:326px; transform:translate(-50%,-50%); background:var(--color-canvas); border:2px solid var(--color-ink); border-radius:8px; padding:7px 12px; font-size:12px; font-weight:500; color:var(--color-ink); white-space:nowrap;">Churn interviews</div>
+            <div style="position:absolute; right:14px; bottom:12px; font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; color:var(--color-ink); background:rgba(255,255,255,0.85); border-radius:var(--radius-sm); padding:5px 9px;">Preview — open to edit</div>
+          </div>
+
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+            <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.5px; color:var(--color-ink); opacity:0.55;">AI-drafted · review before you rely on it</span>
+            <a href="Roadmap.dc.html" style="font-size:15px; font-weight:480; color:var(--color-ink); text-decoration:none; border-bottom:2px solid var(--color-ink);">Open full map</a>
+          </div>
+        </div>
+      </sc-if>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 900 },
+  &quot;paneState&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;empty&quot;, &quot;generating&quot;, &quot;result&quot;], &quot;default&quot;: &quot;empty&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Main pane&quot; }
+}">
+class Component extends DCLogic {
+  state = { pane: null, goal: '', level: 'new', hours: 5, step: 0, mode: 'roadmap' };
+  timers = [];
+  componentWillUnmount() { this.timers.forEach(t => clearTimeout(t)); }
+  pane() { return this.state.pane ?? this.props.paneState ?? 'empty'; }
+  MODES = {
+    roadmap: { eyebrow:'New roadmap', heading:'Describe what you want to learn', sub:"A goal works better than a keyword. You'll get a map you can edit, track and hand to the tutor.", goalLabel:'Your goal', placeholder:'e.g. move from customer support into product management', cta:'Generate roadmap', ex:['Growth product management','Ship an iOS app','Postgres in production'] },
+    course: { eyebrow:'New course plan', heading:'Turn a goal into a weekly plan', sub:'Get an ordered, time-boxed schedule — modules and lessons paced to the hours you actually have.', goalLabel:'What to learn', placeholder:'e.g. front-end fundamentals, paced over six weeks', cta:'Generate plan', ex:['Front-end in 6 weeks','Data science on evenings','Interview prep in 2 weeks'] },
+    quiz: { eyebrow:'New quiz', heading:'Test what you know', sub:'Generate a short quiz on any topic or roadmap — see where the gaps are before you move on.', goalLabel:'Topic to test', placeholder:'e.g. React hooks, state and effects', cta:'Generate quiz', ex:['SQL joins','REST vs GraphQL','Prioritization frameworks'] }
+  };
+  modeStyle(active) {
+    return { display:'flex', alignItems:'center', gap:'11px', width:'100%', textAlign:'left', border:0, cursor:'pointer',
+      fontFamily:'var(--font-sans)', fontSize:'15px', fontWeight: active?480:330, color:'var(--color-ink)',
+      background: active?'var(--color-surface-soft)':'transparent', borderRadius:'var(--radius-md)', padding:'10px' };
+  }
+  clearTimers() { this.timers.forEach(t => clearTimeout(t)); this.timers = []; }
+  runGenerate() {
+    this.clearTimers();
+    this.setState({ pane: 'generating', step: 1 });
+    this.timers.push(setTimeout(() => this.setState({ step: 2 }), 900));
+    this.timers.push(setTimeout(() => this.setState({ step: 3 }), 1700));
+    this.timers.push(setTimeout(() => this.setState({ pane: 'result', step: 0 }), 2300));
+  }
+  lvl(active) {
+    return { flex:1, textAlign:'center', border:0, borderRadius:'var(--radius-pill)', padding:'8px 4px', cursor:'pointer',
+      fontFamily:'var(--font-sans)', fontSize:'13px', fontWeight: active?480:330,
+      background: active?'var(--color-primary)':'transparent', color: active?'var(--color-on-primary)':'var(--color-ink)' };
+  }
+  stepCircle(state) {
+    const base = { width:'24px', height:'24px', borderRadius:'var(--radius-full)', boxSizing:'border-box', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 };
+    if (state === 'done') return { ...base, background:'var(--color-primary)' };
+    if (state === 'active') return { ...base, border:'2px solid var(--color-ink)' };
+    return { ...base, border:'2px solid var(--color-hairline)' };
+  }
+  renderVals() {
+    const p = this.pane(), step = this.state.step, level = this.state.level;
+    const hoursLabel = this.state.hours + (this.state.hours === 1 ? ' hour' : ' hours');
+    const goalEcho = this.state.goal || 'Growth product management — 2 years in, strong on delivery, weak on experimentation.';
+    const stepStates = [
+      step >= 2 ? 'done' : 'active',
+      step >= 3 ? 'done' : (step === 2 ? 'active' : 'pending'),
+      step >= 3 ? 'active' : 'pending'
+    ];
+    const stepMeta = [
+      { label:'Outline drafted', sub:'7 stages, 24 topics' },
+      { label:'Building the graph', sub:'Linking prerequisites and optional branches' },
+      { label:'Layout & resource links', sub:'Placing nodes, attaching vetted resources' }
+    ];
+    const steps = stepMeta.map((m,i) => {
+      const s = stepStates[i];
+      return { label:m.label, sub:m.sub, circle:this.stepCircle(s), check:s==='done', dot:s==='active',
+        connector: i < 2, dim: s==='pending' ? 'opacity:0.5;' : '' };
+    });
+    const setGoal = (v) => this.setState({ goal: v });
+    const md = this.MODES[this.state.mode] || this.MODES.roadmap;
+    const setMode = (m) => this.setState({ mode: m });
+    return {
+      isEmpty: p === 'empty', isGenerating: p === 'generating', isResult: p === 'result',
+      goal: this.state.goal, onGoal: (e) => setGoal(e.target.value),
+      lvlNew: this.lvl(level==='new'), lvlSome: this.lvl(level==='some'), lvlDeep: this.lvl(level==='deep'),
+      setNew: () => this.setState({ level:'new' }), setSome: () => this.setState({ level:'some' }), setDeep: () => this.setState({ level:'deep' }),
+      hoursLabel, cycleHours: () => this.setState({ hours: this.state.hours === 3 ? 5 : this.state.hours === 5 ? 10 : 3 }),
+      generate: () => this.runGenerate(), regenerate: () => this.runGenerate(), cancel: () => { this.clearTimers(); this.setState({ pane:'empty', step:0 }); },
+      roadmapModeStyle: this.modeStyle(this.state.mode === 'roadmap'), courseModeStyle: this.modeStyle(this.state.mode === 'course'), quizModeStyle: this.modeStyle(this.state.mode === 'quiz'),
+      pickRoadmap: () => setMode('roadmap'), pickCourse: () => setMode('course'), pickQuiz: () => setMode('quiz'),
+      modeEyebrow: md.eyebrow, modeHeading: md.heading, modeSub: md.sub, goalLabel: md.goalLabel, goalPlaceholder: md.placeholder, modeCta: md.cta,
+      examples: md.ex.map(t => ({ label: t, onClick: () => setGoal(t) })),
+      goalEcho, steps
+    };
+  }
+}
+</script>
+</body>
+</html>

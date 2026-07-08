@@ -1,0 +1,73 @@
+/* pathgrid — token layer (Figma-inspired design language).
+   Core + pastel-block tokens mirror the bound design system
+   (_ds/figma-inspired-design-system-*/tokens/). The pathgrid-* aliases
+   below add the app's semantic layer: the roadmap canvas and node states.
+   Substitutes: figmaSans -> Inter Variable, figmaMono -> JetBrains Mono. */
+
+:root {
+  /* ── Monochrome core ─────────────────────────── */
+  --color-primary: #000000;
+  --color-on-primary: #ffffff;
+  --color-ink: #000000;            /* ALL text on light — no mid-grays */
+  --color-canvas: #ffffff;
+  --color-inverse-canvas: #000000;
+  --color-inverse-ink: #ffffff;
+
+  /* ── Surfaces & hairlines ────────────────────── */
+  --color-surface-soft: #f7f7f5;
+  --color-hairline: #e6e6e6;
+  --color-hairline-soft: #f1f1f1;
+
+  /* ── Pastel color blocks (storytelling + nodes) ─ */
+  --color-block-lime: #dceeb1;
+  --color-block-lilac: #c5b0f4;
+  --color-block-cream: #f4ecd6;
+  --color-block-pink: #efd4d4;
+  --color-block-mint: #c8e6cd;
+  --color-block-coral: #f3c9b6;
+  --color-block-navy: #1f1d3d;
+
+  /* ── Accent & semantic ───────────────────────── */
+  --color-accent-magenta: #ff3d8b; /* documented DS accent — unused in pathgrid (no promo/pricing surface) */
+  --color-success: #1ea64a;        /* check glyph fill only */
+
+  /* ── Type ────────────────────────────────────── */
+  --font-sans: "Inter", "SF Pro Display", system-ui, helvetica, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", menlo, monospace;
+  --weight-body: 320; --weight-body-sm: 330; --weight-display: 340;
+  --weight-link: 480; --weight-headline: 540; --weight-bold: 700;
+
+  /* ── Radius (pills only for CTAs) ────────────── */
+  --radius-xs: 2px; --radius-sm: 6px; --radius-md: 8px;
+  --radius-lg: 24px; --radius-xl: 32px; --radius-pill: 50px; --radius-full: 9999px;
+
+  /* ── Spacing ─────────────────────────────────── */
+  --space-xs: 8px; --space-sm: 12px; --space-md: 16px;
+  --space-lg: 24px; --space-xl: 32px; --space-xxl: 48px; --space-section: 96px;
+
+  /* ── Elevation (shadow-light) ────────────────── */
+  --border-hairline: 1px solid var(--color-hairline);
+  --shadow-soft: 0 4px 16px rgba(0,0,0,0.06);
+  --shadow-modal: 0 12px 40px rgba(0,0,0,0.18);
+
+  /* ── pathgrid semantic layer: the roadmap canvas ─ */
+  --pathgrid-canvas-ground: var(--color-block-cream);
+  --pathgrid-canvas-grid: #e2d9c0;
+  --pathgrid-edge: var(--color-ink);            /* dashed variant = optional */
+  --pathgrid-node-title: var(--color-canvas);   /* + 2.5px ink border */
+  --pathgrid-node-topic: var(--color-block-lilac);
+  --pathgrid-node-subtopic: var(--color-canvas);
+  --pathgrid-node-border: var(--color-ink);     /* 2px */
+  --pathgrid-node-shadow: 0 2px 0 rgba(0,0,0,0.14);
+
+  /* node states */
+  --pathgrid-done-fill: var(--color-block-mint);
+  --pathgrid-done-check: var(--color-success);
+  --pathgrid-learning-ring: 0 0 0 3px var(--color-block-cream), 0 0 0 5px var(--color-ink);
+  --pathgrid-skipped-opacity: 0.4;              /* + line-through label */
+
+  /* attention surfaces (in-palette; no red) */
+  --pathgrid-success-surface: var(--color-block-mint);
+  --pathgrid-alert-surface: var(--color-block-coral);
+  --pathgrid-info-surface: var(--color-block-lilac);  /* also used for calm BYOK/AI reassurance notes */
+}

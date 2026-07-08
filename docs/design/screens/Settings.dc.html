@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Settings — pathgrid</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M4 24 L13 14 L24 4' stroke='%23000' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='4' cy='24' r='3.4' fill='%23000'/%3E%3Ccircle cx='13' cy='14' r='3.4' fill='%23000'/%3E%3Ccircle cx='24' cy='4' r='4' fill='%23c5b0f4' stroke='%23000' stroke-width='2.2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/elevation.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/tokens/base.css">
+  <link rel="stylesheet" href="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/styles.css">
+  <script src="_ds/figma-inspired-design-system-b00e7091-2c8f-4041-9207-2f1ec41d47fe/_ds_bundle.js"></script>
+  <style>
+    body { margin:0; background:#ffffff; }
+    @keyframes da-spin { to { transform:rotate(360deg); } }
+    select.da-select { -webkit-appearance:none; appearance:none; }
+  </style>
+</helmet>
+
+<div style="min-height:100vh; background:var(--color-canvas); font-family:var(--font-sans); color:var(--color-ink);">
+
+  <!-- App nav -->
+  <dc-import name="AppHeader" active="none" signed-in="true" style="position:sticky; top:0; z-index:50;" hint-size="100%,60px"></dc-import>
+
+  <main style="max-width:760px; margin:0 auto; padding:44px 32px 80px; display:flex; flex-direction:column; gap:40px;">
+
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <div style="font-family:var(--font-mono); text-transform:uppercase; font-size:13px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.6;">Settings</div>
+      <h1 style="margin:0; font-size:40px; font-weight:340; letter-spacing:-0.02em; line-height:1.0;">Your account</h1>
+    </div>
+
+    <!-- Profile -->
+    <section data-screen-label="Profile" style="display:flex; flex-direction:column; gap:18px;">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:13px; letter-spacing:0.6px; color:var(--color-ink);">Profile</span>
+        <span style="height:1px; flex:1; background:var(--color-hairline);"></span>
+      </div>
+      <div style="border:var(--border-hairline); border-radius:var(--radius-lg); padding:22px; display:flex; align-items:center; gap:18px; flex-wrap:wrap;">
+        <div style="width:56px; height:56px; border-radius:var(--radius-full); background:var(--color-block-lilac); border:2px solid var(--color-ink); display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:18px; color:var(--color-ink); flex-shrink:0;">MK</div>
+        <div style="flex:1; min-width:200px; display:flex; flex-direction:column; gap:3px;">
+          <span style="font-size:19px; font-weight:540; letter-spacing:-0.2px;">Mia Kern</span>
+          <span style="font-size:15px; font-weight:330; color:var(--color-ink); opacity:0.7;">mia@work.com</span>
+        </div>
+        <button style="height:40px; padding:0 18px; border-radius:var(--radius-pill); border:var(--border-hairline); background:var(--color-canvas); color:var(--color-ink); font-family:var(--font-sans); font-size:15px; font-weight:480; cursor:pointer;" style-hover="background:var(--color-surface-soft);">Edit profile</button>
+      </div>
+    </section>
+
+    <!-- AI Provider -->
+    <section data-screen-label="AI provider" style="display:flex; flex-direction:column; gap:18px;">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:13px; letter-spacing:0.6px; color:var(--color-ink);">AI provider</span>
+        <span style="height:1px; flex:1; background:var(--color-hairline);"></span>
+      </div>
+
+      <div style="border:var(--border-hairline); border-radius:var(--radius-lg); padding:24px; display:flex; flex-direction:column; gap:22px;">
+
+        <!-- provider selector -->
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <label style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.6;">Provider</label>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <sc-for list="{{ providers }}" as="p" hint-placeholder-count="4">
+              <button onClick="{{ p.onClick }}" style="{{ p.style }}">{{ p.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- key field -->
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <label style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.6;">{{ keyLabel }}</label>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <div style="flex:1; min-width:240px; display:flex; align-items:center; gap:8px; border:var(--border-hairline); border-radius:var(--radius-md); padding:0 12px 0 14px; background:var(--color-canvas);" style-focus-within="border-color:var(--color-ink); box-shadow:0 0 0 1px var(--color-ink);">
+              <input type="{{ keyInputType }}" placeholder="{{ keyPlaceholder }}" value="{{ keyValue }}" onInput="{{ onKey }}" style="flex:1; min-width:0; border:0; outline:0; background:transparent; font-family:var(--font-mono); font-size:14px; letter-spacing:0.3px; color:var(--color-ink); padding:13px 0;">
+              <button onClick="{{ toggleReveal }}" title="Show / hide" style="background:transparent; border:0; cursor:pointer; font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.4px; color:var(--color-ink); opacity:0.6; padding:6px;">{{ revealLabel }}</button>
+            </div>
+            <button onClick="{{ testKey }}" style="height:48px; padding:0 20px; border-radius:var(--radius-pill); border:0; background:var(--color-primary); color:var(--color-on-primary); font-family:var(--font-sans); font-size:15px; font-weight:480; cursor:pointer; flex-shrink:0; transition:transform 150ms ease;" style-active="transform:scale(0.98);">Test key</button>
+          </div>
+
+          <!-- status row -->
+          <div style="min-height:24px; display:flex; align-items:center;">
+            <sc-if value="{{ keyIdle }}" hint-placeholder-val="{{ true }}"><span style="font-size:13px; font-weight:330; color:var(--color-ink); opacity:0.6;">Paste a key, then test it. It's stored only in this browser.</span></sc-if>
+            <sc-if value="{{ keyChecking }}" hint-placeholder-val="{{ false }}"><span style="display:flex; align-items:center; gap:8px; font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.4px; color:var(--color-ink);"><span style="width:13px; height:13px; border-radius:var(--radius-full); border:2px solid var(--color-hairline); border-top-color:var(--color-ink); animation:da-spin 0.7s linear infinite;"></span>Checking key…</span></sc-if>
+            <sc-if value="{{ keyValid }}" hint-placeholder-val="{{ false }}"><span style="display:flex; align-items:center; gap:8px; font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.4px; color:var(--color-ink); background:var(--color-block-mint); border-radius:var(--radius-pill); padding:5px 12px;"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.4L4.7 9 10 3.4" stroke="var(--color-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>Key valid · {{ providerName }} reachable</span></sc-if>
+            <sc-if value="{{ keyInvalid }}" hint-placeholder-val="{{ false }}"><span style="display:flex; align-items:center; gap:8px; font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.4px; color:var(--color-ink); background:var(--color-block-coral); border-radius:var(--radius-pill); padding:5px 12px;"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2.8v3.6M6 8.6v.2" stroke="var(--color-ink)" stroke-width="1.8" stroke-linecap="round"></path></svg>Couldn't verify — check the key and try again</span></sc-if>
+          </div>
+        </div>
+
+        <!-- model pickers -->
+        <div style="display:flex; gap:16px; flex-wrap:wrap;">
+          <div style="flex:1; min-width:230px; display:flex; flex-direction:column; gap:10px;">
+            <label style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.6;">Smart model</label>
+            <div style="position:relative;">
+              <select class="da-select" value="{{ smartModel }}" onChange="{{ onSmart }}" style="width:100%; box-sizing:border-box; border:var(--border-hairline); border-radius:var(--radius-md); padding:12px 34px 12px 14px; font-family:var(--font-sans); font-size:15px; font-weight:330; color:var(--color-ink); background:var(--color-canvas); cursor:pointer; outline:none;">
+                <sc-for list="{{ smartOptions }}" as="m" hint-placeholder-count="3"><option value="{{ m }}">{{ m }}</option></sc-for>
+              </select>
+              <svg width="11" height="11" viewBox="0 0 10 10" fill="none" style="position:absolute; right:13px; top:50%; transform:translateY(-50%); pointer-events:none;"><path d="M2 3.5l3 3 3-3" stroke="var(--color-ink)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </div>
+            <span style="font-size:13px; font-weight:330; color:var(--color-ink); opacity:0.6;">Used for generating and refining maps.</span>
+          </div>
+          <div style="flex:1; min-width:230px; display:flex; flex-direction:column; gap:10px;">
+            <label style="font-family:var(--font-mono); text-transform:uppercase; font-size:11px; letter-spacing:0.6px; color:var(--color-ink); opacity:0.6;">Fast model</label>
+            <div style="position:relative;">
+              <select class="da-select" value="{{ fastModel }}" onChange="{{ onFast }}" style="width:100%; box-sizing:border-box; border:var(--border-hairline); border-radius:var(--radius-md); padding:12px 34px 12px 14px; font-family:var(--font-sans); font-size:15px; font-weight:330; color:var(--color-ink); background:var(--color-canvas); cursor:pointer; outline:none;">
+                <sc-for list="{{ fastOptions }}" as="m" hint-placeholder-count="3"><option value="{{ m }}">{{ m }}</option></sc-for>
+              </select>
+              <svg width="11" height="11" viewBox="0 0 10 10" fill="none" style="position:absolute; right:13px; top:50%; transform:translateY(-50%); pointer-events:none;"><path d="M2 3.5l3 3 3-3" stroke="var(--color-ink)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </div>
+            <span style="font-size:13px; font-weight:330; color:var(--color-ink); opacity:0.6;">Used for the tutor chat and quick edits.</span>
+          </div>
+        </div>
+
+        <!-- privacy note -->
+        <div style="display:flex; gap:12px; align-items:flex-start; background:var(--color-block-lilac); border-radius:var(--radius-md); padding:16px 18px;">
+          <svg width="17" height="17" viewBox="0 0 16 16" fill="none" style="flex-shrink:0; margin-top:1px;"><path d="M8 1.5l5 2v3.2c0 3-2.1 5.6-5 6.8-2.9-1.2-5-3.8-5-6.8V3.5l5-2z" stroke="var(--color-ink)" stroke-width="1.3" stroke-linejoin="round"></path><path d="M6 8l1.4 1.4L10.5 6" stroke="var(--color-ink)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <span style="font-size:15px; font-weight:330; line-height:1.5;">Your key stays in this browser. Pathgrid never sends it to our servers — requests go straight from your device to {{ providerName }}.</span>
+        </div>
+
+        <div style="border-top:var(--border-hairline); padding-top:16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+          <button onClick="{{ clearKey }}" style="background:transparent; border:0; padding:0; cursor:pointer; font-family:var(--font-sans); font-size:15px; font-weight:480; color:var(--color-ink); border-bottom:2px solid var(--color-ink);">Clear key from this browser</button>
+          <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:10px; letter-spacing:0.4px; color:var(--color-ink); opacity:0.5;">Changes save automatically</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Account -->
+    <section data-screen-label="Account" style="display:flex; flex-direction:column; gap:18px;">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <span style="font-family:var(--font-mono); text-transform:uppercase; font-size:13px; letter-spacing:0.6px; color:var(--color-ink);">Account</span>
+        <span style="height:1px; flex:1; background:var(--color-hairline);"></span>
+      </div>
+      <div style="border:var(--border-hairline); border-radius:var(--radius-lg); padding:22px; display:flex; flex-direction:column; gap:20px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+          <div style="display:flex; flex-direction:column; gap:3px;">
+            <span style="font-size:16px; font-weight:480;">Sign out</span>
+            <span style="font-size:14px; font-weight:330; color:var(--color-ink); opacity:0.7;">End your session on this browser. Your key and progress stay saved.</span>
+          </div>
+          <a href="Auth.dc.html" style="height:40px; padding:0 18px; border-radius:var(--radius-pill); border:var(--border-hairline); background:var(--color-canvas); color:var(--color-ink); font-size:15px; font-weight:480; text-decoration:none; display:flex; align-items:center; flex-shrink:0;" style-hover="background:var(--color-surface-soft);">Sign out</a>
+        </div>
+        <div style="border-top:var(--border-hairline); padding-top:20px; display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+          <div style="display:flex; flex-direction:column; gap:3px; max-width:430px;">
+            <span style="font-size:16px; font-weight:480;">Delete account</span>
+            <span style="font-size:14px; font-weight:330; line-height:1.5; color:var(--color-ink); opacity:0.7;">Permanently removes your account, synced progress and generated library. Progress saved on this device is kept. This can't be undone.</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+            <sc-if value="{{ notConfirmingDelete }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ askDelete }}" style="height:40px; padding:0 18px; border-radius:var(--radius-pill); border:0; background:var(--color-block-coral); color:var(--color-ink); font-family:var(--font-sans); font-size:15px; font-weight:480; cursor:pointer; transition:transform 150ms ease;" style-active="transform:scale(0.98);">Delete account</button>
+            </sc-if>
+            <sc-if value="{{ confirmDelete }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ cancelDelete }}" style="height:40px; padding:0 16px; border-radius:var(--radius-pill); border:var(--border-hairline); background:var(--color-canvas); color:var(--color-ink); font-family:var(--font-sans); font-size:15px; font-weight:480; cursor:pointer;" style-hover="background:var(--color-surface-soft);">Cancel</button>
+              <button style="height:40px; padding:0 18px; border-radius:var(--radius-pill); border:0; background:var(--color-block-coral); color:var(--color-ink); font-family:var(--font-sans); font-size:15px; font-weight:480; cursor:pointer;">Yes, delete</button>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 900, &quot;height&quot;: 900 }
+}">
+class Component extends DCLogic {
+  state = { provider: 'anthropic', key: '', status: 'idle', reveal: false, smart: null, fast: null, confirmDelete: false };
+  timer = null;
+  componentWillUnmount() { if (this.timer) clearTimeout(this.timer); }
+
+  PROVIDERS = {
+    anthropic: { label:'Anthropic', name:'Anthropic', prefix:'sk-ant-', smart:['Claude Opus 4.6','Claude Sonnet 4.6','Claude Sonnet 4'], fast:['Claude Haiku 4.5','Claude Haiku 4'] },
+    openai:    { label:'OpenAI', name:'OpenAI', prefix:'sk-', smart:['GPT-5.2','GPT-5.2 mini','o4'], fast:['GPT-5.2 mini','GPT-4.1 mini'] },
+    google:    { label:'Google', name:'Google', prefix:'AI', smart:['Gemini 3 Pro','Gemini 2.5 Pro'], fast:['Gemini 3 Flash','Gemini 2.5 Flash'] },
+    openrouter:{ label:'OpenRouter', name:'OpenRouter', prefix:'sk-or-', smart:['Auto (best available)','Claude Sonnet 4.6','GPT-5.2'], fast:['Auto (cheapest)','Claude Haiku 4.5'] }
+  };
+
+  providerStyle(active) {
+    return { border: active ? '0' : 'var(--border-hairline)', borderRadius:'var(--radius-pill)', padding: active ? '9px 18px' : '8px 17px',
+      cursor:'pointer', fontFamily:'var(--font-sans)', fontSize:'15px', fontWeight:480,
+      background: active ? 'var(--color-primary)' : 'var(--color-canvas)', color: active ? 'var(--color-on-primary)' : 'var(--color-ink)' };
+  }
+  setProvider(id) {
+    const p = this.PROVIDERS[id];
+    this.setState({ provider: id, status: 'idle', smart: p.smart[0], fast: p.fast[0] });
+  }
+  testKey() {
+    if (!this.state.key.trim()) { this.setState({ status: 'invalid' }); return; }
+    if (this.timer) clearTimeout(this.timer);
+    this.setState({ status: 'checking' });
+    const ok = this.state.key.trim().startsWith(this.PROVIDERS[this.state.provider].prefix) && this.state.key.trim().length >= 20;
+    this.timer = setTimeout(() => this.setState({ status: ok ? 'valid' : 'invalid' }), 1100);
+  }
+  renderVals() {
+    const p = this.PROVIDERS[this.state.provider];
+    const providers = Object.keys(this.PROVIDERS).map(id => ({
+      label: this.PROVIDERS[id].label, style: this.providerStyle(id === this.state.provider), onClick: () => this.setProvider(id)
+    }));
+    const st = this.state.status;
+    return {
+      providers, providerName: p.name,
+      keyLabel: p.name + ' API key', keyPlaceholder: p.prefix + '…',
+      keyValue: this.state.key, onKey: (e) => this.setState({ key: e.target.value, status: 'idle' }),
+      keyInputType: this.state.reveal ? 'text' : 'password', reveal: this.state.reveal,
+      revealLabel: this.state.reveal ? 'Hide' : 'Show', toggleReveal: () => this.setState({ reveal: !this.state.reveal }),
+      testKey: () => this.testKey(), clearKey: () => this.setState({ key:'', status:'idle' }),
+      keyIdle: st === 'idle', keyChecking: st === 'checking', keyValid: st === 'valid', keyInvalid: st === 'invalid',
+      smartModel: this.state.smart ?? p.smart[0], fastModel: this.state.fast ?? p.fast[0],
+      smartOptions: p.smart, fastOptions: p.fast,
+      onSmart: (e) => this.setState({ smart: e.target.value }), onFast: (e) => this.setState({ fast: e.target.value }),
+      confirmDelete: this.state.confirmDelete, notConfirmingDelete: !this.state.confirmDelete,
+      askDelete: () => this.setState({ confirmDelete: true }), cancelDelete: () => this.setState({ confirmDelete: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

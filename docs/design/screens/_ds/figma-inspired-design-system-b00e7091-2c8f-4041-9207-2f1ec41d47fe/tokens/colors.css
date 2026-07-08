@@ -1,0 +1,42 @@
+/* Color tokens — Figma-inspired design language.
+   Monochrome system core + pastel color-block family.
+   Source: VoltAgent/awesome-design-md → design-md/figma/DESIGN.md */
+
+:root {
+  /* ── Brand & core ─────────────────────────────── */
+  --color-primary: #000000;        /* every primary CTA, selected states */
+  --color-on-primary: #ffffff;
+  --color-ink: #000000;            /* ALL text on light surfaces — no mid-grays */
+  --color-canvas: #ffffff;         /* default page background */
+  --color-inverse-canvas: #000000; /* footer, marquee strip */
+  --color-inverse-ink: #ffffff;
+  --color-on-inverse-soft: rgba(255, 255, 255, 0.16); /* circular icon buttons on dark */
+
+  /* ── Surfaces & hairlines ─────────────────────── */
+  --color-surface-soft: #f7f7f5;   /* off-white tiles: template cards, icon buttons */
+  --color-hairline: #e6e6e6;       /* 1px borders: inputs, pricing cards, dividers */
+  --color-hairline-soft: #f1f1f1;  /* subtlest row separators */
+
+  /* ── Color blocks (signature pastel family) ───── */
+  --color-block-lime: #dceeb1;     /* systems / FAQ / contact-form block */
+  --color-block-lilac: #c5b0f4;    /* design hero, promo banners */
+  --color-block-cream: #f4ecd6;    /* warm strips, template-grid sections */
+  --color-block-pink: #efd4d4;
+  --color-block-mint: #c8e6cd;
+  --color-block-coral: #f3c9b6;    /* "ship products" story block */
+  --color-block-navy: #1f1d3d;     /* only dark surface above the footer */
+
+  /* ── Accent & semantic ────────────────────────── */
+  --color-accent-magenta: #ff3d8b; /* one promo CTA per page, max */
+  --color-success: #1ea64a;        /* checkmark glyph fill only, never a surface */
+  --color-overlay-scrim: rgba(0, 0, 0, 0.6); /* behind modals / lightboxes */
+
+  /* ── Semantic aliases ─────────────────────────── */
+  --surface-page: var(--color-canvas);
+  --surface-card: var(--color-canvas);
+  --surface-tile: var(--color-surface-soft);
+  --text-body: var(--color-ink);
+  --text-inverse: var(--color-inverse-ink);
+  --border-default: var(--color-hairline);
+  --border-soft: var(--color-hairline-soft);
+}
