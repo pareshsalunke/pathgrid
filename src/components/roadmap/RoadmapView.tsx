@@ -5,6 +5,7 @@ import { RoadmapCanvas } from "./RoadmapCanvas";
 import { ListView } from "./ListView";
 import { TopicDrawer } from "./TopicDrawer";
 import { cn } from "@/lib/utils";
+import { useProgressSync } from "@/lib/stores/progress-sync";
 import type { PositionedNode } from "@/lib/layout";
 import type { GraphEdge } from "@/lib/schemas/graph";
 import type { DrawerTopic } from "./types";
@@ -22,6 +23,9 @@ export function RoadmapView({
 }) {
   const [view, setView] = useState<"map" | "list">("map");
   const [selected, setSelected] = useState<string | null>(null);
+
+  // Hydrate + write progress to the server when signed in (localStorage otherwise).
+  useProgressSync(roadmapId);
 
   const onSelect = (id: string) => setSelected(topics[id] ? id : null);
   const selectedTopic = selected ? topics[selected] : null;

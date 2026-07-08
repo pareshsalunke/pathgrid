@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { env } from "@/lib/env";
+import { Providers } from "./providers";
 import "./globals.css";
 
 // figmaSans -> Inter Variable, figmaMono -> JetBrains Mono (design-system substitutes).
@@ -48,7 +49,9 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${jetbrainsMono.variable} h-full`}
     >
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

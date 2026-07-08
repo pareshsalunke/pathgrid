@@ -6,6 +6,7 @@ import { AppFooter } from "@/components/layout/AppFooter";
 import { Container } from "@/components/layout/Container";
 import { RoadmapView } from "@/components/roadmap/RoadmapView";
 import { ProgressMeter } from "@/components/roadmap/ProgressMeter";
+import { BookmarkButton } from "@/components/roadmap/BookmarkButton";
 import type { DrawerTopic } from "@/components/roadmap/types";
 import {
   getRoadmapBySlug,
@@ -127,6 +128,7 @@ export default async function RoadmapPage({ params }: Params) {
             <span className="text-ink/60 font-mono text-[11px] tracking-[0.6px] uppercase">
               {contentNodeIds.length} topics
             </span>
+            <BookmarkButton roadmapId={rm.id} />
           </div>
         </Container>
       </section>

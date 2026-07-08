@@ -21,6 +21,7 @@
     "seed:sample": "node --env-file=.env --import tsx src/lib/db/seed.ts"
   },
   "dependencies": {
+    "@auth/drizzle-adapter": "^1.11.2",
     "@base-ui/react": "^1.6.0",
     "@neondatabase/serverless": "^1.1.0",
     "@xyflow/react": "^12.11.2",
@@ -30,6 +31,7 @@
     "elkjs": "^0.11.1",
     "lucide-react": "^1.23.0",
     "next": "16.2.10",
+    "next-auth": "5.0.0-beta.31",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "rehype-sanitize": "^6.0.0",

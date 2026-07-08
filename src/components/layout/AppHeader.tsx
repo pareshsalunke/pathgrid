@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 
 type MenuItem = {
@@ -320,14 +321,17 @@ function Dropdown({
 }
 
 export function AppHeader({
-  signedIn = false,
   active,
   className,
 }: {
-  signedIn?: boolean;
   active?: "roadmaps" | "ai";
   className?: string;
 }) {
+  const { data: session } = useSession();
+  const user = session?.user;
+  const signedIn = Boolean(user);
+  const displayName = user?.name ?? user?.email ?? "Account";
+  const initials = initialsFrom(user?.name, user?.email);
   const [open, setOpen] = useState<"roadmaps" | "ai" | "avatar" | null>(null);
 
   return (
@@ -398,24 +402,32 @@ export function AppHeader({
                   open === "avatar" ? "bg-hairline" : "bg-surface-soft",
                 )}
               >
-                MK
+                {initials}
               </button>
               {open === "avatar" && (
                 <div className="border-hairline bg-canvas shadow-soft absolute top-[calc(100%+6px)] right-0 z-[60] flex w-56 flex-col rounded-xl border p-1.5">
                   <div className="flex flex-col gap-0.5 px-3 pt-2 pb-2.5">
-                    <span className="font-headline text-[15px] tracking-[-0.01em]">
-                      Mia Kern
+                    <span className="font-headline truncate text-[15px] tracking-[-0.01em]">
+                      {displayName}
                     </span>
-                    <span className="text-ink/60 font-mono text-[11px]">
-                      mia@work.com
-                    </span>
+                    {user?.email && (
+                      <span className="text-ink/60 truncate font-mono text-[11px]">
+                        {user.email}
+                      </span>
+                    )}
                   </div>
                   <span className="bg-hairline mx-0 my-1 h-px" />
                   <AvatarLink href="/dashboard" label="Dashboard" />
                   <AvatarLink href="/dashboard" label="My learning" />
                   <AvatarLink href="/settings" label="Settings" />
                   <span className="bg-hairline mx-0 my-1 h-px" />
-                  <AvatarLink href="/login" label="Log out" />
+                  <button
+                    type="button"
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                    className="font-body-sm text-ink hover:bg-surface-soft rounded-lg px-3 py-[9px] text-left text-[15px]"
+                  >
+                    Log out
+                  </button>
                 </div>
               )}
             </div>
@@ -439,6 +451,13 @@ export function AppHeader({
       </div>
     </header>
   );
+}
+
+function initialsFrom(name?: string | null, email?: string | null): string {
+  const source = name?.trim() || email?.split("@")[0] || "";
+  const parts = source.split(/[\s._-]+/).filter(Boolean);
+  const letters = (parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "");
+  return (letters || source.slice(0, 2) || "?").toUpperCase();
 }
 
 function AvatarLink({ href, label }: { href: string; label: string }) {

@@ -79,3 +79,24 @@ Re-verify this section when Phase 1 adds `generateStaticParams`, route handlers,
 - **Two sample roadmaps seeded** (`frontend-developer`, `typescript`) so the home grids and
   the canvas have real data; the full catalog is Phase 4.
 
+## Design & scope decisions (Phase 2)
+
+- **SSG preserved despite auth.** The root layout does **not** call `auth()` — instead
+  `SessionProvider` ([src/app/providers.tsx](../src/app/providers.tsx)) fetches the session
+  client-side, so `/` and `/[roadmapSlug]` stay static. Only `/dashboard`, `/settings`, `/login`
+  are dynamic (they read `auth()`/`searchParams`). Bookmark state and progress hydration are
+  fetched client-side for the same reason.
+- **Auth.js v5, database sessions, Drizzle adapter** (Google + GitHub + Resend magic link).
+  Pages protected by `await auth()` + `redirect()` — no middleware (keeps neon-http off the edge).
+- **`users.avatar_url` kept (unused).** Dropping it while adding `image` made drizzle-kit prompt
+  "rename vs drop" interactively (fails in non-TTY). Keeping the legacy column avoids the prompt;
+  the adapter writes `image`.
+- **Account delete = one `DELETE users`** relying on FK `ON DELETE CASCADE` (progress, bookmarks,
+  accounts, sessions, owned roadmaps). neon-http has no multi-statement transactions.
+- **Merge policy**: rank `pending < skipped < learning < done`; higher wins so "done" is never
+  downgraded ([mergeStatuses](../src/lib/db/progress.ts)).
+- **OAuth e2e not automated** (real provider login). Server persistence + merge are proven by a
+  Neon integration test ([progress-db.test.ts](../src/lib/db/progress-db.test.ts)); the OAuth
+  round-trip is verified manually once the user pastes credentials.
+- **Settings ships Profile + Account only.** The AI Provider / API-keys section is Phase 3.
+
