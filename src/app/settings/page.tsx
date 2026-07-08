@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { AppFooter } from "@/components/layout/AppFooter";
 import { AccountActions } from "./AccountActions";
+import { AIProviderSection } from "./AIProviderSection";
 
 export const metadata: Metadata = { title: "Settings" };
 
@@ -60,16 +61,17 @@ export default async function SettingsPage() {
           </div>
         </section>
 
+        <section className="mb-10">
+          <SectionHeader label="AI provider" />
+          <AIProviderSection />
+        </section>
+
         <section>
           <SectionHeader label="Account" />
           <div className="border-hairline rounded-lg border p-[22px]">
             <AccountActions />
           </div>
         </section>
-
-        <p className="text-ink/45 mt-8 font-mono text-[11px] tracking-[0.5px] uppercase">
-          AI provider &amp; API keys — coming in the AI phase
-        </p>
       </div>
       <AppFooter />
     </div>

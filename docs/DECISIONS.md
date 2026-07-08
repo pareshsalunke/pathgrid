@@ -100,3 +100,35 @@ Re-verify this section when Phase 1 adds `generateStaticParams`, route handlers,
   round-trip is verified manually once the user pastes credentials.
 - **Settings ships Profile + Account only.** The AI Provider / API-keys section is Phase 3.
 
+## Design & scope decisions (Phase 3 — AI runtime, BYOK; item 1)
+
+- **BYOK transport carries both tier models.** docs/04 §4 names a single `x-ai-model`
+  header, but runtime generation needs two tiers (docs/05 §4: `smart` for graphs/content/
+  chat, `fast` for quizzes + the JSON repair pass). Contract is therefore `x-ai-provider`
+  + `x-ai-model-smart` + `x-ai-model-fast` + `Authorization: Bearer <key>`
+  ([src/lib/ai/headers.ts](../src/lib/ai/headers.ts), shared client+server);
+  `resolveProviderConfig` ([registry.ts](../src/lib/ai/registry.ts)) returns
+  `{error:"no_provider_key"}` when any part is absent.
+- **User keys live only in the browser.** localStorage via `useAIProvider`
+  ([src/lib/stores/ai-provider.ts](../src/lib/stores/ai-provider.ts), persist key
+  `pathgrid-ai`); forwarded per request in the Authorization header, used in memory only
+  server-side — never written to the DB or logs, never passed to `track()` (docs/05 §4).
+- **Vercel AI SDK v7 + `@ai-sdk/{anthropic,openai,google}` v4.** `getModel` instantiates a
+  fresh provider client per request with the caller's key. OpenRouter reuses the OpenAI
+  provider with `baseURL: https://openrouter.ai/api/v1` — no extra dep (docs/05 §4).
+- **Model catalog = seeds + free-text override.** Small static list per provider
+  ([catalog.ts](../src/lib/ai/catalog.ts)); Anthropic ids from the claude-api reference,
+  others seeded with conservative stable ids. The Settings picker offers a "Custom…" option
+  so new models never need a code change (docs/05 §4).
+- **Registry core + Test-key only this item.** The structured-output helper (generate→Zod→
+  one repair) and `events` token logging (docs/05 §4) are deferred to the first generation
+  route (#3), where they can be exercised and unit-tested. `AI_DISABLED=1` kill switch added
+  ([env.ts](../src/lib/env.ts)); `POST /api/ai/test-key` validates a key via a 1-token call
+  on the fast model and maps provider errors → actionable messages.
+- **AI-provider section tested by component test, not authed e2e.** The section is on the
+  auth-gated `/settings` and the Playwright suite has no auth fixture, so internals (pills,
+  key field, Show/Hide, Custom override, Test-key states) are covered by a Vitest + Testing
+  Library test ([AIProviderSection.test.tsx](../src/app/settings/AIProviderSection.test.tsx));
+  e2e adds only the signed-out `/settings → /login` redirect.
+- **`docs/PROGRESS.md` is gitignored** — a local handoff/bridge file, not versioned.
+

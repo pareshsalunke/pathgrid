@@ -11,4 +11,6 @@ export const env = {
   appUrlObject: new URL(APP_URL),
   /** true only when SEO_INDEXING=on; otherwise emit site-wide noindex. */
   seoIndexingOn: process.env.SEO_INDEXING === "on",
+  /** true when AI_DISABLED=1 — kill switch for every runtime AI route (docs/05 §4). */
+  aiDisabled: process.env.AI_DISABLED === "1",
 };
