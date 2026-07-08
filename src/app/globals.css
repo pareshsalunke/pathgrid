@@ -1,0 +1,111 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./tokens.css";
+
+/* shadcn/base-ui components read these semantic names. We alias every one to a
+   pathgrid token so any component added later renders in-palette. pathgrid is a
+   light editorial frame — the only dark surface is the roadmap canvas, handled
+   locally, so there is no global .dark inversion here. */
+:root {
+  --radius: var(--radius-md);
+  --background: var(--color-canvas);
+  --foreground: var(--color-ink);
+  --card: var(--color-canvas);
+  --card-foreground: var(--color-ink);
+  --popover: var(--color-canvas);
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-primary);
+  --primary-foreground: var(--color-on-primary);
+  --secondary: var(--color-surface-soft);
+  --secondary-foreground: var(--color-ink);
+  --muted: var(--color-surface-soft);
+  --muted-foreground: var(--color-ink);
+  --accent: var(--color-surface-soft);
+  --accent-foreground: var(--color-ink);
+  --destructive: var(--color-block-coral);
+  --destructive-foreground: var(--color-ink);
+  --border: var(--color-hairline);
+  --input: var(--color-hairline);
+  --ring: var(--color-ink);
+}
+
+/* Expose pathgrid tokens as Tailwind utilities. `inline` means the utility
+   inlines the referenced var (bg-ink -> var(--color-ink)); it does not redefine
+   the var, so tokens.css stays the single source of truth. */
+@theme inline {
+  /* palette -> bg / text / border utilities */
+  --color-ink: var(--color-ink);
+  --color-canvas: var(--color-canvas);
+  --color-primary: var(--color-primary);
+  --color-on-primary: var(--color-on-primary);
+  --color-surface-soft: var(--color-surface-soft);
+  --color-hairline: var(--color-hairline);
+  --color-hairline-soft: var(--color-hairline-soft);
+  --color-success: var(--color-success);
+  --color-block-lime: var(--color-block-lime);
+  --color-block-lilac: var(--color-block-lilac);
+  --color-block-cream: var(--color-block-cream);
+  --color-block-pink: var(--color-block-pink);
+  --color-block-mint: var(--color-block-mint);
+  --color-block-coral: var(--color-block-coral);
+  --color-block-navy: var(--color-block-navy);
+
+  /* shadcn contract -> utilities (bg-background, text-foreground, border-border…) */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* radius scale (rounded-md == 8px node/input, rounded-lg == 24px card, rounded-pill == CTA) */
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-pill: var(--radius-pill);
+
+  /* type: fonts + the documented weight scale (font-body … font-bold) */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-weight-body: var(--weight-body);
+  --font-weight-body-sm: var(--weight-body-sm);
+  --font-weight-display: var(--weight-display);
+  --font-weight-link: var(--weight-link);
+  --font-weight-headline: var(--weight-headline);
+  --font-weight-bold: var(--weight-bold);
+
+  /* elevation */
+  --shadow-soft: var(--shadow-soft);
+  --shadow-modal: var(--shadow-modal);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-body);
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: var(--color-block-lilac);
+}
