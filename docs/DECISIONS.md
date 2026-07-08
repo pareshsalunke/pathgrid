@@ -47,3 +47,35 @@ Re-verify this section when Phase 1 adds `generateStaticParams`, route handlers,
   "home renders" (hero + primary CTA visible, no horizontal overflow at 390px). The full
   smoke lands with the roadmap canvas in Phase 1.
 
+## Design & scope decisions (Phase 1)
+
+- **Graph schema = docs/04 §3 (authoritative).** The `roadmap_versions.graph` shape is the
+  React-Flow-native one in §3 (`node {id,type,position?,data:{label,slug?,order?,optional?},
+  parentId?}`, `edge {id,source,target,data:{style,kind}}`). The `{title,x,y}` shape in doc 06
+  is only the pipeline's pre-layout intermediate — Zod validates against §3
+  ([src/lib/schemas/graph.ts](../src/lib/schemas/graph.ts)).
+
+- **Markdown → sanitized HTML at render (RSC), not stored.** `topics.body_md` is the only
+  stored column — no `body_html`. The roadmap page renders it server-side through a `unified`
+  + `rehype-sanitize` pipeline ([src/lib/markdown.ts](../src/lib/markdown.ts)) and passes HTML
+  as props. Keeps the doc-04 schema intact, ships no markdown parser to the client (doc 05),
+  and satisfies the "sanitize model HTML" guardrail.
+
+- **Roadmap data passed as props from the SSG page — no API routes yet.** Per doc 05, the
+  canvas gets the graph + pre-rendered topic payloads as props (no second fetch). The doc-04
+  `/api/roadmaps/*` route handlers arrive with the client/AI features in Phase 2/3.
+
+- **elkjs layout runs server-side at SSG.** `layoutGraph()` computes positions in the RSC so
+  the canvas receives positioned nodes as props (no client-side layout flash). Sample graphs
+  are authored position-less.
+
+- **Progress is localStorage + Zustand only (per-device).** No `user_topic_progress` /
+  `bookmarks` tables or progress API this phase; the bookmark icon is non-functional.
+  Cross-device sync is deliberately Phase 2 (server progress + `POST /api/progress/merge`
+  folds anonymous localStorage into the account on first login). The store
+  ([src/lib/stores/progress.ts](../src/lib/stores/progress.ts)) is the optimistic cache Phase 2
+  keeps in front of the server. (Confirmed with the user.)
+
+- **Two sample roadmaps seeded** (`frontend-developer`, `typescript`) so the home grids and
+  the canvas have real data; the full catalog is Phase 4.
+

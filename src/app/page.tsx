@@ -2,17 +2,14 @@ import Link from "next/link";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { AppFooter } from "@/components/layout/AppFooter";
 import { Container } from "@/components/layout/Container";
-import {
-  rolePaths,
-  skillPaths,
-  changelog,
-  type RolePath,
-  type SkillPath,
-} from "@/lib/home-data";
+import { listCatalog, type CatalogCard } from "@/lib/db/roadmaps";
+import { changelog } from "@/lib/home-data";
 
 const eyebrow = "font-mono text-[13px] uppercase tracking-[0.6px] text-ink";
 
-export default function Home() {
+export default async function Home() {
+  const catalog = await listCatalog();
+
   return (
     <div className="bg-canvas text-ink flex min-h-screen flex-col">
       <AppHeader active="roadmaps" className="sticky top-0 z-50" />
@@ -51,11 +48,15 @@ export default function Home() {
             eyebrow="Role paths"
             note="Step-by-step maps to a job title"
           />
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(288px,1fr))] gap-3.5">
-            {rolePaths.map((role) => (
-              <RoleCard key={role.slug} role={role} />
-            ))}
-          </div>
+          {catalog.role.length > 0 ? (
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(288px,1fr))] gap-3.5">
+              {catalog.role.map((c) => (
+                <RoadmapCard key={c.slug} card={c} />
+              ))}
+            </div>
+          ) : (
+            <EmptyCatalog />
+          )}
         </Container>
       </section>
 
@@ -66,11 +67,15 @@ export default function Home() {
             eyebrow="Skill paths"
             note="One technology, end to end"
           />
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(212px,1fr))] gap-3">
-            {skillPaths.map((skill) => (
-              <SkillCard key={skill.slug} skill={skill} />
-            ))}
-          </div>
+          {catalog.skill.length > 0 ? (
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(212px,1fr))] gap-3">
+              {catalog.skill.map((c) => (
+                <SkillCard key={c.slug} card={c} />
+              ))}
+            </div>
+          ) : (
+            <EmptyCatalog />
+          )}
         </Container>
       </section>
 
@@ -182,21 +187,16 @@ function SectionHeader({
   );
 }
 
-function NewBadge({ small = false }: { small?: boolean }) {
+function EmptyCatalog() {
   return (
-    <span
-      className={
-        small
-          ? "bg-block-lilac rounded-sm px-[5px] py-0.5 font-mono text-[9px] tracking-[0.5px] uppercase"
-          : "bg-block-lilac rounded-sm px-[7px] py-0.5 font-mono text-[10px] font-normal tracking-[0.6px] uppercase"
-      }
-    >
-      New
-    </span>
+    <div className="border-hairline font-body-sm text-ink/60 rounded-md border border-dashed px-5 py-8 text-center text-[15px]">
+      No roadmaps yet. Run <code className="font-mono">pnpm seed:sample</code>{" "}
+      to add some.
+    </div>
   );
 }
 
-function BookmarkIcon({ filled = false }: { filled?: boolean }) {
+function BookmarkIcon() {
   return (
     <svg
       width="16"
@@ -207,7 +207,6 @@ function BookmarkIcon({ filled = false }: { filled?: boolean }) {
     >
       <path
         d="M4 2.5h8V14l-4-2.6L4 14V2.5z"
-        fill={filled ? "currentColor" : "none"}
         stroke="currentColor"
         strokeWidth="1.4"
         strokeLinejoin="round"
@@ -216,51 +215,37 @@ function BookmarkIcon({ filled = false }: { filled?: boolean }) {
   );
 }
 
-function RoleCard({ role }: { role: RolePath }) {
+function RoadmapCard({ card }: { card: CatalogCard }) {
   return (
     <Link
-      href={`/${role.slug}`}
+      href={`/${card.slug}`}
       className="bg-surface-soft text-ink hover:border-hairline flex flex-col gap-3.5 rounded-md border border-transparent p-5 no-underline"
     >
       <div className="flex items-start justify-between gap-2">
         <span className="font-link text-ink flex items-center gap-2 text-[17px]">
-          {role.title}
-          {role.isNew && <NewBadge />}
+          {card.title}
         </span>
-        <BookmarkIcon filled={role.progress !== undefined} />
+        <BookmarkIcon />
       </div>
-      {role.progress !== undefined ? (
-        <div className="flex items-center gap-2.5">
-          <div className="bg-hairline h-1.5 flex-1 overflow-hidden rounded-full">
-            <div
-              className="bg-ink h-full"
-              style={{ width: `${role.progress}%` }}
-            />
-          </div>
-          <span className="text-ink font-mono text-[11px]">
-            {role.progress}%
-          </span>
-        </div>
-      ) : (
-        <span className="text-ink/60 font-mono text-[11px] tracking-[0.4px]">
-          {role.topics} topics
-        </span>
-      )}
+      <span className="text-ink/60 font-mono text-[11px] tracking-[0.4px]">
+        {card.topicCount} topics
+      </span>
     </Link>
   );
 }
 
-function SkillCard({ skill }: { skill: SkillPath }) {
+function SkillCard({ card }: { card: CatalogCard }) {
   return (
     <Link
-      href={`/${skill.slug}`}
+      href={`/${card.slug}`}
       className="bg-surface-soft text-ink hover:border-hairline flex items-center justify-between gap-2 rounded-md border border-transparent px-4 py-[15px] no-underline"
     >
       <span className="font-link text-ink flex items-center gap-[7px] text-[16px]">
-        {skill.title}
-        {skill.isNew && <NewBadge small />}
+        {card.title}
       </span>
-      <span className="text-ink/55 font-mono text-[11px]">{skill.topics}</span>
+      <span className="text-ink/55 font-mono text-[11px]">
+        {card.topicCount}
+      </span>
     </Link>
   );
 }

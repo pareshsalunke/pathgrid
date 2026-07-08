@@ -1,0 +1,148 @@
+import { eq, asc, sql, inArray } from "drizzle-orm";
+import { getDb } from "./index";
+import { roadmaps, roadmapVersions, topics, resources } from "./schema";
+import type { RoadmapGraph } from "@/lib/schemas/graph";
+import type { TopicMeta, Seo, ResourceKind } from "@/lib/schemas/content";
+
+/** Repositories — the only place that queries the DB (CLAUDE.md: no queries in components). */
+
+export type CatalogCard = {
+  slug: string;
+  title: string;
+  brief: string | null;
+  category: "role" | "skill" | "custom";
+  topicCount: number;
+};
+
+export type Catalog = { role: CatalogCard[]; skill: CatalogCard[] };
+
+export async function listCatalog(): Promise<Catalog> {
+  const db = getDb();
+  const rows = await db
+    .select({
+      slug: roadmaps.slug,
+      title: roadmaps.title,
+      brief: roadmaps.brief,
+      category: roadmaps.category,
+      topicCount: sql<number>`count(${topics.id})`.mapWith(Number),
+    })
+    .from(roadmaps)
+    .leftJoin(topics, eq(topics.roadmapId, roadmaps.id))
+    .where(eq(roadmaps.visibility, "public"))
+    .groupBy(roadmaps.id)
+    .orderBy(asc(roadmaps.title));
+
+  const cards: CatalogCard[] = rows
+    .filter((r): r is typeof r & { slug: string } => Boolean(r.slug))
+    .map((r) => ({
+      slug: r.slug,
+      title: r.title,
+      brief: r.brief,
+      category: r.category,
+      topicCount: r.topicCount,
+    }));
+
+  return {
+    role: cards.filter((c) => c.category === "role"),
+    skill: cards.filter((c) => c.category === "skill"),
+  };
+}
+
+export type RoadmapResource = {
+  kind: ResourceKind;
+  title: string;
+  url: string;
+  isPaid: boolean;
+};
+
+export type RoadmapTopic = {
+  nodeId: string;
+  slug: string;
+  title: string;
+  bodyMd: string | null;
+  meta: TopicMeta | null;
+  resources: RoadmapResource[];
+};
+
+export type RoadmapPage = {
+  id: string;
+  slug: string;
+  title: string;
+  brief: string | null;
+  category: "role" | "skill" | "custom";
+  graph: RoadmapGraph;
+  seo: Seo | null;
+  topics: RoadmapTopic[];
+};
+
+export async function listRoadmapSlugs(): Promise<string[]> {
+  const db = getDb();
+  const rows = await db
+    .select({ slug: roadmaps.slug })
+    .from(roadmaps)
+    .where(eq(roadmaps.visibility, "public"));
+  return rows.map((r) => r.slug).filter((s): s is string => Boolean(s));
+}
+
+export async function getRoadmapBySlug(
+  slug: string,
+): Promise<RoadmapPage | null> {
+  const db = getDb();
+  const [rm] = await db
+    .select()
+    .from(roadmaps)
+    .where(eq(roadmaps.slug, slug))
+    .limit(1);
+  if (!rm || !rm.slug || !rm.currentVersionId) return null;
+
+  const [ver] = await db
+    .select()
+    .from(roadmapVersions)
+    .where(eq(roadmapVersions.id, rm.currentVersionId))
+    .limit(1);
+  if (!ver) return null;
+
+  const topicRows = await db
+    .select()
+    .from(topics)
+    .where(eq(topics.roadmapId, rm.id));
+
+  const topicIds = topicRows.map((t) => t.id);
+  const resRows = topicIds.length
+    ? await db
+        .select()
+        .from(resources)
+        .where(inArray(resources.topicId, topicIds))
+        .orderBy(asc(resources.position))
+    : [];
+
+  const resByTopic = new Map<string, RoadmapResource[]>();
+  for (const r of resRows) {
+    const list = resByTopic.get(r.topicId) ?? [];
+    list.push({
+      kind: r.kind,
+      title: r.title,
+      url: r.url,
+      isPaid: r.isPaid ?? false,
+    });
+    resByTopic.set(r.topicId, list);
+  }
+
+  return {
+    id: rm.id,
+    slug: rm.slug,
+    title: rm.title,
+    brief: rm.brief,
+    category: rm.category,
+    graph: ver.graph,
+    seo: rm.seo,
+    topics: topicRows.map((t) => ({
+      nodeId: t.nodeId,
+      slug: t.slug,
+      title: t.title,
+      bodyMd: t.bodyMd,
+      meta: t.meta,
+      resources: resByTopic.get(t.id) ?? [],
+    })),
+  };
+}
