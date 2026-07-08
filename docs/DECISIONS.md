@@ -32,3 +32,18 @@ changed in 16:
 
 Re-verify this section when Phase 1 adds `generateStaticParams`, route handlers, and
 `fetch`-based data loading.
+
+## Design & scope deviations (Phase 0)
+
+- **No dark theme default.** docs/08 Phase 0 lists "dark theme default", but
+  [docs/design/rationale.md](design/rationale.md) overrides it: pathgrid is a light
+  black-on-white editorial frame, and the *only* dark surface is the roadmap canvas
+  (handled locally in Phase 1). So the app ships light by default with no global `.dark`
+  inversion — a conscious deviation, not an oversight.
+
+- **Phase 0 e2e smoke is intentionally minimal.** docs/08 describes the full smoke as
+  "open roadmap → click node → drawer → mark done → reload → still done", but those
+  features don't exist until Phase 1. The Phase 0 Playwright test therefore only asserts
+  "home renders" (hero + primary CTA visible, no horizontal overflow at 390px). The full
+  smoke lands with the roadmap canvas in Phase 1.
+

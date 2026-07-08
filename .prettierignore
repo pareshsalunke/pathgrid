@@ -1,0 +1,13 @@
+.next
+node_modules
+drizzle
+# Curated spec pack + design exports + root memory file — don't reformat.
+docs
+CLAUDE.md
+pnpm-lock.yaml
+public
+test-results
+playwright-report
+blob-report
+playwright/.cache
+next-env.d.ts

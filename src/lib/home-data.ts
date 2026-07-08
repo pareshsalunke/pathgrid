@@ -24,7 +24,12 @@ export type ChangelogEntry = {
 };
 
 export const rolePaths: RolePath[] = [
-  { slug: "product-manager", title: "Product manager", progress: 42, topics: 46 },
+  {
+    slug: "product-manager",
+    title: "Product manager",
+    progress: 42,
+    topics: 46,
+  },
   { slug: "frontend-developer", title: "Frontend developer", topics: 54 },
   { slug: "backend-developer", title: "Backend developer", topics: 58 },
   { slug: "ai-engineer", title: "AI engineer", topics: 61, isNew: true },
@@ -41,7 +46,12 @@ export const skillPaths: SkillPath[] = [
   { slug: "system-design", title: "System design", topics: 36 },
   { slug: "git-github", title: "Git & GitHub", topics: 18 },
   { slug: "docker", title: "Docker", topics: 22 },
-  { slug: "prompt-engineering", title: "Prompt engineering", topics: 20, isNew: true },
+  {
+    slug: "prompt-engineering",
+    title: "Prompt engineering",
+    topics: 20,
+    isNew: true,
+  },
   { slug: "api-design", title: "API design", topics: 26 },
   { slug: "kubernetes", title: "Kubernetes", topics: 30 },
   { slug: "linux", title: "Linux", topics: 24 },
@@ -50,7 +60,10 @@ export const skillPaths: SkillPath[] = [
 ];
 
 export const changelog: ChangelogEntry[] = [
-  { date: "Jun 28", text: "Team paths — share one roadmap, see everyone's progress" },
+  {
+    date: "Jun 28",
+    text: "Team paths — share one roadmap, see everyone's progress",
+  },
   { date: "Jun 14", text: "Tutor can now cite the exact node it's explaining" },
   { date: "May 30", text: "List view for every canvas — full keyboard path" },
 ];
