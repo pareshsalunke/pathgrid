@@ -332,3 +332,55 @@ so the new build is the generation lock + the admin surface; the rest is an audi
   `message` (roadmap/chat SSE `event.message`; quiz/test-key JSON `data.message`). The one
   new string is the `409` copy in `CreateRoadmapPane`.
 
+## Design & scope decisions (Phase 4 — content pipeline & real catalog)
+
+- **Launch niche = a PM/leadership wedge, not the dev catalog** (resolves doc 02's open
+  question; user decision 2026-07-09). `pipeline/catalog.ts` seeds 6 roadmaps:
+  `product-manager` · `technical-product-manager` · `ai-product-manager` ·
+  `system-design` · `leadership-high-performance-teams` · `pm-behavioral-interviews`.
+  The doc 06 §3.1 outline persona is generalized from "self-taught developers" to
+  self-directed *professionals* accordingly (templates are "adapt freely").
+- **catalog.yaml → typed `pipeline/catalog.ts`.** No YAML parser dep, typechecked
+  entries, and the CLI validates `--slug` against it with a helpful error.
+- **`server-only` under tsx → `node --conditions=react-server`** (the `pipeline`
+  script). Verified: only `server-only` ships a `react-server` export condition
+  (→ `empty.js`); `ai`/`@ai-sdk/*` don't, so nothing else resolves differently. The
+  pipeline therefore reuses the runtime AI core (`generateStructured`,
+  `graphifyPrompts`+schema, `validateGraph`, `layoutGraph`, `generateQuiz`,
+  `upsertQuiz`) with zero refactor and all client-import guards intact.
+- **Draft status = `visibility:'unlisted'`** — no new status column, **no migration**.
+  `getRoadmapBySlug` doesn't filter visibility and `/[roadmapSlug]` allows dynamic
+  params, so drafts render **on the real page** for review while staying off home +
+  sitemap (both filter `public`). `publishRoadmap` flips to public; **re-seeding never
+  touches visibility** (the doc 06 §4.4 freshness path can't silently unpublish).
+  Draft pages emit `robots: noindex` (belt for post-launch, when SEO_INDEXING is on).
+- **Provenance without a migration** (doc 06 §4.5): `topics.meta.generatedBy
+  {model, promptVersion, date}` (jsonb extension of `topicMeta`), `quizzes.model`
+  (already stored), `roadmaps.isAiGenerated` → the roadmap page renders an
+  "AI-drafted, human-reviewed" footer line.
+- **Provider Batch APIs → a 4-wide concurrency pool** (`src/lib/pipeline/pool.ts`).
+  The ~50% batch discount isn't worth a bespoke batch integration for a 6-roadmap
+  catalog (~$1–3/roadmap at Sonnet+Haiku rates); per-topic incremental writes make the
+  steps resumable so retries are cheap. Revisit if the catalog grows 10×.
+- **Resource policy A (verified links; user decision)**: the model suggests ≤2 free
+  resources per topic (prompted to skip rather than guess), `verifyUrl` HEAD-checks
+  (GET fallback on 403/405/501), failures are **dropped** — `resources.status` is
+  always `'verified'` for pipeline rows; nothing `unverified` ships (doc 06 §2).
+- **Review gate = `/admin/pipeline` (real page; user decision)** — same `isAdmin` env
+  allowlist + 404 as `/admin/ai`. Lists unlisted drafts (from DB, works deployed) with
+  critique-pass findings (best-effort fs read of `pipeline/out/<slug>/critique.json` —
+  local-only) + the doc 06 §4.3 checklist; the draft itself is reviewed on `/[slug]`.
+  Critique runs on the **fast tier** (doc 06 §4.2 "cheap model").
+- **`assertOfficialSize` enforced in the graph step** (doc 04 §3's 15–80 content-node
+  bar) — pipeline output only; small samples/tests keep validating.
+- **estHours = the content pass's own sum**: `graph.meta.estHours` is provisional at
+  graphify time and recomputed at seed-draft as `round(Σ est_hours)` — the runtime
+  generator keeps its `hoursPerWeek × 12` formula (different input contract).
+- **Publish + ISR**: `POST /api/revalidate` (new), gated by `REVALIDATE_SECRET`
+  (timing-safe compare; 503 when unset) → revalidates `/`, `/${slug}`, `/sitemap.xml`.
+  `src/app/sitemap.ts` (new) lists public slugs only. The publish step confirms
+  interactively (or `--yes`) because the DB is shared local+prod, then calls
+  revalidate best-effort (`REVALIDATE_URL` ?? `APP_URL`).
+- **`pipeline/out/` is gitignored** — intermediate JSON is a local working artifact;
+  the DB is the source of truth after seed-draft.
+

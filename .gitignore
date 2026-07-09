@@ -50,3 +50,7 @@ next-env.d.ts
 
 # local handoff/bridge doc — not versioned
 docs/PROGRESS.md
+
+# pipeline intermediate outputs (doc 06 §2) — local working artifacts; DB is the
+# source of truth after seed-draft
+/pipeline/out/

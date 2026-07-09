@@ -18,7 +18,8 @@
     "e2e": "playwright test",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "seed:sample": "node --env-file=.env --import tsx src/lib/db/seed.ts"
+    "seed:sample": "node --env-file=.env --import tsx src/lib/db/seed.ts",
+    "pipeline": "node --conditions=react-server --env-file=.env --import tsx pipeline/run.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^4.0.8",

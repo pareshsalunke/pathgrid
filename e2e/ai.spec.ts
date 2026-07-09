@@ -10,10 +10,12 @@ test("AI hub renders anonymously with the create form and login CTA", async ({
   // Rail modes present
   await expect(page.getByRole("button", { name: "Course plan" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Quiz" })).toBeVisible();
-  // Anonymous gating: session resolves client-side → login CTA replaces generate
+  // Anonymous gating: session resolves client-side → login CTA replaces generate.
+  // Cold dev-server compile + hydration + session fetch under parallel workers can
+  // exceed the 5s default — seen flaking twice; generous timeout, no product signal.
   await expect(
     page.getByRole("link", { name: "Log in to generate" }),
-  ).toBeVisible();
+  ).toBeVisible({ timeout: 15_000 });
 });
 
 test("?goal= prefills the create form", async ({ page }) => {

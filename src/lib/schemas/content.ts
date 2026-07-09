@@ -2,10 +2,20 @@ import { z } from "zod";
 
 /** Topic + resource + SEO content shapes (docs/04 §2, docs/06 §3). */
 
+/** Provenance stamp for pipeline-generated content (doc 06 §4.5) — jsonb-only,
+ *  no migration; lives inside topics.meta. */
+export const generatedBy = z.object({
+  model: z.string(),
+  promptVersion: z.string(),
+  date: z.string(), // YYYY-MM-DD
+});
+export type GeneratedBy = z.infer<typeof generatedBy>;
+
 export const topicMeta = z.object({
   objectives: z.array(z.string()).optional(),
   pitfalls: z.array(z.string()).optional(),
   est_hours: z.number().optional(),
+  generatedBy: generatedBy.optional(),
 });
 export type TopicMeta = z.infer<typeof topicMeta>;
 

@@ -70,6 +70,10 @@ export type RoadmapPage = {
   title: string;
   brief: string | null;
   category: "role" | "skill" | "custom";
+  /** Drives the "AI-drafted, human-reviewed" provenance line (doc 06 §4.5). */
+  isAiGenerated: boolean;
+  /** 'unlisted' = pipeline draft under review — page must emit noindex. */
+  visibility: "public" | "unlisted" | "private";
   graph: RoadmapGraph;
   seo: Seo | null;
   topics: RoadmapTopic[];
@@ -104,6 +108,8 @@ export async function getRoadmapBySlug(
     title: rm.title,
     brief: rm.brief,
     category: rm.category,
+    isAiGenerated: rm.isAiGenerated ?? false,
+    visibility: rm.visibility,
     seo: rm.seo,
     ...payload,
   };
@@ -134,6 +140,8 @@ export async function getRoadmapById(
     title: rm.title,
     brief: rm.brief,
     category: rm.category,
+    isAiGenerated: rm.isAiGenerated ?? false,
+    visibility: rm.visibility,
     seo: rm.seo,
     ...payload,
   };
@@ -171,6 +179,8 @@ export async function getRoadmapForChat(
     title: rm.title,
     brief: rm.brief,
     category: rm.category,
+    isAiGenerated: rm.isAiGenerated ?? false,
+    visibility: rm.visibility,
     seo: rm.seo,
     ...payload,
   };

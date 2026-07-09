@@ -19,4 +19,7 @@ export const env = {
     .split(",")
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean),
+  /** Shared secret for POST /api/revalidate (pipeline publish → ISR refresh,
+   *  docs/05 §3). Empty = the endpoint is disabled (503). */
+  revalidateSecret: process.env.REVALIDATE_SECRET ?? "",
 };

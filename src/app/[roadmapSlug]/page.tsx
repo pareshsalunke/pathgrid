@@ -31,6 +31,11 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: rm.seo?.metaTitle ?? rm.title,
     description: rm.seo?.metaDesc ?? rm.brief ?? undefined,
     alternates: { canonical: `/${rm.slug}` },
+    // Pipeline drafts are unlisted and reviewable on this page — never indexable,
+    // even once SEO_INDEXING flips on at launch.
+    ...(rm.visibility !== "public"
+      ? { robots: { index: false, follow: false } }
+      : {}),
   };
 }
 
@@ -204,6 +209,15 @@ export default async function RoadmapPage({ params }: Params) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
+      )}
+
+      {rm.isAiGenerated && (
+        <Container className="py-6">
+          {/* Provenance label (doc 06 §4.5) — honest and increasingly expected. */}
+          <span className="text-ink/50 font-mono text-[11px] tracking-[0.6px] uppercase">
+            AI-drafted, human-reviewed
+          </span>
+        </Container>
       )}
 
       <div className="mt-16">
