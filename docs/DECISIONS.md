@@ -132,3 +132,29 @@ Re-verify this section when Phase 1 adds `generateStaticParams`, route handlers,
   e2e adds only the signed-out `/settings → /login` redirect.
 - **`docs/PROGRESS.md` is gitignored** — a local handoff/bridge file, not versioned.
 
+### Item 3 — `POST /api/ai/roadmap` (two-pass generation)
+
+- **Outline prompt returns a `title`** (docs/06 §3.1 adapted — templates are "adapt
+  freely"): `graph.meta.title` needs a real name and the outline pass is where naming
+  belongs. Graphify returns **nodes+edges only**; `meta` is built **deterministically
+  server-side** (title from outline, `level` mapped `intermediate→mixed` to fit the
+  doc-04 §3 enum, `estHours = hoursPerWeek × 12` per §3.6) — never trusted from the model.
+- **Positioned graph stored.** For generated roadmaps, `layoutGraph` runs at generation
+  time and positions are saved in `roadmap_versions.graph` (schema allows optional
+  positions). Official seeded roadmaps still lay out at SSG render — no change there.
+  elk-only `width`/`height` fields are stripped before save (derived from `NODE_SIZE`).
+- **Structured-output helper** ([structured.ts](../src/lib/ai/structured.ts)): generate →
+  strip code fences → JSON.parse → Zod → ONE repair call on the **fast tier** (docs/05 §4)
+  with the issues pasted in → `StructuredOutputError`. Errors carry Zod issue paths only,
+  never raw model output (nothing model-generated is logged).
+- **`ai_call` event props are camelCase** (`inTokens`/`outTokens`/`latencyMs`) — matches
+  existing events codebase-wide; doc 04 §2's `in_tokens` naming noted as drift.
+- **Graph-only generation** (docs/06 §3.6): no per-topic `topics` rows for generated
+  maps — drawer content arrives on demand via the tutor (items 4/5). Only the
+  `generated_items` table added now (migration 0003, additive); `chat_*`/`quizzes`/
+  `guides` land with items 5/6.
+- **SSE protocol**: data-only events `{type:"progress",step}` →
+  `{type:"done",roadmapId,title,usage}` | `{type:"error",code,message}`;
+  `maxDuration = 300`. Errors after the stream opens ride as SSE `error` events
+  (HTTP status already committed).
+

@@ -22,6 +22,13 @@
       "when": 1783532030192,
       "tag": "0002_dazzling_sunspot",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1783558729011,
+      "tag": "0003_lucky_ricochet",
+      "breakpoints": true
     }
   ]
 }

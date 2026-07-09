@@ -53,6 +53,12 @@ export const progressStatus = pgEnum("progress_status", [
   "done",
   "skipped",
 ]);
+export const generatedKind = pgEnum("generated_kind", [
+  "roadmap",
+  "plan",
+  "quiz",
+  "guide",
+]);
 
 // ── Auth.js (adapter) ──────────────────────────────────────────────
 
@@ -215,6 +221,25 @@ export const bookmarks = pgTable(
   },
   (t) => [primaryKey({ columns: [t.userId, t.roadmapId] })],
 );
+
+// ── AI runtime (Phase 3) ───────────────────────────────────────────
+
+/** Everything a user generates in the AI hub (doc 04 §2). For kind='roadmap',
+ *  payloadRef points at roadmaps.id (plain uuid per the doc DDL — the roadmap
+ *  row already cascades via ownerId); quiz/plan payloads inline in `payload`. */
+export const generatedItems = pgTable("generated_items", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  kind: generatedKind("kind").notNull(),
+  title: text("title").notNull(),
+  payloadRef: uuid("payload_ref"),
+  payload: jsonb("payload"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
 
 export const events = pgTable("events", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
