@@ -29,6 +29,13 @@
       "when": 1783558729011,
       "tag": "0003_lucky_ricochet",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1783599787952,
+      "tag": "0004_military_exiles",
+      "breakpoints": true
     }
   ]
 }

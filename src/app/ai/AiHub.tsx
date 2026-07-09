@@ -32,6 +32,27 @@ export function AiHub() {
   return (
     <div className="mx-auto flex w-full max-w-[1440px] flex-1 flex-wrap">
       <aside className="border-hairline flex w-full flex-col gap-[26px] p-6 pt-6 md:w-[268px] md:shrink-0 md:border-r md:px-4">
+        <Link
+          href="/ai/chat"
+          className="border-hairline bg-canvas text-ink hover:bg-surface-soft flex h-11 items-center justify-center gap-2 rounded-full border text-[15px] no-underline"
+        >
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 12 12"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M6 2v8M2 6h8"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+          </svg>
+          New chat
+        </Link>
+
         <nav className="flex flex-col gap-1" aria-label="Create">
           <RailLabel>Create</RailLabel>
           {(Object.keys(MODE_META) as Mode[]).map((m) => (

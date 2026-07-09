@@ -5,11 +5,13 @@ import {
   text,
   boolean,
   integer,
+  bigint,
   bigserial,
   timestamp,
   jsonb,
   unique,
   primaryKey,
+  index,
 } from "drizzle-orm/pg-core";
 import type { RoadmapGraph } from "@/lib/schemas/graph";
 import type { TopicMeta, Seo } from "@/lib/schemas/content";
@@ -59,6 +61,7 @@ export const generatedKind = pgEnum("generated_kind", [
   "quiz",
   "guide",
 ]);
+export const chatRole = pgEnum("chat_role", ["user", "assistant"]);
 
 // ── Auth.js (adapter) ──────────────────────────────────────────────
 
@@ -240,6 +243,50 @@ export const generatedItems = pgTable("generated_items", {
     .defaultNow()
     .notNull(),
 });
+
+/** Tutor chat (doc 04 §2). roadmapId null = general tutor; SET NULL (not the doc's
+ *  default NO ACTION) so deleting a roadmap owner's account never blocks the GDPR
+ *  users-cascade — the thread degrades to general tutor. summary/summaryUpto hold a
+ *  rolling summary of turns older than the ~20-message context window (summaryUpto =
+ *  last chat_messages.id folded into the summary). */
+export const chatThreads = pgTable(
+  "chat_threads",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    roadmapId: uuid("roadmap_id").references(() => roadmaps.id, {
+      onDelete: "set null",
+    }),
+    title: text("title"),
+    summary: text("summary"),
+    summaryUpto: bigint("summary_upto", { mode: "number" }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (t) => [index("chat_threads_user_idx").on(t.userId)],
+);
+
+export const chatMessages = pgTable(
+  "chat_messages",
+  {
+    id: bigserial("id", { mode: "number" }).primaryKey(),
+    threadId: uuid("thread_id")
+      .notNull()
+      .references(() => chatThreads.id, { onDelete: "cascade" }),
+    role: chatRole("role").notNull(),
+    content: text("content").notNull(),
+    // Per-turn cost split: user rows carry the call's inputTokens, assistant rows
+    // its outputTokens — SUM(tokens) over a thread = what the user actually paid.
+    tokens: integer("tokens"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (t) => [index("chat_messages_thread_id_idx").on(t.threadId, t.id)],
+);
 
 export const events = pgTable("events", {
   id: bigserial("id", { mode: "number" }).primaryKey(),

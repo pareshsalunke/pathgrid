@@ -142,7 +142,7 @@ const aiItems: MenuItem[] = [
     ),
   },
   {
-    href: "/tutor",
+    href: "/ai/chat",
     title: "Roadmap chat",
     subtitle: "Chat grounded in a path",
     tile: "bg-block-lilac",
@@ -158,7 +158,7 @@ const aiItems: MenuItem[] = [
     ),
   },
   {
-    href: "/tutor",
+    href: "/ai/chat",
     title: "Ask the tutor",
     subtitle: "One-off questions, any topic",
     tile: "bg-surface-soft",

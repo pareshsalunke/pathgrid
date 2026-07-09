@@ -182,3 +182,64 @@ Re-verify this section when Phase 1 adds `generateStaticParams`, route handlers,
   session" is literal; cost estimate from a tiny static price table
   ([pricing.ts](../src/lib/ai/pricing.ts)), tokens-only for unknown/override models.
 
+### Item 5 — `POST /api/ai/chat` + tutor chat (`/ai/chat`)
+
+Schema (migration 0004, additive — deviations from the doc-04 §2 DDL sketch):
+
+- **`chat_messages.role` is a pgEnum** (`chat_role`), not `text` — follows the
+  `generated_kind`/`progress_status` precedent; invalid roles fail at the DB.
+- **`chat_threads.roadmap_id` is `ON DELETE SET NULL`** (doc default would be NO
+  ACTION). Required, not stylistic: with NO ACTION, deleting a roadmap owner's account
+  (`DELETE FROM users`, the GDPR path) fails whenever one of their roadmaps grounds
+  someone else's thread. SET NULL degrades such threads to the general tutor.
+- **`chat_threads.summary` + `summary_upto` added** (extension of the doc sketch):
+  rolling summary of turns older than the ~20-message context window (doc 05 §4
+  "cap history; summarize older turns"), regenerated on the fast tier with hysteresis;
+  `summary_upto` = last `chat_messages.id` folded in.
+- **`tokens` split across roles**: user rows store that turn's `inputTokens`, assistant
+  rows its `outputTokens` — `SUM(tokens)` per thread = what the user actually paid, and
+  the split keeps a priced per-thread readout possible (input/output rates differ).
+- **Indexes on `chat_messages(thread_id, id)` and `chat_threads(user_id)`** — first
+  hot ORDER BY path in the app (last-20-by-thread every turn).
+
+Route + UI:
+
+- **Canonical route is `/ai/chat` + `/ai/chat/[threadId]`** (docs/03 §2); the header/
+  drawer `/tutor` stubs were rewired (a `/tutor` page never existed — no redirect).
+  Pages are auth-gated RSCs (viewer precedent, `noindex`) loading rail/messages via
+  repos — no extra GET APIs.
+- **SSE contract**: pre-stream failures are plain JSON (401/503/`no_provider_key`/
+  `invalid_body`/404 thread/404 roadmap — the client's `!res.ok` branch stays
+  reusable); once streaming, `{type:"meta",threadId,title}` → `{type:"delta",text}`… →
+  `{type:"done",usage}` | `{type:"error",code,message}`. On a new thread's meta the
+  client swaps the URL with **`history.replaceState`** (Next 16 syncs it into router
+  state — `router.replace`/`refresh` would remount mid-stream); the rail is client
+  state seeded from the server.
+- **ai@7 `streamText` error routing** (first use in the codebase): provider failures
+  surface as stream error parts which `textStream` silently drops, and `result.usage`
+  then rejects with a generic `NoOutputGeneratedError` — so [tutor.ts](../src/lib/ai/tutor.ts)
+  captures the original via `onError` and rethrows it, keeping `mapProviderError`
+  status-code mapping intact.
+- **Rolling summary runs via `next/server` `after()`** (fires once the SSE stream
+  closes, `waitUntil`-backed) so it never delays a reply; the closure briefly holds
+  the caller's key past response close — same invocation, still memory-only, within
+  the doc-05 §4 contract. Trigger: ≥10 messages outside summary+window, fast tier,
+  logged as `ai_call {feature:"chat_summary"}`. Turn calls log `{feature:"chat"}`.
+- **Disconnect-safe streaming**: client aborts only stop the sending (`cancel()` flag
+  + guarded enqueue); the server finishes the turn and persists both rows — leaving
+  mid-answer means the reply is in the thread (roadmap-route parity).
+- **`getRoadmapForChat` access rule = owner OR `public`/`unlisted`** — unlisted is
+  already link-shareable via its slug page, so grounding chat on it is consistent;
+  `getRoadmapById` stays owner-only for the viewer.
+- **Bubbles render plain text v1** (`whitespace-pre-wrap`): `renderMarkdown` is
+  server-side by design (doc 05 — no client markdown parser) and streaming markdown
+  would need one; the persona instructs plain text. Markdown rendering is a follow-up.
+- **Context switching is minimal v1 (user-decided)**: the chip shows the thread's
+  roadmap (or "General tutor") and "Change" links to the roadmap page; switching =
+  start a new chat from a roadmap surface. **Node-citation chips skipped
+  (user-decided)** — the persona cites nodes in plain text; structured citations later.
+- **`?q=` prefills the composer and never auto-sends** — BYOK spend stays an explicit
+  click (drawer "Explain this topic" deep-links with `?q=Explain this topic`).
+- **`maxDuration = 300` kept uniform** with `/api/ai/roadmap` (slow-provider headroom;
+  costs nothing when idle).
+

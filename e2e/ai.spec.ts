@@ -39,3 +39,18 @@ test("generated-roadmap viewer redirects to /login when signed out", async ({
   await page.goto("/ai/roadmap/00000000-0000-0000-0000-000000000000");
   await expect(page).toHaveURL(/\/login/);
 });
+
+test("tutor chat redirects to /login when signed out, preserving context params", async ({
+  page,
+}) => {
+  await page.goto("/ai/chat?roadmap=00000000-0000-0000-0000-000000000000&q=hi");
+  await expect(page).toHaveURL(/\/login\?callbackUrl=/);
+  expect(page.url()).toContain(encodeURIComponent("/ai/chat?roadmap="));
+});
+
+test("tutor chat thread page redirects to /login when signed out", async ({
+  page,
+}) => {
+  await page.goto("/ai/chat/00000000-0000-0000-0000-000000000000");
+  await expect(page).toHaveURL(/\/login/);
+});

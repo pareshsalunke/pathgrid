@@ -137,16 +137,17 @@ export function TopicDrawer({
           )}
         </div>
 
-        {/* Footer */}
+        {/* Footer — deep links into the tutor with this map + topic as context
+            (docs/03 §3.2 AI row; ?q= prefills the composer, never auto-sends). */}
         <div className="border-hairline flex gap-2 border-t px-[22px] py-3.5">
           <Link
-            href="/ai"
+            href={`/ai/chat?roadmap=${roadmapId}&topic=${encodeURIComponent(topic.nodeId)}&q=${encodeURIComponent("Explain this topic")}`}
             className="bg-primary font-link text-on-primary flex-1 rounded-full px-4 py-3 text-center text-[14px] no-underline"
           >
             Explain this topic
           </Link>
           <Link
-            href="/tutor"
+            href={`/ai/chat?roadmap=${roadmapId}&topic=${encodeURIComponent(topic.nodeId)}`}
             className="border-hairline bg-canvas font-link text-ink hover:bg-surface-soft flex-1 rounded-full border px-4 py-3 text-center text-[14px] no-underline"
           >
             Ask the tutor

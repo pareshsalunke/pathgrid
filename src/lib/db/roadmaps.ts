@@ -139,6 +139,43 @@ export async function getRoadmapById(
   };
 }
 
+/**
+ * Access-checked read for grounding the tutor (docs 06 §3.7): a user may chat
+ * about a roadmap they own OR any public/unlisted one (unlisted is already
+ * link-shareable via its slug page). Slug stays nullable — generated maps have
+ * none, official maps use it for the context chip's link target.
+ */
+export async function getRoadmapForChat(
+  roadmapId: string,
+  userId: string,
+): Promise<(Omit<RoadmapPage, "slug"> & { slug: string | null }) | null> {
+  const db = getDb();
+  const [rm] = await db
+    .select()
+    .from(roadmaps)
+    .where(eq(roadmaps.id, roadmapId))
+    .limit(1);
+  if (!rm || !rm.currentVersionId) return null;
+  const allowed =
+    rm.ownerId === userId ||
+    rm.visibility === "public" ||
+    rm.visibility === "unlisted";
+  if (!allowed) return null;
+
+  const payload = await loadRoadmapPayload(rm.id, rm.currentVersionId);
+  if (!payload) return null;
+
+  return {
+    id: rm.id,
+    slug: rm.slug,
+    title: rm.title,
+    brief: rm.brief,
+    category: rm.category,
+    seo: rm.seo,
+    ...payload,
+  };
+}
+
 /** Shared assembly: current version graph + topics + ordered resources. */
 async function loadRoadmapPayload(
   roadmapId: string,
