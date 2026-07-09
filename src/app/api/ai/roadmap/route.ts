@@ -10,6 +10,10 @@ import {
   StructuredOutputError,
 } from "@/lib/ai/generate-roadmap";
 import { createGeneratedRoadmap } from "@/lib/db/generated";
+import {
+  acquireGenerationLock,
+  releaseGenerationLock,
+} from "@/lib/db/generation-lock";
 import { track } from "@/lib/track";
 
 /**
@@ -49,6 +53,14 @@ export async function POST(req: Request) {
   if (!parsed.success)
     return NextResponse.json({ error: "invalid_body" }, { status: 400 });
   const input = parsed.data;
+
+  // One in-flight generation per user (docs/05 §4) — protects the caller's wallet from
+  // a double-submit / second tab. Released in the stream's finally; stale-reclaimable.
+  if (!(await acquireGenerationLock(userId)))
+    return NextResponse.json(
+      { error: "generation_in_progress" },
+      { status: 409 },
+    );
 
   const encoder = new TextEncoder();
   const startedAt = Date.now();
@@ -123,6 +135,7 @@ export async function POST(req: Request) {
           send({ type: "error", code: mapped.code, message: mapped.message });
         }
       } finally {
+        await releaseGenerationLock(userId).catch(() => {});
         controller.close();
       }
     },

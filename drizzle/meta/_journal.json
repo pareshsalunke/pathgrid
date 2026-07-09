@@ -43,6 +43,13 @@
       "when": 1783613753571,
       "tag": "0005_slippery_talkback",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1783627858373,
+      "tag": "0006_gifted_salo",
+      "breakpoints": true
     }
   ]
 }

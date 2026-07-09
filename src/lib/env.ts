@@ -13,4 +13,10 @@ export const env = {
   seoIndexingOn: process.env.SEO_INDEXING === "on",
   /** true when AI_DISABLED=1 — kill switch for every runtime AI route (docs/05 §4). */
   aiDisabled: process.env.AI_DISABLED === "1",
+  /** Lower-cased allowlist of emails permitted to view /admin/ai (item 7). Server-only
+   *  var (no NEXT_PUBLIC_) → absent on the client, where it resolves to []. */
+  adminEmails: (process.env.ADMIN_EMAILS ?? "")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean),
 };

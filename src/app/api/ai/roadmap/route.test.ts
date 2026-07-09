@@ -19,6 +19,10 @@ vi.mock("@/lib/ai/generate-roadmap", () => {
   };
 });
 vi.mock("@/lib/db/generated", () => ({ createGeneratedRoadmap: vi.fn() }));
+vi.mock("@/lib/db/generation-lock", () => ({
+  acquireGenerationLock: vi.fn(),
+  releaseGenerationLock: vi.fn(async () => {}),
+}));
 vi.mock("@/lib/track", () => ({ track: vi.fn(async () => {}) }));
 
 import { auth } from "@/auth";
@@ -26,6 +30,10 @@ import { env } from "@/lib/env";
 import { resolveProviderConfig } from "@/lib/ai/registry";
 import { generateRoadmap } from "@/lib/ai/generate-roadmap";
 import { createGeneratedRoadmap } from "@/lib/db/generated";
+import {
+  acquireGenerationLock,
+  releaseGenerationLock,
+} from "@/lib/db/generation-lock";
 import { track } from "@/lib/track";
 import { POST } from "./route";
 
@@ -33,6 +41,8 @@ const authMock = vi.mocked(auth);
 const resolveMock = vi.mocked(resolveProviderConfig);
 const generateMock = vi.mocked(generateRoadmap);
 const createMock = vi.mocked(createGeneratedRoadmap);
+const acquireMock = vi.mocked(acquireGenerationLock);
+const releaseMock = vi.mocked(releaseGenerationLock);
 const trackMock = vi.mocked(track);
 
 const goodBody = {
@@ -68,6 +78,7 @@ beforeEach(() => {
   env.aiDisabled = false;
   authMock.mockResolvedValue({ user: { id: "u1" } } as never);
   resolveMock.mockReturnValue(providerConfig);
+  acquireMock.mockResolvedValue(true);
 });
 
 describe("POST /api/ai/roadmap guards", () => {
@@ -96,6 +107,15 @@ describe("POST /api/ai/roadmap guards", () => {
     expect(
       (await POST(request({ ...goodBody, hoursPerWeek: 500 }))).status,
     ).toBe(400);
+  });
+
+  it("409 generation_in_progress when a generation is already in flight", async () => {
+    acquireMock.mockResolvedValue(false);
+    const res = await POST(request());
+    expect(res.status).toBe(409);
+    expect(await res.json()).toEqual({ error: "generation_in_progress" });
+    // The lock short-circuits before any (billable) generation work.
+    expect(generateMock).not.toHaveBeenCalled();
   });
 });
 
@@ -152,6 +172,9 @@ describe("POST /api/ai/roadmap stream", () => {
       outTokens: 200,
     });
     expect(JSON.stringify(call![1])).not.toContain("sk-ant-x");
+
+    // Lock is released once the stream finishes (frees the next generation).
+    expect(releaseMock).toHaveBeenCalledWith("u1");
   });
 
   it("sends a mapped provider error event on failure", async () => {
@@ -165,5 +188,7 @@ describe("POST /api/ai/roadmap stream", () => {
     expect(last.code).toBe("invalid_key");
     const call = trackMock.mock.calls.find((c) => c[0] === "ai_call");
     expect(call![1]).toMatchObject({ ok: false, code: "invalid_key" });
+    // Released even when generation throws (finally) — no wedged lock.
+    expect(releaseMock).toHaveBeenCalledWith("u1");
   });
 });

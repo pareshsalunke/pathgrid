@@ -293,3 +293,42 @@ Route + UI:
   exist. Same call item 5 made for chat. `POST /api/quiz-attempts` fires a
   `quiz_attempt` analytics event; `POST /api/ai/quiz` logs `ai_call {feature:"quiz"}`.
 
+### Item 7 — generation lock + provider-error polish + `/admin/ai` usage table
+
+Item 7 closes Phase 3. Three of its four sub-parts were already scaffolded (items 1–6),
+so the new build is the generation lock + the admin surface; the rest is an audit.
+
+- **Generation lock = a server-side DB lock** (docs/05 §4 "a lock so one user can't run
+  parallel generations"), not client-only. New `generation_locks` table (migration 0006,
+  additive: `user_id` PK → `users` cascade, `kind`, `started_at`). Acquisition is **one
+  atomic upsert** — neon-http has no session advisory locks or multi-statement
+  transactions — via `onConflictDoUpdate` with a **`setWhere` staleness guard**
+  ([generation-lock.ts](../src/lib/db/generation-lock.ts)): no row → insert → acquired;
+  row older than the **5-minute TTL** (just over the roadmap route's `maxDuration=300`) →
+  takeover (a crashed generation self-heals); an active row → `setWhere` false → 0 rows →
+  `.returning()` empty → refused. **Only `POST /api/ai/roadmap` is locked** (chat/quiz are
+  quick); it acquires before opening the SSE stream (pre-stream `409 generation_in_progress`,
+  consistent with the 401/503/400 guards) and releases in the stream's `finally`. The
+  per-tab button-disable stays; the lock adds cross-tab / cross-device / direct-API cover.
+- **`/admin/ai` admin gate = an env email allowlist** (`ADMIN_EMAILS`,
+  [env.ts](../src/lib/env.ts) → [admin.ts](../src/lib/admin.ts) `isAdmin`), not a
+  `users.role` column — no migration, no promotion path, fits the solo / self-host
+  operator model. Non-admins get **`notFound()` (404), not a redirect**, so the page's
+  existence isn't revealed; signed-out → `/login?callbackUrl=/admin/ai`. This reconciles
+  with doc 02's "no admin reporting" non-goal: that non-goal is **B2B/team** reporting —
+  `/admin/ai` (doc 08 Phase 3) is the operator's own usage view, not a user-facing feature.
+- **Usage table = tokens/day per feature over a 30-day window** (doc 08 wording),
+  aggregating `events WHERE name='ai_call'` ([db/admin.ts](../src/lib/db/admin.ts),
+  raw `sql` — `make_interval(days => n)`, group by the `to_char`/`props->>'feature'`
+  aliases, `count(*) filter (where props->>'ok' = 'false')` for failures). **No cost
+  column** — per-action/session cost already lives in the hub (`pricing.ts`), and a
+  per-feature aggregate loses the model granularity a price needs. **No key can surface**
+  (keys never reach `props`). **No design export exists** for an ops page → it follows the
+  `settings/page.tsx` editorial frame (theme vars only); dynamic via `auth()` (leaves
+  `/` + `/[roadmapSlug]` SSG untouched); `noindex`. No nav link — admins type the URL.
+- **Kill-switch + provider-error mapping were verification, not new code.** All four AI
+  routes already return `503 ai_disabled` (`test-key` gained the missing route test:
+  401/503/400) and all four client surfaces already render `mapProviderError`'s actionable
+  `message` (roadmap/chat SSE `event.message`; quiz/test-key JSON `data.message`). The one
+  new string is the `409` copy in `CreateRoadmapPane`.
+

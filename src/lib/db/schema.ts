@@ -337,3 +337,20 @@ export const events = pgTable("events", {
     .defaultNow()
     .notNull(),
 });
+
+/**
+ * Per-user generation lock (Phase 3 item 7; docs/05 §4 "a lock so one user can't run
+ * parallel generations"). One row = one in-flight long generation. The roadmap route
+ * (maxDuration=300) acquires atomically and releases in `finally`; a row older than the
+ * stale TTL is reclaimable so a crashed run never wedges the user out. `kind` is
+ * future-proofed for other long generations (currently only 'roadmap').
+ */
+export const generationLocks = pgTable("generation_locks", {
+  userId: uuid("user_id")
+    .primaryKey()
+    .references(() => users.id, { onDelete: "cascade" }),
+  kind: text("kind").notNull(),
+  startedAt: timestamp("started_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});

@@ -106,9 +106,11 @@ export function CreateRoadmapPane() {
             ? "Add your API key in Settings first."
             : data.error === "ai_disabled"
               ? "AI is turned off on this instance."
-              : res.status === 401
-                ? "Your session expired — sign in again."
-                : "Something went wrong starting the generation. Try again.",
+              : data.error === "generation_in_progress"
+                ? "A roadmap is already generating. Wait for it to finish, then try again."
+                : res.status === 401
+                  ? "Your session expired — sign in again."
+                  : "Something went wrong starting the generation. Try again.",
         );
         return;
       }
