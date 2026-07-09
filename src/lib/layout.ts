@@ -1,24 +1,16 @@
 import ELK from "elkjs/lib/elk.bundled.js";
-import type { GraphNode, GraphEdge, NodeType } from "@/lib/schemas/graph";
+import type { GraphNode, GraphEdge } from "@/lib/schemas/graph";
+import { NODE_SIZE, type PositionedNode } from "@/lib/node-size";
 
 /**
- * Layered auto-layout for position-less graphs (docs/05). Isomorphic — runs at
- * build/SSG time in the RSC so the canvas receives positioned nodes as props.
+ * Layered auto-layout for position-less graphs (docs/05). Runs at build/SSG
+ * time (or generation time) on the server. This module instantiates elkjs at
+ * module scope — client components must import NODE_SIZE/PositionedNode from
+ * lib/node-size, never from here (a value import drags ~1.4MB of elk into the
+ * client bundle and can stall hydration).
  */
 
-export const NODE_SIZE: Record<NodeType, { width: number; height: number }> = {
-  title: { width: 240, height: 60 },
-  topic: { width: 200, height: 48 },
-  subtopic: { width: 180, height: 42 },
-  label: { width: 180, height: 42 },
-  section: { width: 220, height: 46 },
-};
-
-export type PositionedNode = GraphNode & {
-  position: { x: number; y: number };
-  width: number;
-  height: number;
-};
+export { NODE_SIZE, type PositionedNode };
 
 const elk = new ELK();
 

@@ -95,17 +95,67 @@ export async function getRoadmapBySlug(
     .limit(1);
   if (!rm || !rm.slug || !rm.currentVersionId) return null;
 
+  const payload = await loadRoadmapPayload(rm.id, rm.currentVersionId);
+  if (!payload) return null;
+
+  return {
+    id: rm.id,
+    slug: rm.slug,
+    title: rm.title,
+    brief: rm.brief,
+    category: rm.category,
+    seo: rm.seo,
+    ...payload,
+  };
+}
+
+/**
+ * Owner-checked read for private (slug-less) roadmaps — the /ai/roadmap/[id]
+ * viewer (docs/03 §2). Returns null unless the roadmap belongs to `ownerId`.
+ * Slug is intentionally absent from the shape: generated maps have none.
+ */
+export async function getRoadmapById(
+  roadmapId: string,
+  ownerId: string,
+): Promise<Omit<RoadmapPage, "slug"> | null> {
+  const db = getDb();
+  const [rm] = await db
+    .select()
+    .from(roadmaps)
+    .where(eq(roadmaps.id, roadmapId))
+    .limit(1);
+  if (!rm || rm.ownerId !== ownerId || !rm.currentVersionId) return null;
+
+  const payload = await loadRoadmapPayload(rm.id, rm.currentVersionId);
+  if (!payload) return null;
+
+  return {
+    id: rm.id,
+    title: rm.title,
+    brief: rm.brief,
+    category: rm.category,
+    seo: rm.seo,
+    ...payload,
+  };
+}
+
+/** Shared assembly: current version graph + topics + ordered resources. */
+async function loadRoadmapPayload(
+  roadmapId: string,
+  versionId: string,
+): Promise<{ graph: RoadmapGraph; topics: RoadmapTopic[] } | null> {
+  const db = getDb();
   const [ver] = await db
     .select()
     .from(roadmapVersions)
-    .where(eq(roadmapVersions.id, rm.currentVersionId))
+    .where(eq(roadmapVersions.id, versionId))
     .limit(1);
   if (!ver) return null;
 
   const topicRows = await db
     .select()
     .from(topics)
-    .where(eq(topics.roadmapId, rm.id));
+    .where(eq(topics.roadmapId, roadmapId));
 
   const topicIds = topicRows.map((t) => t.id);
   const resRows = topicIds.length
@@ -129,13 +179,7 @@ export async function getRoadmapBySlug(
   }
 
   return {
-    id: rm.id,
-    slug: rm.slug,
-    title: rm.title,
-    brief: rm.brief,
-    category: rm.category,
     graph: ver.graph,
-    seo: rm.seo,
     topics: topicRows.map((t) => ({
       nodeId: t.nodeId,
       slug: t.slug,

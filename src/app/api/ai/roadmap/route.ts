@@ -96,11 +96,13 @@ export async function POST(req: Request) {
         });
 
         await logCall(true, result.usage);
+        // Graph rides on the done event so the hub previews with no extra fetch.
         send({
           type: "done",
           roadmapId,
           title: result.title,
           usage: result.usage,
+          graph: result.graph,
         });
       } catch (err) {
         // Map to an actionable code; never expose raw provider/model output.

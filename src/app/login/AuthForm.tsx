@@ -9,8 +9,11 @@ const oauthBtn =
 
 export function AuthForm({
   initialMode,
+  callbackUrl = "/dashboard",
 }: {
   initialMode: "signin" | "signup";
+  /** Sanitized by the login page — relative paths only. */
+  callbackUrl?: string;
 }) {
   const [mode, setMode] = useState<"signin" | "signup">(initialMode);
   const [email, setEmail] = useState("");
@@ -25,7 +28,7 @@ export function AuthForm({
     const res = await signIn("resend", {
       email,
       redirect: false,
-      callbackUrl: "/dashboard",
+      callbackUrl,
     });
     setLoading(false);
     if (!res?.error) setSent(true);
@@ -50,7 +53,7 @@ export function AuthForm({
       <div className="flex flex-col gap-2.5">
         <button
           type="button"
-          onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
+          onClick={() => signIn("github", { callbackUrl })}
           className={oauthBtn}
         >
           <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor">
@@ -60,7 +63,7 @@ export function AuthForm({
         </button>
         <button
           type="button"
-          onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+          onClick={() => signIn("google", { callbackUrl })}
           className={oauthBtn}
         >
           <svg width="17" height="17" viewBox="0 0 18 18">

@@ -110,4 +110,27 @@ suite("generated roadmap persistence (Neon)", () => {
     expect(items[0].kind).toBe("roadmap");
     expect(items[0].payloadRef).toBe(roadmapId);
   });
+
+  it("getRoadmapById returns the map for the owner only", async () => {
+    const { getRoadmapById } = await import("./roadmaps");
+    const owned = await getRoadmapById(roadmapId, userId);
+    expect(owned?.title).toBe("IT Graph");
+    expect(owned?.graph.nodes).toHaveLength(2);
+    expect(owned?.topics).toEqual([]); // generated maps have no topics rows
+
+    const stranger = "00000000-0000-0000-0000-000000000000";
+    expect(await getRoadmapById(roadmapId, stranger)).toBeNull();
+  });
+
+  it("listGeneratedRoadmaps returns the card with graph-derived counts", async () => {
+    const cards = await generated.listGeneratedRoadmaps(userId);
+    expect(cards).toHaveLength(1);
+    expect(cards[0]).toMatchObject({
+      roadmapId,
+      title: "IT Graph",
+      stageCount: 0, // sample graph has no section nodes
+      topicCount: 1, // one topic node
+    });
+    expect(new Date(cards[0].createdAt).getTime()).toBeGreaterThan(0);
+  });
 });

@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { getDb } from "./index";
 import { roadmaps, roadmapVersions, generatedItems } from "./schema";
 import type { RoadmapGraph } from "@/lib/schemas/graph";
@@ -53,4 +53,51 @@ export async function createGeneratedRoadmap({
   });
 
   return { roadmapId: rm.id };
+}
+
+export type GeneratedRoadmapCard = {
+  itemId: string;
+  roadmapId: string;
+  title: string;
+  createdAt: string; // ISO
+  stageCount: number;
+  topicCount: number;
+};
+
+/**
+ * The user's generated roadmaps for the hub rail / library (doc 04 §4
+ * GET /api/me/library). Counts are computed server-side from the stored graph so
+ * the client payload stays tiny (no graphs over the wire).
+ */
+export async function listGeneratedRoadmaps(
+  userId: string,
+): Promise<GeneratedRoadmapCard[]> {
+  const db = getDb();
+  const rows = await db
+    .select({
+      itemId: generatedItems.id,
+      roadmapId: roadmaps.id,
+      title: roadmaps.title,
+      createdAt: generatedItems.createdAt,
+      graph: roadmapVersions.graph,
+    })
+    .from(generatedItems)
+    .innerJoin(roadmaps, eq(roadmaps.id, generatedItems.payloadRef))
+    .innerJoin(
+      roadmapVersions,
+      eq(roadmapVersions.id, roadmaps.currentVersionId),
+    )
+    .where(eq(generatedItems.userId, userId))
+    .orderBy(desc(generatedItems.createdAt));
+
+  return rows.map((r) => ({
+    itemId: r.itemId,
+    roadmapId: r.roadmapId,
+    title: r.title,
+    createdAt: r.createdAt.toISOString(),
+    stageCount: r.graph.nodes.filter((n) => n.type === "section").length,
+    topicCount: r.graph.nodes.filter(
+      (n) => n.type === "topic" || n.type === "subtopic",
+    ).length,
+  }));
 }

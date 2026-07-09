@@ -4,13 +4,19 @@ import { AuthForm } from "./AuthForm";
 
 export const metadata: Metadata = { title: "Sign in" };
 
+/** Only same-origin relative paths — never absolute/protocol-relative (open redirect). */
+function safeCallbackUrl(raw: string | undefined): string {
+  return raw && /^\/(?!\/)/.test(raw) ? raw : "/dashboard";
+}
+
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ mode?: string }>;
+  searchParams: Promise<{ mode?: string; callbackUrl?: string }>;
 }) {
-  const { mode } = await searchParams;
+  const { mode, callbackUrl } = await searchParams;
   const initialMode = mode === "signup" ? "signup" : "signin";
+  const safeCallback = safeCallbackUrl(callbackUrl);
 
   return (
     <div className="flex min-h-screen flex-wrap">
@@ -74,7 +80,7 @@ export default async function LoginPage({
 
       {/* Form */}
       <div className="bg-canvas flex flex-[1_1_480px] items-center justify-center p-12">
-        <AuthForm initialMode={initialMode} />
+        <AuthForm initialMode={initialMode} callbackUrl={safeCallback} />
       </div>
     </div>
   );

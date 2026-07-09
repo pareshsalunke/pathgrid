@@ -101,12 +101,13 @@ describe("POST /api/ai/roadmap guards", () => {
 
 describe("POST /api/ai/roadmap stream", () => {
   it("streams progress events and finishes with done + roadmapId + usage", async () => {
+    const fakeGraph = { $schema: "pathgrid/roadmap-graph/v1", nodes: [] };
     generateMock.mockImplementation(async ({ onProgress }) => {
       onProgress?.("outline");
       onProgress?.("graphify");
       onProgress?.("layout");
       return {
-        graph: {} as never,
+        graph: fakeGraph as never,
         title: "TS Path",
         usage: { inputTokens: 300, outputTokens: 200, calls: 2 },
       };
@@ -137,6 +138,8 @@ describe("POST /api/ai/roadmap stream", () => {
       outputTokens: 200,
       calls: 2,
     });
+    // The hub previews straight from the done event — graph must ride along.
+    expect(done.graph).toEqual(fakeGraph);
 
     // Token logging (docs/04 §2 ai_call) — never the key.
     const call = trackMock.mock.calls.find((c) => c[0] === "ai_call");

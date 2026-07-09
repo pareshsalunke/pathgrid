@@ -158,3 +158,27 @@ Re-verify this section when Phase 1 adds `generateStaticParams`, route handlers,
   `maxDuration = 300`. Errors after the stream opens ride as SSE `error` events
   (HTTP status already committed).
 
+### Item 4 — `/ai` hub + `/ai/roadmap/[id]` viewer
+
+- **[Save to library] button dropped** (AI Hub.dc.html shows one): the route already
+  auto-saves before `done` (docs/08 item 3), so the result pane shows "saved to your
+  library" + [Regenerate] + [Open full map] instead. Cancel mid-generation only aborts
+  the client fetch — the server finishes and saves (design copy embraces this).
+- **`done` event carries the positioned graph** so the hub previews with zero extra
+  round-trips.
+- **Course plan / Quiz modes are coming-soon states** (APIs are items 5/6); the rail +
+  copy match the design so the IA is already in place.
+- **Viewer synthesizes label-only drawer topics** (empty body/resources) — generated
+  maps have no `topics` rows; the drawer degrades per its existing empty-body behavior.
+  Bodies arrive with the tutor (item 5). Viewer uses stored positions — no elk pass.
+- **Login gained `callbackUrl` support** (relative-paths-only validation against open
+  redirects; default `/dashboard`) so gated AI actions return the user to `/ai`.
+- **`NODE_SIZE`/`PositionedNode` moved to `src/lib/node-size.ts`** (layout.ts
+  re-exports). Lesson: layout.ts instantiates elkjs at module scope, so a **value**
+  import from a client component silently shipped ~1.4MB of elk to the `/ai` bundle
+  and could stall hydration; Phase-1 components only ever `import type` from it.
+  Rule: client code imports canvas dims from `lib/node-size`, never `lib/layout`.
+- **Session token counter is in-memory only** (`useAiSession`, no persist) — "this
+  session" is literal; cost estimate from a tiny static price table
+  ([pricing.ts](../src/lib/ai/pricing.ts)), tokens-only for unknown/override models.
+
