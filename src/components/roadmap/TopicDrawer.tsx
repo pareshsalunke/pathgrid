@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useProgress } from "@/lib/stores/progress";
 import { cn } from "@/lib/utils";
 import type { ProgressStatus } from "@/lib/schemas/progress";
 import type { ResourceKind } from "@/lib/schemas/content";
 import type { DrawerTopic } from "./types";
+import { QuizPanel } from "./QuizPanel";
 
 const STATUSES: { value: ProgressStatus; label: string }[] = [
   { value: "pending", label: "Pending" },
@@ -34,6 +36,7 @@ export function TopicDrawer({
   const status =
     useProgress((s) => s.byRoadmap[roadmapId]?.[topic.nodeId]) ?? "pending";
   const setStatus = useProgress((s) => s.setStatus);
+  const [quizOpen, setQuizOpen] = useState(false);
 
   return (
     <div className="fixed inset-0 z-50">
@@ -137,22 +140,41 @@ export function TopicDrawer({
           )}
         </div>
 
-        {/* Footer — deep links into the tutor with this map + topic as context
-            (docs/03 §3.2 AI row; ?q= prefills the composer, never auto-sends). */}
-        <div className="border-hairline flex gap-2 border-t px-[22px] py-3.5">
-          <Link
-            href={`/ai/chat?roadmap=${roadmapId}&topic=${encodeURIComponent(topic.nodeId)}&q=${encodeURIComponent("Explain this topic")}`}
-            className="bg-primary font-link text-on-primary flex-1 rounded-full px-4 py-3 text-center text-[14px] no-underline"
+        {/* Footer — AI row (docs/03 §3.2). "Quiz me" runs inline (item 6); the two chat
+            entries deep-link into the tutor with this map + topic as context
+            (?q= prefills the composer, never auto-sends). */}
+        <div className="border-hairline flex flex-col gap-2 border-t px-[22px] py-3.5">
+          <button
+            type="button"
+            onClick={() => setQuizOpen(true)}
+            className="bg-primary font-link text-on-primary rounded-full px-4 py-3 text-center text-[14px]"
           >
-            Explain this topic
-          </Link>
-          <Link
-            href={`/ai/chat?roadmap=${roadmapId}&topic=${encodeURIComponent(topic.nodeId)}`}
-            className="border-hairline bg-canvas font-link text-ink hover:bg-surface-soft flex-1 rounded-full border px-4 py-3 text-center text-[14px] no-underline"
-          >
-            Ask the tutor
-          </Link>
+            Quiz me
+          </button>
+          <div className="flex gap-2">
+            <Link
+              href={`/ai/chat?roadmap=${roadmapId}&topic=${encodeURIComponent(topic.nodeId)}&q=${encodeURIComponent("Explain this topic")}`}
+              className="border-hairline bg-canvas font-link text-ink hover:bg-surface-soft flex-1 rounded-full border px-4 py-3 text-center text-[14px] no-underline"
+            >
+              Explain this topic
+            </Link>
+            <Link
+              href={`/ai/chat?roadmap=${roadmapId}&topic=${encodeURIComponent(topic.nodeId)}`}
+              className="border-hairline bg-canvas font-link text-ink hover:bg-surface-soft flex-1 rounded-full border px-4 py-3 text-center text-[14px] no-underline"
+            >
+              Ask the tutor
+            </Link>
+          </div>
         </div>
+
+        {quizOpen && (
+          <QuizPanel
+            roadmapId={roadmapId}
+            nodeId={topic.nodeId}
+            title={topic.title}
+            onClose={() => setQuizOpen(false)}
+          />
+        )}
       </aside>
     </div>
   );

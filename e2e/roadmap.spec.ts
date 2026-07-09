@@ -36,3 +36,19 @@ test("roadmap: list view toggle renders topics", async ({ page }) => {
   await page.getByRole("button", { name: "list", exact: true }).click();
   await expect(page.getByRole("button", { name: /CSS/ }).first()).toBeVisible();
 });
+
+// The full quiz flow needs auth + a BYOK key (untestable in CI, like the item-5
+// chat e2e); assert the signed-out gate on the drawer "Quiz me" action instead.
+test("roadmap: Quiz me prompts anonymous users to log in", async ({ page }) => {
+  await page.goto("/frontend-developer");
+  const canvas = page.locator(".react-flow");
+  await canvas.getByText("HTML", { exact: true }).click();
+  const drawer = page.getByRole("dialog");
+  await expect(drawer).toBeVisible();
+
+  await drawer.getByRole("button", { name: "Quiz me" }).click();
+
+  const login = drawer.getByRole("link", { name: "Log in" });
+  await expect(login).toBeVisible();
+  await expect(login).toHaveAttribute("href", /\/login\?callbackUrl=/);
+});

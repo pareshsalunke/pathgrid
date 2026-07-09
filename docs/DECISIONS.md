@@ -243,3 +243,53 @@ Route + UI:
 - **`maxDuration = 300` kept uniform** with `/api/ai/roadmap` (slow-provider headroom;
   costs nothing when idle).
 
+### Item 6 — quiz (`POST /api/ai/quiz` + drawer flow + `POST /api/quiz-attempts`)
+
+Schema (migration 0005, additive — deviations from the doc-04 §2 DDL sketch):
+
+- **`quizzes` is keyed by `(roadmap_id, node_id)`, not the doc's `topic_id` FK.**
+  Forced by the code, not preference: `DrawerTopic` only ever carries a graph `nodeId`
+  (never the `topics` uuid), and **generated maps have no `topics` rows at all** (the
+  `/ai/roadmap/[id]` viewer synthesises label-only topics). `(roadmap_id, node_id)` is
+  the one addressing that exists on both official and generated surfaces, and it mirrors
+  how `user_topic_progress` / `chat_threads` already address content. A `UNIQUE
+  (roadmap_id, node_id)` is the cache key; `upsertQuiz` uses `onConflictDoUpdate` so a
+  two-tab race (or a future explicit regenerate) is idempotent. `model` stores authoring
+  provenance (doc 06 §4.5).
+- **Both `quiz_attempts` FKs are `ON DELETE CASCADE`** (doc sketch left `quiz_id` bare):
+  `user_id` cascade is the GDPR path; `quiz_id` cascade means deleting a roadmap (which
+  cascades its quizzes) can't orphan an attempt. Net effect proven by the Neon test —
+  delete a user ⇒ only their attempts go (a foreign quiz survives); delete a roadmap ⇒
+  its quizzes and their attempts both go.
+
+Route + UI:
+
+- **Plain JSON, not SSE** (unlike the roadmap/chat routes). A quiz is a single
+  fast-tier `generateStructured` call with a small payload, so streaming buys nothing;
+  errors are ordinary status codes (`422 generation_invalid`, `502` mapped-provider,
+  `404` roadmap/topic) which the client's `!res.ok` branch already handles.
+- **Fast tier for generation *and* repair** (doc 05 tier table: quiz = fast) — cheapest
+  path on the user's key.
+- **Answers are withheld until grading.** `POST /api/ai/quiz` returns only
+  `{q, options}` (`toPublicQuestions` strips `answerIdx`/`why`); `POST /api/quiz-attempts`
+  grades server-side and *then* reveals `answerIdx`/`why` for the review screen — matches
+  doc 04 §4 ("Grade + store attempt") and keeps answers out of the client bundle. The
+  attempts route is **session-gated only** (no BYOK key — it makes no model call).
+- **Model output is a `{questions:[…]}` wrapper** (doc 06 §3.5); Zod `quizGeneration`
+  validates the wrapper, the bare `quizQuestions` array is what's stored. **Question count
+  accepted as 4–6** though the prompt asks for exactly 5 (2 recall / 2 application / 1
+  tricky) — a slightly over/under-count return renders fine instead of forcing a paid
+  repair or a hard fail on the user's key.
+- **"Quiz me" runs inline in the drawer**, not a deep-link (doc 08 says "flow", doc 03
+  §3.2 lists it as a drawer AI-row action). `QuizPanel` overlays the drawer body on
+  **both** official (`/[roadmapSlug]`) and generated (`/ai/roadmap/[id]`) maps via the
+  shared `TopicDrawer`; gating mirrors `CreateRoadmapPane` (anon → login CTA / no-key →
+  connect-key → Settings). For generated maps (no `body_md`) the route falls back to the
+  node label + standard-curriculum instruction — the same label-only unlock as item-5
+  chat. The session token meter counts a real generation only; a **cache hit is free**
+  (no model call, no `ai_call` event).
+- **`/ai` hub Quiz tab stays `ComingSoonPane`** (deliberate non-goal): item 6's checklist
+  is route + drawer flow + grading; a hub tab needs a roadmap/topic picker that doesn't
+  exist. Same call item 5 made for chat. `POST /api/quiz-attempts` fires a
+  `quiz_attempt` analytics event; `POST /api/ai/quiz` logs `ai_call {feature:"quiz"}`.
+

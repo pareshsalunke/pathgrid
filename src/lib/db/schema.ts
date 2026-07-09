@@ -15,6 +15,7 @@ import {
 } from "drizzle-orm/pg-core";
 import type { RoadmapGraph } from "@/lib/schemas/graph";
 import type { TopicMeta, Seo } from "@/lib/schemas/content";
+import type { QuizQuestion } from "@/lib/schemas/quiz";
 
 /**
  * Schema: content core (Phase 1) + accounts & persistence (Phase 2).
@@ -287,6 +288,44 @@ export const chatMessages = pgTable(
   },
   (t) => [index("chat_messages_thread_id_idx").on(t.threadId, t.id)],
 );
+
+/** Cached per-topic quizzes (doc 04 §2, doc 06 §3.5). Keyed by (roadmapId, nodeId)
+ *  rather than the doc's `topic_id` FK: the drawer only ever knows a graph nodeId, and
+ *  generated maps have no `topics` rows at all — this addressing works identically for
+ *  official and generated maps (DECISIONS.md). roadmapId cascade drops a map's quizzes on
+ *  roadmap/owner delete; the unique key is the cache lookup. `model` = authoring provenance
+ *  (doc 06 §4.5). questions holds the full [{q,options[4],answerIdx,why}] — answers are
+ *  stripped before leaving the quiz route. */
+export const quizzes = pgTable(
+  "quizzes",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    roadmapId: uuid("roadmap_id")
+      .notNull()
+      .references(() => roadmaps.id, { onDelete: "cascade" }),
+    nodeId: text("node_id").notNull(),
+    questions: jsonb("questions").$type<QuizQuestion[]>().notNull(),
+    model: text("model"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (t) => [unique("quizzes_roadmap_node_unique").on(t.roadmapId, t.nodeId)],
+);
+
+/** A graded quiz attempt (doc 04 §2). Both FKs cascade (deviation from the doc's bare
+ *  `quiz_id` FK): user delete is the GDPR path; quiz delete (via a roadmap delete) must not
+ *  leave dangling attempts. answers = the learner's selected option index per question. */
+export const quizAttempts = pgTable("quiz_attempts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
+  quizId: uuid("quiz_id").references(() => quizzes.id, { onDelete: "cascade" }),
+  score: integer("score").notNull(),
+  answers: jsonb("answers").$type<number[]>().notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
 
 export const events = pgTable("events", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
