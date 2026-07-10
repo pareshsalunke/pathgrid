@@ -23,6 +23,7 @@ import {
   topicContentSchema,
   resourcePrompts,
   resourceSuggestions,
+  type ResourceSuggestions,
   seoPrompts,
   seoSchema,
   critiquePrompts,
@@ -249,25 +250,34 @@ export async function stepResources(ctx: StepContext): Promise<void> {
 
   const out: ResourceMap = { ...existing };
   let dropped = 0;
+  let failed = 0;
   await pool(pending, CONCURRENCY, async (node) => {
-    const { system, prompt } = resourcePrompts({
-      roadmapTitle: graph.meta.title,
-      topicTitle: node.data.label,
-      bodyMd: content[node.id].body_md,
-    });
-    const res = await generateStructured({
-      model: getModel(ctx.config, "smart"),
-      repairModel: getModel(ctx.config, "fast"),
-      system,
-      prompt,
-      schema: resourceSuggestions,
-      maxOutputTokens: RESOURCES_MAX_TOKENS,
-    });
-    addUsage(ctx.usage, res.usage);
+    // Resources are best-effort (Policy A): a malformed suggestion for one topic must
+    // never fail the whole run — that topic just gets no links.
+    let suggestions: ResourceSuggestions["resources"] = [];
+    try {
+      const { system, prompt } = resourcePrompts({
+        roadmapTitle: graph.meta.title,
+        topicTitle: node.data.label,
+        bodyMd: content[node.id].body_md,
+      });
+      const res = await generateStructured({
+        model: getModel(ctx.config, "smart"),
+        repairModel: getModel(ctx.config, "fast"),
+        system,
+        prompt,
+        schema: resourceSuggestions,
+        maxOutputTokens: RESOURCES_MAX_TOKENS,
+      });
+      addUsage(ctx.usage, res.usage);
+      suggestions = res.data.resources;
+    } catch {
+      failed += 1;
+    }
 
     // Never publish an unverified URL (doc 06 §2): HEAD-check, drop failures.
     const verified: DraftResource[] = [];
-    for (const r of res.data.resources) {
+    for (const r of suggestions) {
       if (await verifyUrl(r.url)) {
         verified.push({
           kind: r.kind,
@@ -283,7 +293,10 @@ export async function stepResources(ctx: StepContext): Promise<void> {
     writeOut(slug, "resources.json", out); // incremental — per-topic resume
   });
   const kept = Object.values(out).reduce((n, list) => n + list.length, 0);
-  log("resources", `✓ ${kept} verified links kept, ${dropped} dropped`);
+  log(
+    "resources",
+    `✓ ${kept} verified links kept, ${dropped} dropped${failed ? `, ${failed} topics skipped (gen error)` : ""}`,
+  );
 }
 
 // ── Step 6: SEO block ──────────────────────────────────────────────────────────

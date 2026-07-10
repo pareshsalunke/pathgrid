@@ -30,9 +30,11 @@ describe("seedOutlinePrompts (doc 06 §3.1)", () => {
     expect(system).toContain("curriculum designer");
   });
 
-  it("asks for 5-8 stages (outlineSchema caps at 8) and JSON only", () => {
+  it("asks for 5-7 stages, a node budget, and JSON only", () => {
     const { prompt } = seedOutlinePrompts(entry);
-    expect(prompt).toContain("5-8 stages");
+    expect(prompt).toContain("5-7 stages");
+    expect(prompt).toContain("NODE BUDGET");
+    expect(prompt).toContain("between 25 and 70");
     expect(prompt).toContain("Return JSON only");
     expect(prompt).toContain('"stages"');
   });
