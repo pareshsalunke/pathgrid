@@ -8,6 +8,12 @@ vi.mock("@/components/editor/EditorCanvas", () => ({
   EditorCanvas: () => <div data-testid="canvas" />,
 }));
 vi.mock("@/components/layout/AppHeader", () => ({ AppHeader: () => null }));
+// Stub the AI-assist popover (needs a SessionProvider + the BYOK store); this test
+// targets the palette / panel / autosave wiring, and the popover is covered by
+// AiAssistPopover.test.tsx.
+vi.mock("@/components/editor/AiAssistPopover", () => ({
+  AiAssistPopover: () => <div data-testid="ai-assist" />,
+}));
 
 import { EditorScreen } from "./EditorScreen";
 

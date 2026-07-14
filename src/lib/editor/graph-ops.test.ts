@@ -4,6 +4,7 @@ import {
   graphToEditor,
   serializeGraph,
   addNode,
+  addSubtopics,
   deleteNode,
   changeNodeType,
   renameNode,
@@ -162,6 +163,56 @@ describe("addNode", () => {
       one.edges.some((e) => e.source === "t" && e.target === one.newId),
     ).toBe(true);
     expectValid(ser(two.nodes, two.edges));
+  });
+});
+
+describe("addSubtopics", () => {
+  it("adds N dashed-related subtopics under the parent, staying valid", () => {
+    const { nodes, edges } = editor();
+    const r = addSubtopics(nodes, edges, {
+      parentId: "b",
+      labels: ["First", "Second", "Third"],
+      roadmapId: RM,
+    });
+    expect(r.newIds).toHaveLength(3);
+    expect(r.nodes).toHaveLength(7); // 4 original + 3 new
+    for (const id of r.newIds) {
+      const node = r.nodes.find((n) => n.id === id)!;
+      expect(node.data.variant).toBe("subtopic");
+      expect(node.data.slug).toBeTruthy();
+      const edge = r.edges.find((e) => e.target === id)!;
+      expect(edge.source).toBe("b");
+      expect(edge.data).toEqual({ style: "dashed", kind: "related" });
+    }
+    expectValid(ser(r.nodes, r.edges));
+  });
+
+  it("staggers positions so subtopics don't stack, and dedupes slugs across the batch", () => {
+    const { nodes, edges } = editor();
+    const r = addSubtopics(nodes, edges, {
+      parentId: "b",
+      labels: ["Same", "Same", "Same"],
+      roadmapId: RM,
+    });
+    const created = r.newIds.map((id) => r.nodes.find((n) => n.id === id)!);
+    const ys = created.map((n) => n.position.y);
+    expect(new Set(ys).size).toBe(3); // distinct y positions
+    const slugs = created.map((n) => n.data.slug);
+    expect(new Set(slugs).size).toBe(3); // uniqueSlug appended -2, -3
+    expectValid(ser(r.nodes, r.edges));
+  });
+
+  it("skips blank labels and falls back to the title node when parentId is unknown", () => {
+    const { nodes, edges } = editor();
+    const r = addSubtopics(nodes, edges, {
+      parentId: "does-not-exist",
+      labels: ["Kept", "   ", ""],
+      roadmapId: RM,
+    });
+    expect(r.newIds).toHaveLength(1); // only "Kept"
+    const edge = r.edges.find((e) => e.target === r.newIds[0])!;
+    expect(edge.source).toBe("t"); // fell back to the title node
+    expectValid(ser(r.nodes, r.edges));
   });
 });
 

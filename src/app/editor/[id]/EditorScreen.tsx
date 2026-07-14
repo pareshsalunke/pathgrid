@@ -15,11 +15,13 @@ import { EditorCanvas } from "@/components/editor/EditorCanvas";
 import { NodePalette } from "@/components/editor/NodePalette";
 import { NodePropertiesPanel } from "@/components/editor/NodePropertiesPanel";
 import { EditorTopBar } from "@/components/editor/EditorTopBar";
+import { AiAssistPopover } from "@/components/editor/AiAssistPopover";
 import { useEditorAutosave } from "@/lib/editor/use-autosave";
 import {
   graphToEditor,
   serializeGraph,
   addNode,
+  addSubtopics,
   deleteNode,
   changeNodeType,
   renameNode,
@@ -112,6 +114,23 @@ export function EditorScreen({
     if (titleNode) setNodes((nds) => renameNode(nds, titleNode.id, label));
   };
 
+  // ── AI assist: insert generated subtopics under the selected node ──
+  const selectedForAssist = selected
+    ? { id: selected.id, label: selected.data.label }
+    : null;
+  // Existing children (edge targets from the selected node) so the model won't repeat them.
+  const existingChildren = selected
+    ? edges
+        .filter((e) => e.source === selected.id)
+        .map((e) => nodes.find((n) => n.id === e.target)?.data.label)
+        .filter((l): l is string => Boolean(l))
+    : [];
+  const onInsertSubtopics = (parentId: string, labels: string[]) => {
+    const r = addSubtopics(nodes, edges, { parentId, labels, roadmapId });
+    setNodes(r.nodes);
+    setEdges(r.edges);
+  };
+
   // Sync the roadmaps.title column (viewer H1 + library card) — separate from the
   // graph autosave, which persists the title node label + meta.title.
   useTitleSync(roadmapId, title, initialTitle);
@@ -126,6 +145,14 @@ export function EditorScreen({
         status={status}
         issue={issue}
         visibility={initialVisibility}
+        aiAssist={
+          <AiAssistPopover
+            roadmapTitle={title}
+            selected={selectedForAssist}
+            existingChildren={existingChildren}
+            onInsert={onInsertSubtopics}
+          />
+        }
       />
       <div className="flex min-h-0 flex-1">
         <NodePalette onAdd={onAdd} />

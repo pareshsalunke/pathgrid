@@ -47,8 +47,8 @@ function StatusPill({
 /**
  * Editor top bar (doc 03 §3.5): back to the viewer, inline title edit, autosave
  * state, share. The title input drives the title node's label (persisted with the
- * graph) and a debounced roadmaps.title sync, handled in EditorScreen. AI assist is
- * a deferred slot (Phase 5 item 2).
+ * graph) and a debounced roadmaps.title sync, handled in EditorScreen. `aiAssist` is
+ * the AI-assist popover slot (Phase 5 item 2), owned by EditorScreen.
  */
 export function EditorTopBar({
   roadmapId,
@@ -57,6 +57,7 @@ export function EditorTopBar({
   status,
   issue,
   visibility,
+  aiAssist,
 }: {
   roadmapId: string;
   title: string;
@@ -64,6 +65,7 @@ export function EditorTopBar({
   status: SaveStatus;
   issue: string | null;
   visibility: "public" | "unlisted" | "private";
+  aiAssist: React.ReactNode;
 }) {
   return (
     <header className="border-hairline bg-canvas z-30 flex flex-wrap items-center gap-x-4 gap-y-2 border-b px-5 py-3">
@@ -84,14 +86,7 @@ export function EditorTopBar({
 
       <StatusPill status={status} issue={issue} />
 
-      <button
-        type="button"
-        disabled
-        title="AI assist is coming soon"
-        className="border-hairline text-ink/40 cursor-not-allowed rounded-full border px-4 py-1.5 text-[13px]"
-      >
-        AI assist
-      </button>
+      {aiAssist}
 
       <ShareControl roadmapId={roadmapId} initialVisibility={visibility} />
     </header>

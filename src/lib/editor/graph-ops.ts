@@ -225,6 +225,57 @@ export function addNode(
 }
 
 /**
+ * Add several subtopic nodes under a parent in one batch (the AI-assist insert —
+ * docs/03 §3.5). Same primitives as addNode (unique slug, dashed "related" edge,
+ * crypto.randomUUID) but positions are staggered vertically so N subtopics don't
+ * stack on one spot, and slugs are deduped across the whole batch. Anchor falls back
+ * parent → title → first node, so the graph stays connected by construction. Blank
+ * labels are skipped. Nothing is auto-selected — the user keeps their bearings.
+ */
+export function addSubtopics(
+  nodes: EditorNode[],
+  edges: EditorEdge[],
+  opts: { parentId?: string; labels: string[]; roadmapId: string },
+): { nodes: EditorNode[]; edges: EditorEdge[]; newIds: string[] } {
+  const { parentId, labels, roadmapId } = opts;
+  const parent =
+    nodes.find((n) => n.id === parentId) ??
+    nodes.find((n) => n.data.variant === "title") ??
+    nodes[0];
+  if (!parent) return { nodes, edges, newIds: [] };
+
+  const used = slugsInUse(nodes);
+  const base = parent.position ?? { x: 0, y: 0 };
+  const newNodes: EditorNode[] = [];
+  const newEdges: EditorEdge[] = [];
+  const newIds: string[] = [];
+
+  for (const raw of labels) {
+    const label = raw.trim();
+    if (!label) continue;
+    const id = crypto.randomUUID();
+    const slug = uniqueSlug(slugify(label), used);
+    used.add(slug);
+    newNodes.push({
+      id,
+      type: "subtopic",
+      position: { x: base.x + 260, y: base.y + newIds.length * 90 },
+      data: { label, variant: "subtopic", slug, roadmapId, nodeId: id },
+    });
+    newEdges.push(
+      makeEdge(parent.id, id, { style: "dashed", kind: "related" }),
+    );
+    newIds.push(id);
+  }
+
+  return {
+    nodes: [...nodes.map(deselect), ...newNodes],
+    edges: [...edges, ...newEdges],
+    newIds,
+  };
+}
+
+/**
  * Delete a node (never the title node). Removes incident edges, clears any orphaned
  * `parentId`, and HEALS connectivity: former neighbours are reconnected to a shared
  * anchor (preferring the title node) with dashed "related" edges — which can never

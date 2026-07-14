@@ -445,3 +445,39 @@ so the new build is the generation lock + the admin surface; the rest is an audi
 - **Entry point** = an owner-only "Edit" button on `/ai/roadmap/[id]`. Dashboard/hub
   entry points are a later touch.
 
+## Design & scope decisions (Phase 5 — editor AI-assist popover, item 2)
+
+- **`POST /api/ai/subtopics` does ZERO DB access** — the one deliberate divergence from
+  `POST /api/ai/quiz` (which reads the roadmap + caches by `(roadmapId,nodeId)`). The editor
+  already holds the live graph in memory, **including edits not yet autosaved**, so the route
+  takes its context in the body (`roadmapTitle`, `parentLabel`, `existingChildren`) and returns
+  bare titles; nothing is read or written. A quiz-style `getRoadmapForChat` lookup would 404 on
+  a just-added node or feed stale context. This mirrors `POST /api/ai/roadmap` (generate from
+  input strings, no roadmap-access check) — the auth posture stays correct: session-gated +
+  the caller's own key = they spend their own tokens on constrained, length-capped, learning-
+  only text. Consequence: **no new DB repo, no migration**, and no cache (each click regenerates).
+- **Fast tier** (like quiz): short mechanical generation; the repair pass runs on the fast
+  model too. `maxOutputTokens: 600` caps the wallet. `track("ai_call",{feature:"assist"})` on
+  both outcomes (never the key) — the `assist` feature row surfaces in `/admin/ai` for free
+  (that table groups by `props->>'feature'`).
+- **New `addSubtopics` graph-op rather than looping `addNode`.** `addNode` places every
+  subtopic at `anchor.x+260, anchor.y`, so N of them would stack on one spot. `addSubtopics`
+  ([graph-ops.ts](../src/lib/editor/graph-ops.ts)) reuses the same primitives (`uniqueSlug`,
+  dashed `related` `makeEdge`, `crypto.randomUUID`, `deselect`) but **staggers positions**
+  (`y += i*90`) and **dedups slugs across the batch** (one accumulating `slugsInUse` set), and
+  sets the real title at creation (no rename round-trip). Anchor falls back parent→title→first,
+  blank labels are skipped — graph stays valid by construction; autosave persists it.
+- **Popover injected as a `React.ReactNode` slot** on `EditorTopBar` (replacing the disabled
+  button), owned by `EditorScreen` which has `nodes`/`edges`/`title`. Keeps the top bar
+  presentational and avoids drilling a bag of AI props through it. `existingChildren` = labels of
+  the selected node's current edge-targets, so the model won't re-suggest what's on the canvas.
+- **Two-step popover** (generate → review checklist, all checked → insert selected). AI output
+  is reviewable before it mutates the canvas (per-suggestion veto), matching the
+  "AI-generated · review before you rely on it" ethos. Gating mirrors `QuizPanel` verbatim
+  (`useMounted` + `useSession` + `currentAiConfig`; anon→login, no-key→Settings); the session
+  token meter counts every generation (no cache = always a real call).
+- **No new e2e**: the editor (hence the popover) is unreachable signed-out; the existing
+  signed-out `/editor/[id] → /login` e2e already covers the gate — same rationale as the
+  roadmap/chat/quiz-generation routes, which need auth+key and so are unit-tested with mocks.
+  The live authed generate→insert pass is deferred (owner sign-in + real key, like items 5–7).
+
