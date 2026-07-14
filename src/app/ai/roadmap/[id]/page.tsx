@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { auth } from "@/auth";
 import { AppHeader } from "@/components/layout/AppHeader";
@@ -8,20 +8,20 @@ import { Container } from "@/components/layout/Container";
 import { RoadmapView } from "@/components/roadmap/RoadmapView";
 import { ProgressMeter } from "@/components/roadmap/ProgressMeter";
 import type { DrawerTopic } from "@/components/roadmap/types";
-import { getRoadmapById } from "@/lib/db/roadmaps";
+import { getViewableRoadmapById } from "@/lib/db/roadmaps";
 import { NODE_SIZE, type PositionedNode } from "@/lib/node-size";
 
 /**
- * Owner-only viewer for generated roadmaps (docs/03 §2 /ai/roadmap/[id]).
- * Reuses the slug page's canvas composition, but: auth + owner check instead of
- * SSG, stored positions instead of an elk pass, and synthesized drawer topics
- * (label-only — generated maps have no topics rows; bodies arrive with the
- * tutor, Phase 3 item 5).
+ * Viewer for generated roadmaps (docs/03 §2 /ai/roadmap/[id]). Serves the owner OR
+ * anyone with the link when the map is unlisted/public (Phase 5 share-by-link) — a
+ * private map to a non-owner 404s. Reuses the slug page's canvas composition, but:
+ * auth-gated instead of SSG, stored positions instead of an elk pass, and
+ * synthesized drawer topics (label-only — generated maps have no topics rows).
  */
 
 export const metadata: Metadata = {
   title: "Your generated roadmap",
-  robots: { index: false }, // private page — never indexable, even post-launch
+  robots: { index: false }, // user content — never indexable, even when shared
 };
 
 type Params = { params: Promise<{ id: string }> };
@@ -29,10 +29,7 @@ type Params = { params: Promise<{ id: string }> };
 export default async function GeneratedRoadmapPage({ params }: Params) {
   const { id } = await params;
   const session = await auth();
-  if (!session?.user?.id)
-    redirect(`/login?callbackUrl=${encodeURIComponent(`/ai/roadmap/${id}`)}`);
-
-  const rm = await getRoadmapById(id, session.user.id);
+  const rm = await getViewableRoadmapById(id, session?.user?.id ?? null);
   if (!rm) notFound();
 
   // Positions were baked in at generation time — just add render dimensions.
@@ -94,6 +91,14 @@ export default async function GeneratedRoadmapPage({ params }: Params) {
             <span className="text-ink/55 font-mono text-[10px] tracking-[0.5px] uppercase">
               AI-drafted · review before you rely on it
             </span>
+            {rm.isOwner && (
+              <Link
+                href={`/editor/${rm.id}`}
+                className="border-ink text-ink hover:bg-block-lilac ml-auto rounded-full border-2 px-4 py-1.5 text-[13px] font-[500] no-underline transition-colors"
+              >
+                Edit
+              </Link>
+            )}
           </div>
         </Container>
       </section>

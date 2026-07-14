@@ -186,6 +186,48 @@ export async function getRoadmapForChat(
   };
 }
 
+/**
+ * Read for the shared viewer + editor "Edit" button (Phase 5). Like
+ * getRoadmapForChat (owner OR public/unlisted), but the viewer accepts an
+ * anonymous visitor (`viewerUserId` may be null → link-shared unlisted/public
+ * maps render logged-out) and it surfaces `isOwner` so the page can offer editing.
+ * A private map to a non-owner returns null → the page 404s (hides existence).
+ */
+export async function getViewableRoadmapById(
+  roadmapId: string,
+  viewerUserId: string | null,
+): Promise<
+  (Omit<RoadmapPage, "slug"> & { slug: string | null; isOwner: boolean }) | null
+> {
+  const db = getDb();
+  const [rm] = await db
+    .select()
+    .from(roadmaps)
+    .where(eq(roadmaps.id, roadmapId))
+    .limit(1);
+  if (!rm || !rm.currentVersionId) return null;
+  const isOwner = Boolean(viewerUserId) && rm.ownerId === viewerUserId;
+  const allowed =
+    isOwner || rm.visibility === "public" || rm.visibility === "unlisted";
+  if (!allowed) return null;
+
+  const payload = await loadRoadmapPayload(rm.id, rm.currentVersionId);
+  if (!payload) return null;
+
+  return {
+    id: rm.id,
+    slug: rm.slug,
+    title: rm.title,
+    brief: rm.brief,
+    category: rm.category,
+    isAiGenerated: rm.isAiGenerated ?? false,
+    visibility: rm.visibility,
+    seo: rm.seo,
+    isOwner,
+    ...payload,
+  };
+}
+
 /** Shared assembly: current version graph + topics + ordered resources. */
 async function loadRoadmapPayload(
   roadmapId: string,

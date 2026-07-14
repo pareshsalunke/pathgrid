@@ -35,11 +35,17 @@ test("rail mode switch is interactive (hydration works)", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("generated-roadmap viewer redirects to /login when signed out", async ({
+test("generated-roadmap viewer 404s for a signed-out visitor on a non-viewable map", async ({
   page,
 }) => {
-  await page.goto("/ai/roadmap/00000000-0000-0000-0000-000000000000");
-  await expect(page).toHaveURL(/\/login/);
+  // Share-by-link (Phase 5): the viewer serves owner + public/unlisted maps (incl.
+  // logged-out); a private/nonexistent map is notFound() — hiding existence rather
+  // than leaking it via a login redirect.
+  const res = await page.goto(
+    "/ai/roadmap/00000000-0000-0000-0000-000000000000",
+  );
+  expect(res?.status()).toBe(404);
+  await expect(page).toHaveURL(/\/ai\/roadmap\//); // no redirect
 });
 
 test("tutor chat redirects to /login when signed out, preserving context params", async ({

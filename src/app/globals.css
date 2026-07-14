@@ -109,3 +109,30 @@ body {
 ::selection {
   background: var(--color-block-lilac);
 }
+
+/* Editor canvas only: the roadmap node's connect handles are 1.5px + transparent
+   for the read-only viewer. Inside .pg-editor make them grabbable (visible + a
+   real hit-area) on node hover / while connecting, without touching the shared
+   node component (src/components/roadmap/nodes.tsx). */
+.pg-editor .react-flow__handle {
+  width: 11px;
+  height: 11px;
+  min-width: 11px;
+  min-height: 11px;
+  border: 2px solid var(--color-canvas);
+  background: var(--color-ink);
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+.pg-editor .react-flow__node:hover .react-flow__handle,
+.pg-editor .react-flow__handle.connectionindicator,
+.pg-editor .react-flow__handle-connecting,
+.pg-editor .react-flow__handle-valid {
+  opacity: 1;
+}
+.pg-editor .react-flow__node {
+  cursor: grab;
+}
+.pg-editor .react-flow__node.dragging {
+  cursor: grabbing;
+}

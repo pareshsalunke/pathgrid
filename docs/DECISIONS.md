@@ -384,3 +384,64 @@ so the new build is the generation lock + the admin surface; the rest is an audi
 - **`pipeline/out/` is gitignored** — intermediate JSON is a local working artifact;
   the DB is the source of truth after seed-draft.
 
+## Design & scope decisions (Phase 5 — editor `/editor/[id]`, item 1)
+
+- **Autosave updates the current version's graph IN PLACE** (`updateRoadmapGraph`
+  in [editor.ts](../src/lib/db/editor.ts): `UPDATE roadmap_versions SET graph WHERE
+  id = currentVersionId` + touch `roadmaps.updated_at`), **not** a new version per
+  save — a debounced editor would otherwise explode `roadmap_versions`. Versioning
+  stays a pipeline/publish concern (`upsertDraftRoadmap` appends; the editor mutates).
+  **No migration** — reuses `roadmap_versions.graph` + the `visibility` enum + existing
+  columns.
+- **Separate `EditorCanvas`, not an `editable` prop on `RoadmapCanvas`.** The read-only
+  canvas backs the **public SSG `/[roadmapSlug]`** page and must not absorb editor
+  bundle/hydration risk; the editor needs mutable RF state (`useNodesState`-style +
+  change handlers) vs the viewer's derived `useMemo`. Reuses `nodeTypes`/`CanvasControls`/
+  `Legend`/`NODE_SIZE`. A fresh `EditorScreen` (not `RoadmapView`, which wires
+  progress-sync + drawer + list).
+- **RF `data` is fattened to carry `slug`/`order`/`parentId`** (`EditorNodeData` in
+  [graph-ops.ts](../src/lib/editor/graph-ops.ts)). `RoadmapCanvas` drops these from RF
+  `data`; reusing that shape and serializing "keep data" would silently lose the slug →
+  topic/subtopic fail `roadmapGraph.superRefine`. The reused `RoadmapNode` only reads
+  label/variant/optional, so the extra fields are inert. **`parentId` stays FLAT** — never
+  set as an RF `parentId` (RF makes positions parent-relative + demands parent-before-child
+  ordering; elk positions are absolute), it round-trips only through `data.parentId`.
+- **Graph invariants held BY CONSTRUCTION**, so autosave rarely blocks: `addNode`
+  auto-edges the new node from the selected/title node (stays connected) and auto-slugs
+  topics/subtopics; the title node is non-deletable + non-retypeable (palette offers no
+  title); `deleteNode` **heals** connectivity by relinking former neighbours to a shared
+  anchor with dashed `related` edges (which can't form a `sequence` cycle); ids via
+  `crypto.randomUUID()`. Slugs are generated **once and kept stable** across renames
+  (superRefine needs non-empty, not unique).
+- **Autosave is a single-in-flight scheduler, NOT the progress-sync copy**
+  ([use-autosave.ts](../src/lib/editor/use-autosave.ts)). A whole-graph PATCH is
+  non-commutative, so out-of-order completion would clobber newer with older. The
+  last-saved graph lives in **state** → "dirty" is derived during render, which makes the
+  trailing save fall out for free (a save landing while edits are pending leaves it dirty →
+  effect re-runs). An `inFlight` ref caps concurrency; every save is gated on client
+  `validateGraph` (invalid transient → status `invalid`, holds); `beforeunload` guard when
+  dirty. (This shape also satisfies the React-Compiler eslint rules: no ref access during
+  render, no synchronous setState in an effect.)
+- **Title has three homes**: the viewer H1 renders `roadmaps.title` (the column), while the
+  graph carries `meta.title` + the title-node `data.label`. The inline title edit drives
+  the title-node label (persisted by graph autosave, which mirrors `meta.title` in
+  `serializeGraph`) AND debounces a `PATCH {title}` to sync `roadmaps.title`. So the
+  editor PATCH body is `{ graph?, visibility?, title? }` (each optional, ≥1 required) —
+  doc 04 §4 named only the graph; title/visibility are the same owner-gated resource.
+- **Share-by-link = private↔unlisted only** (never public — catalog/sitemap/official
+  territory; the sitemap already filters to public). The viewer `/ai/roadmap/[id]` is
+  **relaxed** from owner-only to serve owner **or** public/unlisted (incl. logged-out) via
+  new `getViewableRoadmapById(id, viewerUserId|null)` (returns `isOwner`); a private map to
+  a non-owner is `notFound()` — hiding existence rather than the old login redirect. Reuses
+  the existing viewer over a new `/r/[id]`; robots `noindex` stays (user content, even when
+  shared). **e2e updated**: the signed-out viewer now asserts **404**, not a `/login`
+  redirect.
+- **Properties panel edits graph node data only** (label/type/optional/delete). **AI-assist
+  popover deferred** (Phase 5 item 2 — doc 03 §3.5 names it in the top bar, but doc 08's
+  checklist splits it out): a disabled top-bar slot marks the seam. **Body_md/resources
+  editing deferred** — generated maps have no `topics` rows; pairs with per-topic content
+  work. Edge deletion is out of P1 (keyboard delete is off; nodes delete via the panel so
+  the guards run).
+- **Entry point** = an owner-only "Edit" button on `/ai/roadmap/[id]`. Dashboard/hub
+  entry points are a later touch.
+
